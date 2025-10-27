@@ -6,7 +6,9 @@ const GlobalLayout: FC = () => {
   return (
     <div>
       <Header className="fixed inset-x-0 top-0" />
-      <Outlet />
+      <main className="pt-20">
+        <Outlet />
+      </main>
     </div>
   );
 };

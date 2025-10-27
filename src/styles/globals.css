@@ -1,1 +1,50 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  *:disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+@theme {
+  --breakpoint-xs: 480px;
+  --breakpoint-3xl: 1920px;
+
+  --animate-angle-rotate: rotate 1s steps(8, end) infinite;
+
+  @keyframes slide {
+    0% {
+      transform: translateX(100%);
+    }
+
+    100% {
+      transform: translateX(-200%);
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
