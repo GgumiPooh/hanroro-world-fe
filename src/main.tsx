@@ -1,4 +1,4 @@
-import App from "@/App.tsx";
+import App from "@/App";
 import RootProvider from "@/providers/RootProvider";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
