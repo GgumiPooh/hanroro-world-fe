@@ -64,7 +64,7 @@ const ImageWithPlaceholder: FC<Props> = ({
   }, [src, fallbackSrc]);
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative overflow-hidden", className)}>
       {status === ImageStatus.LOADING && (
         <div className="absolute inset-0">{renderPlaceholder?.()}</div>
       )}
