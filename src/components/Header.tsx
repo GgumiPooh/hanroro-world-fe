@@ -1,5 +1,6 @@
 import LogoIcon from "@/icons/LogoIcon";
 import { cn } from "@/utils/styles";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { type FC } from "react";
 import Button from "./Button";
 
@@ -15,7 +16,7 @@ const Header: FC<Props> = ({ className }) => {
         className,
       )}
     >
-      <LogoIcon className="m-8 w-25 text-plum-300" />
+      <LogoIcon className="m-8 w-25 shrink-0 text-plum-300" />
       <Button variant="ghost" size="lg" className="font-bold">
         TimeLine
       </Button>
@@ -28,6 +29,7 @@ const Header: FC<Props> = ({ className }) => {
       <Button variant="ghost" size="lg" className="font-bold">
         To Artist
       </Button>
+      <Bars3Icon className="right-[10%] h-10 w-10 text-plum-300" />
     </div>
   );
 };
