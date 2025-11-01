@@ -24,7 +24,7 @@ const Home: FC = () => {
       <div className="absolute bottom-20 left-3/4 flex gap-15">
         <Button
           variant="ghost"
-          className="p-2"
+          size="md"
           onClick={() => {
             window.open("https://www.youtube.com/@hanroro6055", "_blank");
           }}
@@ -34,7 +34,7 @@ const Home: FC = () => {
         </Button>
         <Button
           variant="ghost"
-          className="p-2"
+          size="md"
           onClick={() => {
             window.open("https://www.instagram.com/hanr0r0/?hl=ko", "_blank");
           }}
@@ -44,7 +44,7 @@ const Home: FC = () => {
         </Button>
         <Button
           variant="ghost"
-          className="p-2"
+          size="md"
           onClick={() => {
             window.open(
               "https://m.blog.naver.com/PostList.naver?blogId=hanr0r0&tab=1",

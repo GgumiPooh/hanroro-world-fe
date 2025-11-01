@@ -16,16 +16,16 @@ const Header: FC<Props> = ({ className }) => {
       )}
     >
       <LogoIcon className="m-8 w-25 text-plum-300" />
-      <Button variant="ghost" size="lg" className="p-3 font-bold">
+      <Button variant="ghost" size="lg" className="font-bold">
         TimeLine
       </Button>
-      <Button variant="ghost" size="lg" className="p-3 font-bold">
+      <Button variant="ghost" size="lg" className="font-bold">
         Album
       </Button>
-      <Button variant="ghost" size="lg" className="p-3 font-bold">
+      <Button variant="ghost" size="lg" className="font-bold">
         Goods
       </Button>
-      <Button variant="ghost" size="lg" className="p-3 font-bold">
+      <Button variant="ghost" size="lg" className="font-bold">
         To Artist
       </Button>
     </div>
