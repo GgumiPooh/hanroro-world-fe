@@ -1,7 +1,5 @@
 import Header from "@/components/Header";
-import InstagramIcon from "@/icons/Instagram";
-import SignIcon from "@/icons/SignIcon";
-import YoutubeIcon from "@/icons/YoutubeIcon";
+
 import { type FC } from "react";
 import { Outlet } from "react-router";
 
