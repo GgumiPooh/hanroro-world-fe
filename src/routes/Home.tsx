@@ -20,7 +20,7 @@ const Home: FC = () => {
         <h3 className="text-left text-xs font-bold text-plum-300 md:text-sm">
           NOT OFFICIAL SITE
           <br />
-          CONTACT : hanroro6055@gmail.com
+          CONTACT : hyoeun.jin2@gmail.com
         </h3>
       </div>
       <div className="absolute right-[5%] bottom-10 flex flex-col gap-5 md:bottom-20 md:flex-row md:gap-10">
