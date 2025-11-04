@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: dist
+      - name: Build
         run: npm install && npm run build
 
       - name: Deploy to Cloudflare Pages
@@ -22,4 +22,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: roro-world-fe
-          directory: build
+          directory: dist
