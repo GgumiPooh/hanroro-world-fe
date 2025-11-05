@@ -33,22 +33,35 @@ const Header: FC<Props> = ({ className }) => {
       )}
     >
       <div className="flex items-center justify-between">
-        <LogoIcon className="w-20 shrink-0 text-plum-200 md:w-25" />
+        <Button
+          variant="icon"
+          size="sm"
+          onClick={() => {
+            window.location.href = "/";
+          }}
+        >
+          <LogoIcon className="w-20 shrink-0 text-plum-200 md:w-25" />
+        </Button>
         {ENV_VARIABLE.IS_COMMING_SOON ? (
           <Button
             variant="ghost"
             size="md"
-            className="font-bold not-md:hidden"
+            className="font-bold not-lg:hidden"
             onClick={() => window.alert("Comming soon")}
           >
             Comming soon
           </Button>
         ) : (
-          <DesktopMenuList className="not-md:hidden" />
+          <DesktopMenuList className="not-lg:hidden" />
         )}
-        <button className="md:hidden" onClick={handleToggleMenu}>
+        <Button
+          variant="icon"
+          size="sm"
+          className="lg:hidden"
+          onClick={handleToggleMenu}
+        >
           <Bars3Icon className="size-10 stroke-2 text-plum-200" />
-        </button>
+        </Button>
       </div>
 
       <div
@@ -85,8 +98,15 @@ const DesktopMenuList: FC<{
   return (
     <ul className={cn("flex items-center", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
-        <li key={item.href}>
-          <Button variant="ghost" size="sm" className="font-bold">
+        <li key={item.href} className="mr-7">
+          <Button
+            variant="ghost"
+            size="md"
+            className="font-bold"
+            onClick={() => {
+              window.location.href = item.href;
+            }}
+          >
             {item.label}
           </Button>
         </li>
@@ -99,10 +119,17 @@ const MobileMenuPanel: FC<{
   className?: string;
 }> = ({ className }) => {
   return (
-    <ul className={cn("-ml-3", className)}>
+    <ul className={cn("", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
-        <li key={item.href}>
-          <Button variant="ghost" size="sm" className="font-bold">
+        <li key={item.href} className="mb-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="font-bold"
+            onClick={() => {
+              window.location.href = item.href;
+            }}
+          >
             {item.label}
           </Button>
         </li>

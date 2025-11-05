@@ -1,7 +1,7 @@
 export const DESKTOP_MENU_LIST = [
   {
-    label: "TimeLine",
-    href: "/timeline",
+    label: "Activity",
+    href: "/activity",
   },
   {
     label: "Albums",

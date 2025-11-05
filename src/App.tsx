@@ -1,4 +1,5 @@
 import GlobalLayout from "@/components/GlobalLayout";
+import Activity from "@/routes/Activity";
 import Error from "@/routes/Error";
 import Home from "@/routes/Home";
 import "@/styles/globals.css";
@@ -10,6 +11,7 @@ const App: FC = () => {
     <Routes>
       <Route element={<GlobalLayout />} errorElement={<Error />}>
         <Route path="/" element={<Home />} />
+        <Route path="/activity" element={<Activity />} />
       </Route>
     </Routes>
   );
