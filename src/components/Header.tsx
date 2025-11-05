@@ -14,7 +14,7 @@ type Props = {
 const Header: FC<Props> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useBreakpoint("md", (isMatch) => {
+  useBreakpoint("lg", (isMatch) => {
     if (!isMatch) {
       return;
     }
