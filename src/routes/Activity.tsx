@@ -1,9 +1,10 @@
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
+import { useActivities } from "@/hooks/useActivities";
 import { cn } from "@/utils/styles";
 import { CheckCircleIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
 
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 const getTitle = (titles: any[], lang = "kor") => {
   const found = titles.find((t) => t.language === lang);
   return found ? found.content : (titles[0]?.content ?? "");
@@ -25,21 +26,13 @@ const Activity: FC = () => {
   // const { scrollX } = useScroll({
   //   container: carouselRef,
   // });
-  const [activities, setActivity] = useState<any[]>([]);
-  useEffect(() => {
-    const fetchActivity = async () => {
-      const res = await fetch("http://localhost:8080/api/activity");
-      if (!res.ok) throw new Error("Failed to fetch activity");
-      const activity = await res.json();
-      setActivity(activity);
-    };
-    fetchActivity();
-  }, []);
+  const { activities, isLoading, error } = useActivities();
 
   const [sort, setSort] = useState<"latest" | "oldest">("latest");
   const handleSort = (sort: "latest" | "oldest") => {
     setSort(sort);
   };
+
   return (
     <div className="relative overflow-y-auto bg-gray-300/70 pt-50">
       <ImageWithPlaceholder
@@ -77,7 +70,7 @@ const Activity: FC = () => {
       <div className="relative ml-120 border-l-6 border-plum-600/50">
         {activities
           .slice()
-          .sort((a: any, b: any) => {
+          .sort((a, b) => {
             if (sort === "oldest") {
               return (
                 new Date(a.activeFrom).getTime() -
@@ -89,7 +82,7 @@ const Activity: FC = () => {
               new Date(a.activeFrom).getTime()
             );
           })
-          .map((item: any) => (
+          .map((item) => (
             <ul key={item.id} className="mb-40 flex items-center">
               <div className="relative top-2/5 left-[-19px] h-8 w-8 rounded-2xl bg-plum-500/90">
                 <CheckCircleIcon
