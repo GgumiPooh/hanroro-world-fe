@@ -23,7 +23,7 @@ const Button: FC<Props> = ({
         variant === "primary" &&
           "bg-plum-500 text-white hover:bg-plum-600 focus:ring-plum-500 active:bg-plum-700",
         variant === "secondary" &&
-          "bg-plum-400/40 text-plum-400 hover:scale-107 hover:bg-plum-400/40 focus:ring-plum-400 active:scale-95 active:bg-plum-400/60 active:text-plum-300",
+          "bg-plum-500/50 text-plum-300 hover:scale-107 hover:bg-plum-500/40 hover:text-plum-300 focus:ring-plum-400 active:scale-95 active:bg-plum-400/60 active:text-plum-300",
         variant === "ghost" &&
           "bg-transparent p-3 text-base text-plum-200 hover:ring-1 hover:ring-plum-300",
         variant === "icon" && "p-0",
