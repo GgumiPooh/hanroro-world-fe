@@ -30,7 +30,7 @@ type Props = {
 
 const ActivityViewer: FC<Props> = ({ activity, index, sort }) => {
   return (
-    <ul className="mb-40 flex items-center" key={`${index}-${sort}`}>
+    <ul className="mb-40 flex items-center md:w-full w-6 " key={`${index}-${sort}`}>
       <div className="relative top-2/5 left-[-19px] h-8 w-8 rounded-2xl bg-plum-500/90">
         <CheckCircleIcon
           className={cn(
