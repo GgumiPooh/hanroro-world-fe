@@ -23,14 +23,18 @@ const getDate = (createdAt: string) => {
 };
 
 type Props = {
+  className?: string;
   activity: Activity;
   index: number;
   sort: Sort;
 };
 
-const ActivityViewer: FC<Props> = ({ activity, index, sort }) => {
+const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
   return (
-    <ul className="mb-40 flex items-center md:w-full w-6 " key={`${index}-${sort}`}>
+    <li
+      className={cn("flex w-6 items-center md:w-full", className)}
+      key={`${index}-${sort}`}
+    >
       <div className="relative top-2/5 left-[-19px] h-8 w-8 rounded-2xl bg-plum-500/90">
         <CheckCircleIcon
           className={cn(
@@ -41,8 +45,8 @@ const ActivityViewer: FC<Props> = ({ activity, index, sort }) => {
           )}
         />
       </div>
-      <li className="ml-30 flex flex-row">
-        <div className="mr-10 w-45">
+      <div className="ml-10 flex flex-row md:ml-30">
+        <div className="mr-10 w-45 shrink-0">
           <ImageWithPlaceholder
             src={getUrlsByType(activity.metaData, "img")}
             alt="img"
@@ -66,8 +70,8 @@ const ActivityViewer: FC<Props> = ({ activity, index, sort }) => {
             <VideoCameraIcon className="size-4" />
           </Button>
         </div>
-      </li>
-    </ul>
+      </div>
+    </li>
   );
 };
 

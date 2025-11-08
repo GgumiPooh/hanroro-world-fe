@@ -16,7 +16,7 @@ const Activity: FC = () => {
 
   return (
     <div className="relative overflow-y-auto bg-gray-300/70 pt-50">
-      <h1 className="mb-30 text-center text-5xl font-bold text-gray-100/90 md:text-8xl">
+      <h1 className="text-center text-5xl font-bold text-gray-100/90 md:text-8xl">
         Activity
       </h1>
       <ImageWithPlaceholder
@@ -26,17 +26,20 @@ const Activity: FC = () => {
         alt="home banner"
       />
 
-      <SortOptions sort={sort} onChage={setSort} />
+      <SortOptions className="mx-auto w-fit" sort={sort} onChage={setSort} />
 
-      <div className="relative ml-20 border-l-6 border-plum-600/50 md:ml-35 lg:ml-80" key={sort}>
-        {activities.map((item, index) => (
-          <ActivityViewer
-            key={`${index}-${sort}`}
-            activity={item}
-            index={index}
-            sort={sort}
-          />
-        ))}
+      <div className="mx-auto w-fit pl-6 md:pl-3">
+        <ul className="relative w-fit border-l-6 border-plum-600/50">
+          {activities.map((item, index) => (
+            <ActivityViewer
+              className="mb-40 w-full max-w-[660px]"
+              key={`${index}-${sort}`}
+              activity={item}
+              index={index}
+              sort={sort}
+            />
+          ))}
+        </ul>
       </div>
     </div>
   );

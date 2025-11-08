@@ -11,7 +11,7 @@ type Props = {
 
 const SortOptions: FC<Props> = ({ className, sort, onChage }) => {
   return (
-    <div className={cn("mb-30 ml-130 flex gap-10 font-bold", className)}>
+    <div className={cn("flex gap-10 font-bold", className)}>
       <Button
         variant="secondary"
         size="md"
