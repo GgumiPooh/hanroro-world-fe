@@ -1,13 +1,20 @@
 import type { Sort } from "@/types/sort";
 import { useEffect, useState } from "react";
 
-type Activity = {
+type Title = {
+  language: string;
+  content: string;
+};
+type MetaData = {
+  type: string;
+  url: string;
+};
+export type Activity = {
   id: string;
-  title: string;
-  description: string;
+  title: Title[];
   activeFrom: string;
   activeTo: string;
-  metaData: any[];
+  metaData: MetaData[];
 };
 
 export function useActivities(sort: Sort) {
