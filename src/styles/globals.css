@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
+/* Pretendard */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+
 @layer base {
   body {
-    @apply bg-apricot-100;
+    @apply font-brand bg-apricot-100;
   }
 
   button:not(:disabled),
@@ -16,6 +19,8 @@
 }
 
 @theme {
+  --font-brand: "Pretendard", sans-serif;
+
   --color-*: initial;
   --color-transparent: transparent;
   --color-current: currentColor;
@@ -82,17 +87,17 @@
   --color-plum-900: #59424a;
   --color-plum-950: #332429;
 
-  --color-slateBlue-50:  #F6F7F9;
-  --color-slateBlue-100: #EBEEF3;
-  --color-slateBlue-200: #D3D9E4;
-  --color-slateBlue-300: #ADBACC;
-  --color-slateBlue-400: #8195AF;
+  --color-slateBlue-50: #f6f7f9;
+  --color-slateBlue-100: #ebeef3;
+  --color-slateBlue-200: #d3d9e4;
+  --color-slateBlue-300: #adbacc;
+  --color-slateBlue-400: #8195af;
   --color-slateBlue-500: #617896;
-  --color-slateBlue-600: #4C5F7D;
-  --color-slateBlue-700: #3F4E65;
+  --color-slateBlue-600: #4c5f7d;
+  --color-slateBlue-700: #3f4e65;
   --color-slateBlue-800: #374355;
-  --color-slateBlue-900: #313A49;
-  --color-slateBlue-950: #252B37;
+  --color-slateBlue-900: #313a49;
+  --color-slateBlue-950: #252b37;
 
   --breakpoint-xs: 480px;
   --breakpoint-3xl: 1920px;
