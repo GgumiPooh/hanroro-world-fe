@@ -1,4 +1,6 @@
 import Button from "@/components/Button";
+import KakaoLogin from "@/icons/KakaoLogin.png";
+import NaverLogin from "@/icons/NaverLogin.png";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import type { FC } from "react";
 import { useEffect } from "react";
@@ -53,20 +55,20 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
         </p>
         <div className="space-y-3">
           <Button
-            variant="secondary"
-            size="lg"
+            variant="icon"
+            size="sm"
             className="w-full"
             onClick={() => handleRedirect("naver")}
           >
-            Continue with Naver
+            <img src={NaverLogin} alt="Naver" />
           </Button>
           <Button
-            variant="secondary"
-            size="lg"
+            variant="icon"
+            size="sm"
             className="w-full"
             onClick={() => handleRedirect("kakao")}
           >
-            Continue with Kakao
+            <img src={KakaoLogin} alt="Kakao" />
           </Button>
         </div>
         <Button variant="ghost" size="sm" className="mt-5" onClick={onClose}>

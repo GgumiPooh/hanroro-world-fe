@@ -95,7 +95,7 @@ const DesktopMenuList: FC<{
   return (
     <ul className={cn("flex items-center", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
-        <li key={item.href} className="mr-7">
+        <li key={item.href} className="mr-5">
           <Button
             variant="ghost"
             size="md"
@@ -121,7 +121,7 @@ const MobileMenuPanel: FC<{
 }> = ({ className }) => {
   const { open } = useAuthOverlay();
   return (
-    <ul className={cn("-ml-3", className)}>
+    <ul className={cn("", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
         <li key={item.href} className="mb-3">
           <Button

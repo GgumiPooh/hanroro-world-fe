@@ -1,5 +1,12 @@
 import LoginOverlay from "@/components/LoginOverlay";
-import { createContext, useCallback, useContext, useState, type FC, type PropsWithChildren } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  type FC,
+  type PropsWithChildren,
+} from "react";
 
 type AuthOverlayContextValue = {
   isOpen: boolean;
@@ -32,5 +39,3 @@ const AuthOverlayProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export default AuthOverlayProvider;
-
-
