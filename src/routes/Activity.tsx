@@ -1,0 +1,54 @@
+import ActivityViewer from "@/components/AtivitiyViewer";
+import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
+import SortOptions from "@/components/SortOptions";
+import { useActivities } from "@/hooks/useActivities";
+import type { Sort } from "@/types/sort";
+
+import { useState, type FC } from "react";
+
+const Activity: FC = () => {
+  // const carouselRef = useRef(null);
+  // const { scrollX } = useScroll({
+  //   container: carouselRef,
+  // });
+  const [sort, setSort] = useState<Sort>("latest");
+  const { activities, isLoading, error } = useActivities(sort);
+
+  return (
+    <div className="relative overflow-y-auto bg-gray-300/60 pt-50">
+    {/* <div className="pointer-events-none fixed inset-x-0 top-0 z-2 h-[150px] bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm" /> */}
+
+      <h1 className="mb-20 text-center text-5xl font-bold text-gray-100 md:text-8xl">
+        Activity
+      </h1>
+      <ImageWithPlaceholder
+        className="fixed inset-0 -z-2 h-dvh w-full"
+        imgClassName="object-cover object-center blur-lg backdrop-blur"
+        src="/images/home-banner5.png"
+        alt="home banner"
+      />
+
+      <SortOptions
+        className="mx-auto mb-10 w-fit"
+        sort={sort}
+        onChage={setSort}
+      />
+
+      <div className="z-2 mx-auto w-fit pl-6 md:pl-3">
+        <ul className="relative w-fit border-l-6 border-plum-600/40">
+          {activities.map((item, index) => (
+            <ActivityViewer
+              className="mb-40 w-full max-w-[660px]"
+              key={`${index}-${sort}`}
+              activity={item}
+              index={index}
+              sort={sort}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Activity;

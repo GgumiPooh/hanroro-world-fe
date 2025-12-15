@@ -1,8 +1,11 @@
 @import "tailwindcss";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+
+/* Pretendard */
 
 @layer base {
   body {
-    @apply bg-apricot-100;
+    @apply font-primary bg-apricot-100;
   }
 
   button:not(:disabled),
@@ -16,6 +19,8 @@
 }
 
 @theme {
+  --font-primary: "Pretendard", sans-serif;
+
   --color-*: initial;
   --color-transparent: transparent;
   --color-current: currentColor;
