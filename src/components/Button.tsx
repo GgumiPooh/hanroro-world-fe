@@ -26,8 +26,7 @@ const Button: FC<Props> = ({
           "bg-plum-400/20 text-plum-700 hover:scale-110 hover:bg-plum-400/40 focus:ring-plum-400 active:scale-95 active:bg-plum-400/50",
         variant === "ghost" &&
           "bg-transparent p-3 text-base text-plum-200 hover:ring-1 hover:ring-plum-300",
-        variant === "icon" &&
-          "bg-plum-400/20 hover:scale-110 hover:bg-black/70 active:scale-95 active:bg-black/80",
+        variant === "icon" && "bg-transparent hover:scale-110 active:scale-95",
 
         size === "sm" && "px-4 py-2 text-sm",
         size === "md" && "px-6 py-3 text-base",

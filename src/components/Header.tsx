@@ -15,7 +15,7 @@ type Props = {
 const Header: FC<Props> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useBreakpoint("md", (isMatch) => {
+  useBreakpoint("lg", (isMatch) => {
     if (!isMatch) {
       return;
     }
@@ -26,9 +26,9 @@ const Header: FC<Props> = ({ className }) => {
   return (
     <div
       className={cn(
-        "space-y-5 rounded-4xl bg-plum-700/20 px-6 py-3 backdrop-blur-sm md:py-4",
+        "space-y-5 rounded-4xl bg-plum-700/20 px-6 py-3 backdrop-blur-sm md:py-3",
         "transition-[max-height] duration-800",
-        !isOpen && "max-h-16 md:max-h-20",
+        !isOpen && "max-h-16 lg:max-h-20",
         isOpen && "max-h-[1000px]",
         className,
       )}
@@ -41,21 +41,21 @@ const Header: FC<Props> = ({ className }) => {
             window.location.href = "/";
           }}
         >
-          <LogoIcon className="w-15 shrink-0 text-plum-200 md:w-25" />
+          <LogoIcon className="w-15 shrink-0 text-plum-200 lg:w-25" />
         </Button>
         {ENV_VARIABLE.IS_COMMING_SOON ? (
           <Button
             variant="ghost"
             size="md"
-            className="font-bold not-md:hidden"
+            className="font-bold not-lg:hidden"
             onClick={() => window.alert("Comming soon")}
           >
             Comming soon
           </Button>
         ) : (
-          <DesktopMenuList className="not-md:hidden" />
+          <DesktopMenuList className="not-lg:hidden" />
         )}
-        <button className="md:hidden" onClick={handleToggleMenu}>
+        <button className="lg:hidden" onClick={handleToggleMenu}>
           <Bars3Icon className="size-10 stroke-2 text-plum-200" />
         </button>
       </div>
