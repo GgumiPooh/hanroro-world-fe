@@ -19,7 +19,7 @@ const Activity: FC = () => {
     <div className="relative overflow-y-auto bg-gray-300/60 pt-50">
       {/* <div className="pointer-events-none fixed inset-x-0 top-0 z-2 h-[150px] bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm" /> */}
 
-      <h1 className="mb-40 text-center text-5xl font-bold text-gray-100 md:text-8xl">
+      <h1 className="mb-50 text-center text-5xl font-bold text-gray-100 md:mb-70 md:text-8xl">
         Activity
       </h1>
       <ImageWithPlaceholder
@@ -29,15 +29,15 @@ const Activity: FC = () => {
         alt="home banner"
       />
 
-      <div className="z-2 mx-auto w-fit pl-6 md:pl-3">
+      <div className="z-2 mx-auto w-fit">
         <ActivityControls
-          className="mb-30"
+          className="mb-25 ml-15 gap-15 md:ml-50 md:gap-20"
           year={year}
           onYearChange={setYear}
           sort={sort}
           onSortChange={setSort}
         />
-        <ul className="relative w-fit border-l-6 border-plum-600/40">
+        <ul className="relative mr-15 ml-10 w-fit border-l-6 border-plum-600/40">
           {activities.map((item, index) => (
             <ActivityViewer
               className="mb-40 w-full max-w-[660px]"

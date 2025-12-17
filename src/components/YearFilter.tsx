@@ -20,23 +20,25 @@ const YearFilter: FC<Props> = ({ className, year, onChange }) => {
   }, []);
 
   return (
-    <div className={cn("flex items-center gap-5", className)}>
+    <div className={cn("flex items-center gap-3", className)}>
       <select
         className={cn(
-          "rounded-2xl bg-plum-500/60 px-3 py-2 text-sm text-plum-100",
-          "ring-1 ring-plum-300/30 transition outline-none",
+          "rounded-2xl bg-plum-200/20 p-1 text-plum-100 md:p-2",
+          "transition outline-none",
         )}
         value={year}
         onChange={(e) => onChange(e.target.value)}
       >
-        <option value="">전체</option>
+        <option className="font-bold" value="">
+          전체
+        </option>
         {years.map((y) => (
           <option key={y} value={y}>
             {y}
           </option>
         ))}
       </select>
-      <label className="mr-20 text-plum-200">년도</label>
+      <label className="font-bold text-plum-100">년도</label>
     </div>
   );
 };
