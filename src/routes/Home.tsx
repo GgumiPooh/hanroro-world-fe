@@ -15,7 +15,7 @@ const Home: FC = () => {
         src="/images/home-banner5.png"
         alt="home banner"
       />
-      <SignIcon className="absolute bottom-18 left-[1%] w-70 text-plum-100 md:w-100 lg:w-120" />
+      <SignIcon className="absolute bottom-13 left-[1%] w-60 text-plum-100 md:w-100 lg:w-120" />
       <div className="absolute bottom-5 left-[3%]">
         <h3 className="text-left text-xs font-bold text-plum-100 md:text-sm">
           NOT OFFICIAL SITE

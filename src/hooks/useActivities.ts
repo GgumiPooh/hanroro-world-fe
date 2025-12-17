@@ -21,10 +21,13 @@ export function useActivities(sort: Sort) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [year, setYear] = useState<string>("");
 
   useEffect(() => {
     const fetchActivity = async () => {
-      const res = await fetch("http://localhost:8080/api/activity");
+      const res = await fetch(
+        `http://localhost:8080/api/activity?year=${year}`,
+      );
 
       if (!res.ok) {
         const error = new Error("Failed to fetch activity");

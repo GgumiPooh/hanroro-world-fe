@@ -32,32 +32,32 @@ type Props = {
 const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
   return (
     <li
-      className={cn("flex w-6 items-center md:w-full", className)}
+      className={cn("flex items-center md:w-full", className)}
       key={`${index}-${sort}`}
     >
-      <div className="relative top-2/5 left-[-19px] h-8 w-8 rounded-2xl bg-plum-500/90">
+      <div className="relative top-2/5 left-[-15px] h-6 w-6 rounded-2xl bg-plum-500/90 md:left-[-19px] md:h-8 md:w-8">
         <CheckCircleIcon
           className={cn(
-            "size-8",
+            "size-6 md:size-8",
             activity.activeTo < new Date().toISOString()
               ? "text-plum-300"
               : "text-gray-500/50",
           )}
         />
       </div>
-      <div className="ml-10 flex flex-row md:ml-30">
-        <div className="mr-10 w-45 shrink-0">
+      <div className="ml-3 flex flex-row md:ml-10 md:ml-30">
+        <div className="mr-5 w-30 shrink-0 md:mr-10 md:w-45">
           <ImageWithPlaceholder
             src={getUrlsByType(activity.metaData, "img")}
             alt="img"
             className="h-auto w-full rounded-lg shadow-[0_13px_25px_rgba(97,120,150,0.4)]"
           />
         </div>
-        <div className="border-l-3 border-slateBlue-600/40 pl-5">
+        <div className="mr-5 h-auto border-l-3 border-slateBlue-600/40 pl-5">
           <h1 className="text-lg font-bold text-plum-300">
             {getDate(activity.activeFrom)}
           </h1>
-          <h1 className="mb-5 text-lg font-bold text-gray-100">
+          <h1 className="mb-5 text-base text-gray-100 md:text-lg md:font-bold">
             {getTitle(activity.title, "kor")}
           </h1>
           <Button
