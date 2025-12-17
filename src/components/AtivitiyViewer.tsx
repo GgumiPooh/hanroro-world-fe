@@ -45,7 +45,7 @@ const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
           )}
         />
       </div>
-      <div className="ml-3 flex flex-row md:ml-10 md:ml-30">
+      <div className="ml-3 flex flex-row md:ml-30">
         <div className="mr-5 w-30 shrink-0 md:mr-10 md:w-45">
           <ImageWithPlaceholder
             src={getUrlsByType(activity.metaData, "img")}
