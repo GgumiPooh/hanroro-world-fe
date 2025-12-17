@@ -35,7 +35,7 @@ const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
       className={cn("flex items-center md:w-full", className)}
       key={`${index}-${sort}`}
     >
-      <div className="relative top-2/5 left-[-15px] md:left-[-19px] h-6 w-6 md:w-8 md:h-8 rounded-2xl bg-plum-500/90">
+      <div className="relative top-2/5 left-[-15px] h-6 w-6 rounded-2xl bg-plum-500/90 md:left-[-19px] md:h-8 md:w-8">
         <CheckCircleIcon
           className={cn(
             "size-6 md:size-8",
@@ -45,19 +45,19 @@ const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
           )}
         />
       </div>
-      <div className="ml-3 md:ml-10 flex flex-row lg:ml-30">
-        <div className="md:mr-10 mr-5 md:w-45 w-30 shrink-0">
+      <div className="ml-3 flex flex-row md:ml-10 lg:ml-30">
+        <div className="mr-5 w-30 shrink-0 md:mr-10 md:w-45">
           <ImageWithPlaceholder
             src={getUrlsByType(activity.metaData, "img")}
             alt="img"
             className="h-auto w-full rounded-lg shadow-[0_13px_25px_rgba(97,120,150,0.4)]"
           />
         </div>
-        <div className="h-auto border-l-3 border-slateBlue-600/40 pl-5 mr-5">
+        <div className="border-slateBlue-600/40 mr-5 h-auto border-l-3 pl-5">
           <h1 className="text-lg font-bold text-plum-300">
             {getDate(activity.activeFrom)}
           </h1>
-          <h1 className="mb-5 text-base md:text-lg md:font-bold text-gray-100">
+          <h1 className="mb-5 text-base text-gray-100 md:text-lg md:font-bold">
             {getTitle(activity.title, "kor")}
           </h1>
           <Button

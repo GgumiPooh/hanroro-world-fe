@@ -16,9 +16,7 @@ function resolveOAuthUrl(provider: "naver" | "kakao"): string | null {
   if (provider === "kakao" && ENV_VARIABLE.KAKAO_OAUTH_URL) {
     return ENV_VARIABLE.KAKAO_OAUTH_URL;
   }
-  if (ENV_VARIABLE.API_BASE_URL) {
-    return `${ENV_VARIABLE.API_BASE_URL}/oauth2.0/authorization/${provider}`;
-  }
+
   return null;
 }
 
@@ -49,15 +47,12 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
         onClick={onClose}
       />
       <div className="relative mx-auto mt-40 w-[min(90vw,420px)] rounded-4xl bg-plum-800/80 p-6 text-center shadow-xl">
-        <h2 className="mb-5 text-xl font-bold text-plum-100">Sign in</h2>
-        <p className="mb-6 text-sm text-plum-200/80">
-          Choose a provider to continue
-        </p>
+        <h2 className="m-5 text-xl font-bold text-plum-100">로그인</h2>
         <div className="space-y-3">
           <Button
             variant="icon"
             size="sm"
-            className="w-full"
+            className="w-full hover:scale-100"
             onClick={() => handleRedirect("naver")}
           >
             <img src={NaverLogin} alt="Naver" />
@@ -65,14 +60,14 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
           <Button
             variant="icon"
             size="sm"
-            className="w-full"
+            className="w-full hover:scale-100"
             onClick={() => handleRedirect("kakao")}
           >
             <img src={KakaoLogin} alt="Kakao" />
           </Button>
         </div>
         <Button variant="ghost" size="sm" className="mt-5" onClick={onClose}>
-          Cancel
+          취소
         </Button>
       </div>
     </div>
