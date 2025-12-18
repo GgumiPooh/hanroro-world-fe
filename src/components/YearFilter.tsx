@@ -11,7 +11,7 @@ type Props = {
 const YearFilter: FC<Props> = ({ className, year, onChange }) => {
   const years = useMemo(() => {
     const current = new Date().getFullYear();
-    const start = 2023;
+    const start = 2022;
     const list: string[] = [];
     for (let y = current; y >= start; y--) {
       list.push(String(y));
