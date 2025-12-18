@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
 import type { FC } from "react";
+import { useNavigate } from "react-router";
 
 const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
   const found = meta.find((m) => m.type === type);
@@ -9,7 +10,8 @@ const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
 };
 
 const AlbumsView: FC = () => {
-  const { albumsView, isLoading, error } = useAlbums("latest");
+  const { albumsView, isLoading, error } = useAlbums();
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <p className="mb-20 text-center text-plum-100/80">Loading...</p>;
@@ -31,7 +33,12 @@ const AlbumsView: FC = () => {
             key={String(item.id)}
             className="mb-30 rounded-xl bg-plum-900/40 backdrop-blur-md"
           >
-            <Button variant="icon" size="sm" className="flex p-0">
+            <Button
+              variant="icon"
+              size="sm"
+              className="flex p-0"
+              onClick={() => navigate(`/albums/${item.id}`)}
+            >
               <div className="flex items-center gap-5 sm:gap-15">
                 <ImageWithPlaceholder
                   className="h-30 shrink-0 bg-plum-800/60 sm:h-50 lg:h-60"
