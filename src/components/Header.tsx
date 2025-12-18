@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import { DESKTOP_MENU_LIST } from "@/constants/navigation";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LogoIcon from "@/icons/LogoIcon";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
@@ -14,6 +15,7 @@ type Props = {
 
 const Header: FC<Props> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { displayName } = useCurrentUser();
 
   useBreakpoint("lg", (isMatch) => {
     if (!isMatch) {
@@ -26,9 +28,8 @@ const Header: FC<Props> = ({ className }) => {
   return (
     <div
       className={cn(
-        "space-y-5 rounded-4xl bg-plum-700/20 px-6 py-3 backdrop-blur-sm md:py-3",
+        "rounded-4xl bg-plum-700/20 px-6 py-3 backdrop-blur-sm",
         "transition-[max-height] duration-800",
-        !isOpen && "max-h-16 lg:max-h-20",
         isOpen && "max-h-[1000px]",
         className,
       )}
@@ -53,7 +54,10 @@ const Header: FC<Props> = ({ className }) => {
             Comming soon
           </Button>
         ) : (
-          <DesktopMenuList className="not-lg:hidden" />
+          <DesktopMenuList
+            className="hidden lg:flex"
+            displayName={displayName}
+          />
         )}
         <Button
           variant="icon"
@@ -67,9 +71,11 @@ const Header: FC<Props> = ({ className }) => {
 
       <div
         className={cn(
-          "transition-opacity",
-          isOpen && "duration-1000",
-          !isOpen && "pointer-events-none opacity-0 duration-500",
+          "overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out",
+          "lg:hidden",
+          isOpen
+            ? "max-h-[600px] opacity-100"
+            : "pointer-events-none max-h-0 opacity-0",
         )}
       >
         {ENV_VARIABLE.IS_COMMING_SOON ? (
@@ -82,7 +88,7 @@ const Header: FC<Props> = ({ className }) => {
             Comming soon
           </Button>
         ) : (
-          <MobileMenuPanel />
+          <MobileMenuPanel className="mt-5" displayName={displayName} />
         )}
       </div>
     </div>
@@ -95,7 +101,8 @@ const Header: FC<Props> = ({ className }) => {
 
 const DesktopMenuList: FC<{
   className?: string;
-}> = ({ className }) => {
+  displayName?: string | null;
+}> = ({ className, displayName }) => {
   const { open } = useAuthOverlay();
   return (
     <ul className={cn("flex items-center", className)}>
@@ -107,13 +114,18 @@ const DesktopMenuList: FC<{
             className="font-bold"
             onClick={() => {
               if (item.href === "/login") {
+                if (displayName) {
+                  return;
+                }
                 open();
                 return;
               }
               window.location.href = item.href;
             }}
           >
-            {item.label}
+            {item.href === "/login"
+              ? (displayName ?? item.label) + " 님!"
+              : item.label}
           </Button>
         </li>
       ))}
@@ -123,7 +135,8 @@ const DesktopMenuList: FC<{
 
 const MobileMenuPanel: FC<{
   className?: string;
-}> = ({ className }) => {
+  displayName?: string | null;
+}> = ({ className, displayName }) => {
   const { open } = useAuthOverlay();
   return (
     <ul className={cn("", className)}>
@@ -135,13 +148,18 @@ const MobileMenuPanel: FC<{
             className="font-bold"
             onClick={() => {
               if (item.href === "/login") {
+                if (displayName) {
+                  return;
+                }
                 open();
                 return;
               }
               window.location.href = item.href;
             }}
           >
-            {item.label}
+            {item.href === "/login"
+              ? (displayName ?? item.label) + " 님!"
+              : item.label}
           </Button>
         </li>
       ))}
