@@ -29,7 +29,7 @@ const AlbumsView: FC = () => {
         return (
           <li
             key={String(item.id)}
-            className="mb-20 rounded-xl bg-plum-900/40 backdrop-blur-md"
+            className="mb-30 rounded-xl bg-plum-900/40 backdrop-blur-md"
           >
             <Button variant="icon" size="sm" className="flex p-0">
               <div className="flex items-center gap-5 sm:gap-15">

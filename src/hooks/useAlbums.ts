@@ -22,12 +22,6 @@ export type Album = {
   createdAt?: string;
 };
 
-function parseAlbumDate(album: Album): number {
-  const candidate = album.publishedAt || album.createdAt || "";
-  const time = Date.parse(candidate);
-  return Number.isFinite(time) ? time : 0;
-}
-
 function resolveLocalizedText(
   items: LanguageData[] | undefined,
   preferred: string[] = ["ko", "en"],
@@ -44,7 +38,7 @@ function getAllMeta(album: Album): MetaData[] {
   return (album.metadata ?? album.metaData ?? []) as MetaData[];
 }
 
-export function useAlbums(sort: "latest" | "oldest" = "latest") {
+export function useAlbums(_sort: "latest" | "oldest" = "latest") {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -72,12 +66,8 @@ export function useAlbums(sort: "latest" | "oldest" = "latest") {
         if (isCancelled) return;
 
         const list = Array.isArray(raw) ? (raw as Album[]) : [];
-        const sorted = [...list].sort((a, b) => {
-          const ta = parseAlbumDate(a);
-          const tb = parseAlbumDate(b);
-          return sort === "latest" ? tb - ta : ta - tb;
-        });
-        setAlbums(sorted);
+        // Keep backend order as-is (no client-side sorting)
+        setAlbums(list);
         setIsLoading(false);
       } catch (err: unknown) {
         if (isCancelled) return;
@@ -99,7 +89,7 @@ export function useAlbums(sort: "latest" | "oldest" = "latest") {
       isCancelled = true;
       controller.abort();
     };
-  }, [sort]);
+  }, [_sort]);
 
   // Derived fields for convenience in UI
   const albumsView = useMemo(
