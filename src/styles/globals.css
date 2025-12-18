@@ -87,6 +87,18 @@
   --color-plum-900: #59424a;
   --color-plum-950: #332429;
 
+  --color-slateBlue-50: #f6f7f9;
+  --color-slateBlue-100: #ebeef3;
+  --color-slateBlue-200: #d3d9e4;
+  --color-slateBlue-300: #adbacc;
+  --color-slateBlue-400: #8195af;
+  --color-slateBlue-500: #617896;
+  --color-slateBlue-600: #4c5f7d;
+  --color-slateBlue-700: #3f4e65;
+  --color-slateBlue-800: #374355;
+  --color-slateBlue-900: #313a49;
+  --color-slateBlue-950: #252b37;
+
   --breakpoint-xs: 480px;
   --breakpoint-3xl: 1920px;
 

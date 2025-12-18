@@ -17,13 +17,13 @@ const Home: FC = () => {
       />
       <SignIcon className="absolute bottom-13 left-[1%] w-60 text-plum-100 md:w-100 lg:w-120" />
       <div className="absolute bottom-5 left-[3%]">
-        <h3 className="text-left text-xs font-bold text-plum-300 md:text-sm">
+        <h3 className="text-left text-xs font-bold text-plum-100 md:text-sm">
           NOT OFFICIAL SITE
           <br />
           CONTACT : hyoeun.jin2@gmail.com
         </h3>
       </div>
-      <div className="absolute right-[5%] bottom-10 flex flex-col gap-5 md:bottom-20 md:flex-row md:gap-10">
+      <div className="absolute right-[5%] bottom-20 flex flex-col gap-15 md:gap-25 lg:flex-row">
         <Button
           variant="ghost"
           size="sm"

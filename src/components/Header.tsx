@@ -41,7 +41,7 @@ const Header: FC<Props> = ({ className }) => {
             window.location.href = "/";
           }}
         >
-          <LogoIcon className="w-15 shrink-0 text-plum-200 lg:w-25" />
+          <LogoIcon className="w-20 shrink-0 text-plum-200 md:w-25" />
         </Button>
         {ENV_VARIABLE.IS_COMMING_SOON ? (
           <Button
@@ -55,9 +55,14 @@ const Header: FC<Props> = ({ className }) => {
         ) : (
           <DesktopMenuList className="not-lg:hidden" />
         )}
-        <button className="lg:hidden" onClick={handleToggleMenu}>
+        <Button
+          variant="icon"
+          size="sm"
+          className="lg:hidden"
+          onClick={handleToggleMenu}
+        >
           <Bars3Icon className="size-10 stroke-2 text-plum-200" />
-        </button>
+        </Button>
       </div>
 
       <div
@@ -95,7 +100,7 @@ const DesktopMenuList: FC<{
   return (
     <ul className={cn("flex items-center", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
-        <li key={item.href} className="mr-5">
+        <li key={item.href} className="mr-7">
           <Button
             variant="ghost"
             size="md"
