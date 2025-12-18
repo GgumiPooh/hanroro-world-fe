@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { DESKTOP_MENU_LIST } from "@/constants/navigation";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import LogoIcon from "@/icons/LogoIcon";
+import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Bars3Icon } from "@heroicons/react/24/outline";
@@ -25,9 +26,9 @@ const Header: FC<Props> = ({ className }) => {
   return (
     <div
       className={cn(
-        "space-y-5 rounded-4xl bg-plum-700/20 px-6 py-5 backdrop-blur-sm md:py-4",
+        "space-y-5 rounded-4xl bg-plum-700/20 px-6 py-3 backdrop-blur-sm md:py-3",
         "transition-[max-height] duration-800",
-        !isOpen && "max-h-20",
+        !isOpen && "max-h-16 lg:max-h-20",
         isOpen && "max-h-[1000px]",
         className,
       )}
@@ -95,6 +96,7 @@ const Header: FC<Props> = ({ className }) => {
 const DesktopMenuList: FC<{
   className?: string;
 }> = ({ className }) => {
+  const { open } = useAuthOverlay();
   return (
     <ul className={cn("flex items-center", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
@@ -104,6 +106,10 @@ const DesktopMenuList: FC<{
             size="md"
             className="font-bold"
             onClick={() => {
+              if (item.href === "/login") {
+                open();
+                return;
+              }
               window.location.href = item.href;
             }}
           >
@@ -118,6 +124,7 @@ const DesktopMenuList: FC<{
 const MobileMenuPanel: FC<{
   className?: string;
 }> = ({ className }) => {
+  const { open } = useAuthOverlay();
   return (
     <ul className={cn("", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
@@ -127,6 +134,10 @@ const MobileMenuPanel: FC<{
             size="sm"
             className="font-bold"
             onClick={() => {
+              if (item.href === "/login") {
+                open();
+                return;
+              }
               window.location.href = item.href;
             }}
           >

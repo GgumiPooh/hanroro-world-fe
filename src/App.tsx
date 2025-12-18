@@ -2,9 +2,11 @@ import GlobalLayout from "@/components/GlobalLayout";
 import Activity from "@/routes/Activity";
 import Error from "@/routes/Error";
 import Home from "@/routes/Home";
+import Login from "@/routes/Login";
 import "@/styles/globals.css";
 import type { FC } from "react";
 import { Route, Routes } from "react-router";
+import Activity from "./routes/Activity";
 
 const App: FC = () => {
   return (
