@@ -75,11 +75,13 @@ const SongDetailViewer: FC = () => {
     <div className="mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0">
       {/* 상단: 앨범 커버 + 제목 & 소개 */}
       <div className="mb-5 flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-10">
-        {/* 앨범 커버 */}
+        {/* 앨범 커버 (노래 이미지 우선, 없으면 앨범 커버) */}
         <ImageWithPlaceholder
           className="h-[260px] w-[260px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px]"
           imgClassName="h-full w-full object-cover"
-          src={album?.coverUrl || "/images/placeholder.png"}
+          src={
+            detailView.imgUrl || album?.coverUrl || "/images/placeholder.png"
+          }
           alt="album cover"
         />
 

@@ -109,7 +109,9 @@ const CommentList = forwardRef<CommentListRef, Props>(({ songId }, ref) => {
   if (isLoading) {
     return (
       <section className="mt-8 mb-24">
-        <p className="text-center text-sm text-plum-300/60">댓글 로딩중...</p>
+        <p className="text-center text-sm text-plum-300/60">
+          댓글 로로로딩중...
+        </p>
       </section>
     );
   }

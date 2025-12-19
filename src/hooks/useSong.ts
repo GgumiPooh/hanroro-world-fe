@@ -18,7 +18,7 @@ export type SongDetail = {
   description?: string | LanguageData[];
   lyrics?: string | LanguageData[];
   metadata?: MetaData[];
-  metaData?: MetaData[];
+  // metaData?: MetaData[];
   createdAt?: string;
   [key: string]: unknown;
 };
@@ -99,12 +99,14 @@ export function useSong(albumId?: string | number, songId?: string | number) {
     if (!detail) return null;
     const meta = detail.metadata ?? detail.metaData ?? [];
     const videoUrl = meta.find((m) => m.type === "video")?.url ?? "";
+    const imgUrl = meta.find((m) => m.type === "img")?.url ?? "";
     return {
       ...detail,
       title: resolveLocalizedText(detail.title),
       description: resolveLocalizedText(detail.description),
       lyrics: resolveLocalizedText(detail.lyrics),
       videoUrl,
+      imgUrl,
     };
   }, [detail]);
 
