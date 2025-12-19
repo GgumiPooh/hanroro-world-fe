@@ -1,10 +1,9 @@
 import Button from "@/components/Button";
+import CommentInput from "@/components/CommentInput";
+import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useSong } from "@/hooks/useSong";
-import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
@@ -13,58 +12,22 @@ const SongDetailViewer: FC = () => {
   const { albumId, songId } = useParams();
   const { detailView, isLoading, error } = useSong(albumId, songId);
   const { albumsView } = useAlbums();
-  const { user } = useCurrentUser();
-  const { open: openLogin } = useAuthOverlay();
-  const [comment, setComment] = useState("");
   const [showLyrics, setShowLyrics] = useState(false);
   const lyricsRef = useRef<HTMLDivElement>(null);
-  const [comments, setComments] = useState<
-    { id: number; author: string; content: string; createdAt: string }[]
-  >([
-    // TODO: Replace with API fetch
-    {
-      id: 1,
-      author: "로로팬",
-      content: "이 노래 너무 좋아요 💜",
-      createdAt: "2024.12.19",
-    },
-    {
-      id: 2,
-      author: "한로로사랑",
-      content: "가사가 정말 감동적이에요",
-      createdAt: "2024.12.18",
-    },
-  ]);
+  const commentListRef = useRef<CommentListRef>(null);
 
   const album = useMemo(
     () => albumsView.find((a) => String(a.id) === albumId),
     [albumsView, albumId],
   );
 
-  const handleInputFocus = () => {
-    if (!user) {
-      openLogin();
-    }
-  };
-
-  const handleSubmitComment = () => {
-    if (!user) {
-      openLogin();
-      return;
-    }
-    if (!comment.trim()) return;
-    // TODO: API call to submit comment
-    const newComment = {
-      id: Date.now(),
-      author: user.name || user.nickname || "익명",
-      content: comment.trim(),
-      createdAt: new Date()
-        .toLocaleDateString("ko-KR")
-        .replaceAll(". ", ".")
-        .replace(".", ""),
-    };
-    setComments((prev) => [newComment, ...prev]);
-    setComment("");
+  const handleCommentSubmit = (newComment: {
+    id: number;
+    author: string;
+    content: string;
+    createdAt: string;
+  }) => {
+    commentListRef.current?.addComment(newComment);
   };
 
   if (isLoading) {
@@ -131,56 +94,13 @@ const SongDetailViewer: FC = () => {
       )}
 
       {/* 댓글 목록 */}
-      <section className="mt-8 mb-24">
-        <h3 className="mb-4 text-lg font-semibold text-plum-100">
-          댓글 <span className="text-plum-400">({comments.length})</span>
-        </h3>
-        {comments.length === 0 ? (
-          <p className="text-center text-sm text-plum-300/60">
-            아직 댓글이 없습니다. 첫 댓글을 남겨보세요!
-          </p>
-        ) : (
-          <ul className="space-y-4">
-            {comments.map((c) => (
-              <li
-                key={c.id}
-                className="rounded-xl border border-plum-700/20 bg-plum-900/30 p-4"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="font-medium text-plum-200">{c.author}</span>
-                  <span className="text-xs text-plum-400/60">
-                    {c.createdAt}
-                  </span>
-                </div>
-                <p className="text-sm text-plum-100/90">{c.content}</p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {songId && <CommentList ref={commentListRef} songId={songId} />}
 
       {/* 고정 댓글 입력 바 */}
-      <div className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4">
-        <div className="flex w-[min(92vw,1000px)] items-center gap-3 rounded-2xl bg-plum-900/50 px-4 py-3 backdrop-blur-md">
-          <input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSubmitComment()}
-            onFocus={handleInputFocus}
-            placeholder="댓글을 입력하세요..."
-            className="flex-1 rounded-xl border border-gray-500/30 bg-gray-500/30 px-4 py-3 text-sm text-plum-100 placeholder-plum-400/60 transition-colors outline-none hover:border-plum-400 focus:border-plum-400 md:text-base"
-          />
-          <Button
-            variant="icon"
-            size="sm"
-            onClick={handleSubmitComment}
-            className="h-11 w-11 shrink-0 rounded-xl bg-plum-600 hover:bg-plum-500"
-          >
-            <PaperAirplaneIcon className="size-5 text-plum-100" />
-          </Button>
-        </div>
-      </div>
+      <CommentInput
+        apiEndpoint={`/api/public/song/${songId}/comment`}
+        onCommentSubmit={handleCommentSubmit}
+      />
     </div>
   );
 };

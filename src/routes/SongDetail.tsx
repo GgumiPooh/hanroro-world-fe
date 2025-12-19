@@ -40,7 +40,7 @@ const SongDetail: FC = () => {
         <Button
           variant="icon"
           size="md"
-          className="text-xl"
+          className="mb-10 pl-10 text-sm text-plum-200"
           onClick={() => navigate(`/album/${albumId}`)}
         >
           <ArrowLeftIcon className="size-5 text-plum-100" />

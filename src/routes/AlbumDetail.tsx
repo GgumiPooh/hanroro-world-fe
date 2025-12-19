@@ -2,6 +2,7 @@ import AlbumDetailViewer from "@/components/AlbumDetailViewer";
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -42,12 +43,12 @@ const AlbumDetail: FC = () => {
         {album?.coverUrl && (
           <div className="relative mx-5 mb-10">
             <Button
-              variant="ghost"
-              size="sm"
-              className="absolute top-4 left-[-100px] z-10 m-0 h-8 w-8 rounded-4xl border border-plum-500 px-3"
+              variant="icon"
+              size="md"
+              className="mb-10 text-sm text-plum-200"
               onClick={() => navigate("/albums")}
             >
-              <span className="text-lg font-bold text-plum-500">{"<"}</span>
+              <ArrowLeftIcon className="size-5 text-plum-100" />
             </Button>
             <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:items-end lg:gap-20">
               <ImageWithPlaceholder
