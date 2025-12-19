@@ -37,7 +37,7 @@ const AlbumsView: FC = () => {
               variant="icon"
               size="sm"
               className="flex p-0"
-              onClick={() => navigate(`/albums/${item.id}`)}
+              onClick={() => navigate(`/album/${item.id}`)}
             >
               <div className="flex items-center gap-5 sm:gap-15">
                 <ImageWithPlaceholder

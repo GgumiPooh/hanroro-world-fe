@@ -1,12 +1,14 @@
 import AlbumDetailViewer from "@/components/AlbumDetailViewer";
+import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
 import type { FC } from "react";
 import { useMemo, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const AlbumDetail: FC = () => {
   const { albumId } = useParams();
+  const navigate = useNavigate();
   const { albumsView } = useAlbums();
   const [showDescription, setShowDescription] = useState(false);
 
@@ -17,18 +19,36 @@ const AlbumDetail: FC = () => {
 
   return (
     <div className="relative overflow-y-auto pt-30 md:pt-50">
-      <div className="fixed inset-0 -z-1 bg-gray-600/65" />
-      <ImageWithPlaceholder
-        className="fixed inset-0 -z-2 h-dvh w-full"
-        imgClassName="object-cover object-center blur-lg backdrop-blur"
-        src="/images/home-banner5.png"
-        alt="home banner"
-      />
+      {/* Glow background from album cover (fallback to default banner) */}
+      {album?.coverUrl ? (
+        <ImageWithPlaceholder
+          className="fixed inset-0 -z-2 h-dvh w-full"
+          imgClassName="h-full w-full scale-110 object-cover blur-lg saturate-150 backdrop-blur"
+          src={album.coverUrl}
+          alt="album glow background"
+        />
+      ) : (
+        <ImageWithPlaceholder
+          className="fixed inset-0 -z-2 h-dvh w-full"
+          imgClassName="object-cover object-center blur-lg backdrop-blur"
+          src="/images/home-banner5.png"
+          alt="home banner"
+        />
+      )}
+      <div className="fixed inset-0 -z-1 bg-gray-900/80" />
 
       <div className="z-2 mx-auto w-[min(92vw,900px)]">
         {/* 앨범 커버 + 제목 */}
         {album?.coverUrl && (
-          <div className="mx-5 mb-10">
+          <div className="relative mx-5 mb-10">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 left-[-100px] z-10 m-0 h-8 w-8 rounded-4xl border border-plum-500 px-3"
+              onClick={() => navigate("/albums")}
+            >
+              <span className="text-lg font-bold text-plum-500">{"<"}</span>
+            </Button>
             <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:items-end lg:gap-20">
               <ImageWithPlaceholder
                 src={album.coverUrl}
@@ -40,17 +60,18 @@ const AlbumDetail: FC = () => {
                   {album.titleText}
                 </div>
                 {/* 토글 버튼 */}
-                <button
-                  type="button"
+                <Button
+                  variant="icon"
+                  size="sm"
                   onClick={() => setShowDescription(!showDescription)}
-                  className="ml-6 self-start text-sm text-plum-300 md:ml-0"
+                  className="ml-6 self-start p-0 text-plum-300 md:ml-0"
                 >
                   {showDescription ? (
-                    <div className="text-bold">▲ 앨범소개</div>
+                    <span className="text-bold">▲</span>
                   ) : (
-                    <div className="text-bold">▼ 앨범소개</div>
+                    <span className="text-bold">▼ 앨범소개</span>
                   )}
-                </button>
+                </Button>
                 {/* 토글 시 설명 표시 */}
                 <div
                   className={`overflow-hidden text-xs text-plum-200/80 transition-all duration-400 ease-in-out md:text-base ${showDescription ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
