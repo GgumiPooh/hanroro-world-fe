@@ -97,11 +97,14 @@ export function useSong(albumId?: string | number, songId?: string | number) {
 
   const detailView = useMemo(() => {
     if (!detail) return null;
+    const meta = detail.metadata ?? detail.metaData ?? [];
+    const videoUrl = meta.find((m) => m.type === "video")?.url ?? "";
     return {
       ...detail,
       title: resolveLocalizedText(detail.title),
       description: resolveLocalizedText(detail.description),
       lyrics: resolveLocalizedText(detail.lyrics),
+      videoUrl,
     };
   }, [detail]);
 

@@ -4,21 +4,43 @@ import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
 import { useSong } from "@/hooks/useSong";
+import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
+
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  // Handle various YouTube URL formats
+  const patterns = [
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match?.[1]) return match[1];
+  }
+  return null;
+}
 
 const SongDetailViewer: FC = () => {
   const { albumId, songId } = useParams();
   const { detailView, isLoading, error } = useSong(albumId, songId);
   const { albumsView } = useAlbums();
   const [showLyrics, setShowLyrics] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
   const lyricsRef = useRef<HTMLDivElement>(null);
   const commentListRef = useRef<CommentListRef>(null);
 
   const album = useMemo(
     () => albumsView.find((a) => String(a.id) === albumId),
     [albumsView, albumId],
+  );
+
+  const youtubeId = useMemo(
+    () => (detailView?.videoUrl ? extractYouTubeId(detailView.videoUrl) : null),
+    [detailView?.videoUrl],
   );
 
   const handleCommentSubmit = (newComment: {
@@ -31,7 +53,11 @@ const SongDetailViewer: FC = () => {
   };
 
   if (isLoading) {
-    return <p className="text-center text-plum-100/80">Loading...</p>;
+    return (
+      <div className="text-bold text-center text-plum-300/80">
+        로로로로디중...
+      </div>
+    );
   }
   if (error) {
     return (
@@ -59,9 +85,25 @@ const SongDetailViewer: FC = () => {
 
         {/* 제목 & 소개 */}
         <div className="flex flex-col items-center text-center">
-          <h2 className="mb-5 text-2xl font-bold text-plum-200 md:text-4xl">
-            {detailView.title}
-          </h2>
+          <div className="mb-5 flex items-center gap-5">
+            <h2 className="text-2xl font-bold text-plum-200 md:text-4xl">
+              {detailView.title}
+            </h2>
+            {youtubeId && (
+              <Button
+                variant="icon"
+                size="sm"
+                onClick={() => setShowPlayer(!showPlayer)}
+                className="mb-1 h-6.5 w-6.5 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
+              >
+                {showPlayer ? (
+                  <PauseIcon className="size-5 text-plum-100" />
+                ) : (
+                  <PlayIcon className="size-5 text-plum-100" />
+                )}
+              </Button>
+            )}
+          </div>
           {detailView.description && (
             <p className="max-w-[50ch] text-sm leading-loose whitespace-pre-wrap text-plum-200/90 italic md:text-lg">
               {detailView.description}
@@ -84,7 +126,7 @@ const SongDetailViewer: FC = () => {
 
           <div
             ref={lyricsRef}
-            className={`ml-10 overflow-hidden leading-relaxed whitespace-pre-wrap text-plum-200/90 transition-all duration-500 ease-in-out ${
+            className={`ml-10 overflow-hidden text-sm leading-relaxed whitespace-pre-wrap text-plum-200/90 transition-all duration-500 ease-in-out md:text-base ${
               showLyrics ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
             }`}
           >
@@ -101,6 +143,18 @@ const SongDetailViewer: FC = () => {
         apiEndpoint={`/api/public/song/${songId}/comment`}
         onCommentSubmit={handleCommentSubmit}
       />
+
+      {/* 숨겨진 YouTube iframe - 음악만 재생 */}
+      {showPlayer && youtubeId && (
+        <div className="pointer-events-none fixed h-0 w-0 overflow-hidden opacity-0">
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
+        </div>
+      )}
     </div>
   );
 };
