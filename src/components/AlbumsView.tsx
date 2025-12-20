@@ -31,7 +31,7 @@ const AlbumsView: FC = () => {
         return (
           <li
             key={String(item.id)}
-            className="mb-30 rounded-xl bg-plum-900/40 backdrop-blur-md"
+            className="mb-20 rounded-xl bg-plum-900/40 backdrop-blur-md md:mb-50"
           >
             <Button
               variant="icon"
@@ -41,13 +41,13 @@ const AlbumsView: FC = () => {
             >
               <div className="flex items-center gap-5 sm:gap-15">
                 <ImageWithPlaceholder
-                  className="h-30 shrink-0 bg-plum-800/60 sm:h-50 lg:h-60"
+                  className="h-25 shrink-0 bg-plum-800/60 sm:h-50 lg:h-60"
                   imgClassName="h-full w-full object-cover"
                   src={cover}
                   alt={title}
                 />
                 <div className="min-w-0 text-left">
-                  <h2 className="truncate text-lg font-bold text-plum-100 sm:text-3xl">
+                  <h2 className="text-base font-bold text-plum-100 sm:text-2xl md:text-3xl">
                     {title}
                   </h2>
                   {dateStr && (
