@@ -1,4 +1,6 @@
 import Button from "@/components/Button";
+import NicknameChangeOverlay from "@/components/NicknameChangeOverlay";
+import UserMenuOverlay from "@/components/UserMenuOverlay";
 import { DESKTOP_MENU_LIST } from "@/constants/navigation";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -15,7 +17,9 @@ type Props = {
 
 const Header: FC<Props> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { displayName } = useCurrentUser();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
+  const { displayName, isLoading: isUserLoading } = useCurrentUser();
   const headerRef = useRef<HTMLDivElement | null>(null);
 
   useBreakpoint("lg", (isMatch) => {
@@ -46,7 +50,7 @@ const Header: FC<Props> = ({ className }) => {
     <div
       ref={headerRef}
       className={cn(
-        "rounded-4xl bg-plum-700/20 px-6 py-3 backdrop-blur-sm",
+        "rounded-4xl bg-plum-600/40 px-6 py-3 backdrop-blur-sm",
         "transition-[max-height] duration-800",
         isOpen && "max-h-[1000px]",
         className,
@@ -75,6 +79,8 @@ const Header: FC<Props> = ({ className }) => {
           <DesktopMenuList
             className="hidden lg:flex"
             displayName={displayName}
+            isLoading={isUserLoading}
+            onUserClick={() => setIsUserMenuOpen(true)}
           />
         )}
         <Button
@@ -106,9 +112,30 @@ const Header: FC<Props> = ({ className }) => {
             Comming soon
           </Button>
         ) : (
-          <MobileMenuPanel className="mt-5 ml-1" displayName={displayName} />
+          <MobileMenuPanel
+            className="mt-5 ml-1"
+            displayName={displayName}
+            isLoading={isUserLoading}
+            onUserClick={() => setIsUserMenuOpen(true)}
+          />
         )}
       </div>
+
+      {/* 유저 메뉴 모달 */}
+      {isUserMenuOpen && (
+        <UserMenuOverlay
+          onClose={() => setIsUserMenuOpen(false)}
+          onNicknameChange={() => setIsNicknameModalOpen(true)}
+        />
+      )}
+
+      {/* 닉네임 변경 모달 */}
+      {isNicknameModalOpen && (
+        <NicknameChangeOverlay
+          currentNickname={displayName}
+          onClose={() => setIsNicknameModalOpen(false)}
+        />
+      )}
     </div>
   );
 
@@ -120,8 +147,17 @@ const Header: FC<Props> = ({ className }) => {
 const DesktopMenuList: FC<{
   className?: string;
   displayName?: string | null;
-}> = ({ className, displayName }) => {
+  isLoading?: boolean;
+  onUserClick?: () => void;
+}> = ({ className, displayName, isLoading, onUserClick }) => {
   const { open } = useAuthOverlay();
+
+  const getLoginLabel = () => {
+    if (isLoading) return "...";
+    if (displayName) return displayName + " 님!";
+    return "Log In";
+  };
+
   return (
     <ul className={cn("flex items-center", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
@@ -132,7 +168,9 @@ const DesktopMenuList: FC<{
             className="font-bold"
             onClick={() => {
               if (item.href === "/login") {
+                if (isLoading) return;
                 if (displayName) {
+                  onUserClick?.();
                   return;
                 }
                 open();
@@ -141,11 +179,7 @@ const DesktopMenuList: FC<{
               window.location.href = item.href;
             }}
           >
-            {item.href === "/login"
-              ? displayName
-                ? displayName + " 님!"
-                : item.label
-              : item.label}
+            {item.href === "/login" ? getLoginLabel() : item.label}
           </Button>
         </li>
       ))}
@@ -156,8 +190,17 @@ const DesktopMenuList: FC<{
 const MobileMenuPanel: FC<{
   className?: string;
   displayName?: string | null;
-}> = ({ className, displayName }) => {
+  isLoading?: boolean;
+  onUserClick?: () => void;
+}> = ({ className, displayName, isLoading, onUserClick }) => {
   const { open } = useAuthOverlay();
+
+  const getLoginLabel = () => {
+    if (isLoading) return "...";
+    if (displayName) return displayName + " 님!";
+    return "Log In";
+  };
+
   return (
     <ul className={cn("", className)}>
       {DESKTOP_MENU_LIST.map((item) => (
@@ -168,7 +211,9 @@ const MobileMenuPanel: FC<{
             className="font-bold"
             onClick={() => {
               if (item.href === "/login") {
+                if (isLoading) return;
                 if (displayName) {
+                  onUserClick?.();
                   return;
                 }
                 open();
@@ -177,11 +222,7 @@ const MobileMenuPanel: FC<{
               window.location.href = item.href;
             }}
           >
-            {item.href === "/login"
-              ? displayName
-                ? displayName + " 님!"
-                : item.label
-              : item.label}
+            {item.href === "/login" ? getLoginLabel() : item.label}
           </Button>
         </li>
       ))}

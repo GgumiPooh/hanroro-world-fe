@@ -138,7 +138,14 @@ const SongDetailViewer: FC = () => {
       )}
 
       {/* 댓글 목록 */}
-      {songId && <CommentList ref={commentListRef} songId={songId} />}
+      {songId && (
+        <CommentList
+          ref={commentListRef}
+          fetchEndpoint={`/api/public/song/${songId}/comments`}
+          deleteEndpoint={(id) => `/api/public/song/comment/${id}`}
+          className="mt-8 mb-24"
+        />
+      )}
 
       {/* 고정 댓글 입력 바 */}
       <CommentInput

@@ -96,16 +96,16 @@ const CommentInput: FC<Props> = ({
           onFocus={handleInputFocus}
           placeholder={placeholder}
           disabled={isSubmitting}
-          className="flex-1 rounded-xl border border-gray-500/30 bg-gray-500/30 px-4 py-3 text-sm text-plum-100 placeholder-plum-400/60 transition-colors outline-none hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
+          className="h-11 flex-1 rounded-xl border border-plum-500/30 bg-plum-500/30 px-4 text-sm text-plum-100 placeholder-plum-400/60 transition-colors outline-none hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
         />
         <Button
           variant="icon"
           size="sm"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="h-11 w-11 shrink-0 rounded-xl bg-plum-600 hover:bg-plum-500 disabled:opacity-50"
+          className="hover:plum-400 h-11 w-11 shrink-0 rounded-xl border border-plum-500/30 bg-plum-500/30 hover:bg-plum-400/30 disabled:opacity-50"
         >
-          <PaperAirplaneIcon className="size-5 text-plum-100" />
+          <PaperAirplaneIcon className="size-5 text-plum-300 hover:text-plum-100" />
         </Button>
       </div>
     </div>

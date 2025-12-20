@@ -7,13 +7,13 @@ export const DESKTOP_MENU_LIST = [
     label: "Albums",
     href: "/albums",
   },
+  // {
+  //   label: "Goods",
+  //   href: "/goods",
+  // },
   {
-    label: "Goods",
-    href: "/goods",
-  },
-  {
-    label: "To Artist",
-    href: "/to-artist",
+    label: "To. RoRo",
+    href: "/toArtist",
   },
   {
     label: "Log In",
