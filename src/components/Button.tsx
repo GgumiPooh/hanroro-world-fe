@@ -31,7 +31,6 @@ const Button: FC<Props> = ({
         size === "sm" && "px-2 py-1 text-xs",
         size === "md" && "px-4 py-1.5 text-base",
         size === "lg" && "px-8 py-4 text-lg",
-        variant === "icon" && size === "sm" && "p-0",
 
         className,
       )}

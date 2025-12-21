@@ -1,7 +1,7 @@
 import ActivityControls from "@/components/ActivityControls";
 import ActivityViewer from "@/components/AtivitiyViewer";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useActivities } from "@/hooks/useActivities";
+import { useActivitiesSupabase } from "@/hooks/supabase/useActivitiesSupabase";
 import type { Sort } from "@/types/sort";
 
 import { useState, type FC } from "react";
@@ -13,10 +13,11 @@ const Activity: FC = () => {
   // });
   const [sort, setSort] = useState<Sort>("latest");
   const [year, setYear] = useState<string>("");
-  const { activities } = useActivities(sort, year);
+  const { activities } = useActivitiesSupabase(sort, year);
 
   return (
-    <div className="relative overflow-y-auto bg-gray-300/60 pt-50">
+    <div className="relative overflow-y-auto pt-50">
+      <div className="fixed inset-0 -z-1 bg-gray-400/50" />
       {/* <div className="pointer-events-none fixed inset-x-0 top-0 z-2 h-[150px] bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm" /> */}
 
       <h1 className="mb-50 text-center text-5xl font-bold text-gray-100 md:mb-70 md:text-8xl">
