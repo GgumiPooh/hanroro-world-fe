@@ -57,9 +57,7 @@ export function useCurrentUserSupabase() {
 }
 
 // Auth helper functions
-export async function signInWithOAuth(
-  provider: "google" | "kakao" | "naver" | "github",
-) {
+export async function signInWithOAuth(provider: "google" | "kakao" | "github") {
   const { error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
