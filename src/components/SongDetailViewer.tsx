@@ -1,9 +1,9 @@
 import Button from "@/components/Button";
-import CommentInput from "@/components/CommentInput";
+import CommentInput, { type CommentData } from "@/components/CommentInput";
 import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbums } from "@/hooks/useAlbums";
-import { useSong } from "@/hooks/useSong";
+import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
+import { useSongSupabase } from "@/hooks/supabase/useSongSupabase";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
@@ -26,8 +26,8 @@ function extractYouTubeId(url: string): string | null {
 
 const SongDetailViewer: FC = () => {
   const { albumId, songId } = useParams();
-  const { detailView, isLoading, error } = useSong(albumId, songId);
-  const { albumsView } = useAlbums();
+  const { detailView, isLoading, error } = useSongSupabase(albumId, songId);
+  const { albumsView } = useAlbumsSupabase();
   const [showLyrics, setShowLyrics] = useState(false);
   const [showPlayer, setShowPlayer] = useState(false);
   const lyricsRef = useRef<HTMLDivElement>(null);
@@ -43,12 +43,7 @@ const SongDetailViewer: FC = () => {
     [detailView?.videoUrl],
   );
 
-  const handleCommentSubmit = (newComment: {
-    id: number;
-    author: string;
-    content: string;
-    createdAt: string;
-  }) => {
+  const handleCommentSubmit = (newComment: CommentData) => {
     commentListRef.current?.addComment(newComment);
   };
 
@@ -141,17 +136,18 @@ const SongDetailViewer: FC = () => {
       {songId && (
         <CommentList
           ref={commentListRef}
-          fetchEndpoint={`/api/public/song/${songId}/comments`}
-          deleteEndpoint={(id) => `/api/public/song/comment/${id}`}
+          songId={songId}
           className="mt-8 mb-24"
         />
       )}
 
       {/* 고정 댓글 입력 바 */}
-      <CommentInput
-        apiEndpoint={`/api/public/song/${songId}/comment`}
-        onCommentSubmit={handleCommentSubmit}
-      />
+      {songId && (
+        <CommentInput
+          apiEndpoint={`/api/public/song/${songId}/comment`}
+          onCommentSubmit={handleCommentSubmit}
+        />
+      )}
 
       {/* 숨겨진 YouTube iframe - 음악만 재생 */}
       {showPlayer && youtubeId && (

@@ -1,7 +1,7 @@
 import ActivityControls from "@/components/ActivityControls";
 import ActivityViewer from "@/components/AtivitiyViewer";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useActivities } from "@/hooks/useActivities";
+import { useActivitiesSupabase } from "@/hooks/supabase/useActivitiesSupabase";
 import type { Sort } from "@/types/sort";
 
 import { useState, type FC } from "react";
@@ -13,7 +13,7 @@ const Activity: FC = () => {
   // });
   const [sort, setSort] = useState<Sort>("latest");
   const [year, setYear] = useState<string>("");
-  const { activities } = useActivities(sort, year);
+  const { activities } = useActivitiesSupabase(sort, year);
 
   return (
     <div className="relative overflow-y-auto pt-50">

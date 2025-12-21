@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import type { Activity } from "@/hooks/useActivities";
+import type { Activity } from "@/hooks/supabase/useActivitiesSupabase";
 import type { Sort } from "@/types/sort";
 import { cn } from "@/utils/styles";
 import { CheckCircleIcon, VideoCameraIcon } from "@heroicons/react/24/outline";

@@ -1,10 +1,10 @@
 import Button from "@/components/Button";
-import { useAlbumDetail } from "@/hooks/useAlbumDetail";
+import { useAlbumDetailSupabase } from "@/hooks/supabase/useAlbumDetailSupabase";
 import type { FC } from "react";
 import { useNavigate } from "react-router";
 
 const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
-  const { detailView } = useAlbumDetail(albumId);
+  const { detailView } = useAlbumDetailSupabase(albumId);
   const navigate = useNavigate();
   return (
     <div className="w-full">

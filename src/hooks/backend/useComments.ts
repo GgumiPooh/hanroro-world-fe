@@ -1,5 +1,5 @@
 import { type CommentData } from "@/components/CommentInput";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useCallback, useEffect, useState } from "react";
 

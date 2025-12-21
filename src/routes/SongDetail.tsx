@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import SongDetailViewer from "@/components/SongDetailViewer";
-import { useAlbums } from "@/hooks/useAlbums";
+import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 import { useMemo } from "react";
@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router";
 const SongDetail: FC = () => {
   const { albumId } = useParams();
   const navigate = useNavigate();
-  const { albumsView } = useAlbums();
+  const { albumsView } = useAlbumsSupabase();
   const album = useMemo(
     () => albumsView.find((a) => String(a.id) === albumId),
     [albumsView, albumId],

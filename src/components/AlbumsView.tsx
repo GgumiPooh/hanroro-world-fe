@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbums } from "@/hooks/useAlbums";
+import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
 import type { FC } from "react";
 import { useNavigate } from "react-router";
 
@@ -10,7 +10,7 @@ const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
 };
 
 const AlbumsView: FC = () => {
-  const { albumsView, isLoading, error } = useAlbums();
+  const { albumsView, isLoading, error } = useAlbumsSupabase();
   const navigate = useNavigate();
 
   if (isLoading) {

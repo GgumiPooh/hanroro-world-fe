@@ -44,7 +44,7 @@ const ToArtist: FC = () => {
       <CommentInput
         apiEndpoint="/api/public/message"
         onCommentSubmit={handleMessageSubmit}
-        placeholder="로로에게 하고 싶은 말을 적어주세요..."
+        placeholder="모욕적인 글 작성 시 관리자에 의해 삭제될 수 있습니다."
       />
     </div>
   );

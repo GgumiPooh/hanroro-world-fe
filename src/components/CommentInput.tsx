@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
@@ -26,19 +26,19 @@ const CommentInput: FC<Props> = ({
   placeholder = "댓글을 입력하세요...",
   className,
 }) => {
-  const { user } = useCurrentUser();
+  const { displayName } = useCurrentUser();
   const { open: openLogin } = useAuthOverlay();
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputFocus = () => {
-    if (!user) {
+    if (!displayName) {
       openLogin();
     }
   };
 
   const handleSubmit = async () => {
-    if (!user) {
+    if (!displayName) {
       openLogin();
       return;
     }
@@ -96,7 +96,7 @@ const CommentInput: FC<Props> = ({
           onFocus={handleInputFocus}
           placeholder={placeholder}
           disabled={isSubmitting}
-          className="h-11 flex-1 rounded-xl border border-plum-500/30 bg-plum-500/30 px-4 text-sm text-plum-100 placeholder-plum-400/60 transition-colors outline-none hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
+          className="h-11 flex-1 rounded-xl border border-plum-500/30 bg-plum-500/30 px-3 text-sm text-plum-100 placeholder-plum-400/60 transition-colors outline-none placeholder:text-xs hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
         />
         <Button
           variant="icon"

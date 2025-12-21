@@ -1,12 +1,16 @@
 import Button from "@/components/Button";
 import { type CommentData } from "@/components/CommentInput";
-import { useComments } from "@/hooks/useComments";
+import { useComments } from "@/hooks/backend/useComments";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { forwardRef, useImperativeHandle } from "react";
 
 type Props = {
-  fetchEndpoint: string;
-  deleteEndpoint: (id: number) => string;
+  /** songId for song comments (uses default endpoints) */
+  songId?: string | number;
+  /** Custom fetch endpoint (overrides songId) */
+  fetchEndpoint?: string;
+  /** Custom delete endpoint function (overrides songId) */
+  deleteEndpoint?: (id: number) => string;
   showHeader?: boolean;
   emptyMessage?: string;
   className?: string;
@@ -20,6 +24,7 @@ export type CommentListRef = {
 const CommentList = forwardRef<CommentListRef, Props>(
   (
     {
+      songId,
       fetchEndpoint,
       deleteEndpoint,
       showHeader = true,
@@ -28,6 +33,11 @@ const CommentList = forwardRef<CommentListRef, Props>(
     },
     ref,
   ) => {
+    const finalFetchEndpoint =
+      fetchEndpoint ?? `/api/public/song/${songId}/comments`;
+    const finalDeleteEndpoint =
+      deleteEndpoint ?? ((id: number) => `/api/public/song/comment/${id}`);
+
     const {
       comments,
       isLoading,
@@ -37,8 +47,8 @@ const CommentList = forwardRef<CommentListRef, Props>(
       isOwnComment,
       refresh,
     } = useComments({
-      fetchEndpoint,
-      deleteEndpoint,
+      fetchEndpoint: finalFetchEndpoint,
+      deleteEndpoint: finalDeleteEndpoint,
     });
 
     useImperativeHandle(ref, () => ({
@@ -57,7 +67,7 @@ const CommentList = forwardRef<CommentListRef, Props>(
     if (error) {
       return (
         <section className={className}>
-          <p className="text-red-300/80 text-center text-sm">{error}</p>
+          <p className="text-center text-sm text-plum-300/80">{error}</p>
         </section>
       );
     }
@@ -81,13 +91,13 @@ const CommentList = forwardRef<CommentListRef, Props>(
                   className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`relative w-full rounded-2xl bg-plum-300/20 p-4 ${
+                    className={`relative w-full rounded-2xl bg-plum-300/20 px-4 py-3 ${
                       isOwn ? "rounded-br-none" : "rounded-bl-none"
                     }`}
                   >
-                    <div className="mb-1 flex items-center justify-between">
+                    <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <span className="text-md text-plum-300">
+                        <span className="md:text-md text-sm text-plum-300">
                           {c.author}
                         </span>
                         <span className="text-xs text-plum-200/90">
@@ -105,7 +115,7 @@ const CommentList = forwardRef<CommentListRef, Props>(
                         </Button>
                       )}
                     </div>
-                    <p className="text-lg leading-relaxed font-medium text-plum-300">
+                    <p className="text-base leading-relaxed font-medium text-plum-300 md:text-lg">
                       {c.content}
                     </p>
                   </div>
