@@ -84,4 +84,3 @@ export function useAlbumsSupabase() {
     error: query.error,
   };
 }
-

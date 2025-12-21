@@ -27,7 +27,7 @@ const AlbumsView: FC = () => {
       {albumsView.map((item) => {
         const cover = getUrlsByType(item.metadata ?? [], "img");
         const title = item.titleText || "Untitled Album";
-        const dateStr = item.published_at || item.created_at || "";
+        const dateStr = item.published_at ?? "";
         return (
           <li
             key={String(item.id)}
