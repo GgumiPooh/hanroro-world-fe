@@ -72,12 +72,15 @@ export function useCommentsSupabase(config: UseCommentsConfig) {
         throw new Error(fetchError.message);
       }
 
-      const mapped: CommentData[] = (data as CommentRow[]).map((c) => ({
-        id: c.id,
-        author: c.users?.name || c.users?.nickname || c.users?.email || "익명",
-        content: c.content,
-        createdAt: new Date(c.created_at).toLocaleDateString("ko-KR"),
-      }));
+      const mapped: CommentData[] = (data as unknown as CommentRow[]).map(
+        (c) => ({
+          id: c.id,
+          author:
+            c.users?.name || c.users?.nickname || c.users?.email || "익명",
+          content: c.content,
+          createdAt: new Date(c.created_at).toLocaleDateString("ko-KR"),
+        }),
+      );
 
       setComments(mapped);
     } catch (err) {
@@ -155,13 +158,9 @@ export function useCommentsSupabase(config: UseCommentsConfig) {
     [tableName],
   );
 
-  const isOwnComment = useCallback(
-    (author: string) => {
-      // This is a simplified check - in production you'd compare user IDs
-      return !!currentUserId;
-    },
-    [currentUserId],
-  );
+  const isOwnComment = useCallback(() => {
+    return !!currentUserId;
+  }, [currentUserId]);
 
   return {
     comments,

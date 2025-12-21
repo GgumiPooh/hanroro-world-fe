@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { type CommentData } from "@/components/CommentInput";
+import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { supabase } from "@/lib/supabase";
-import { useCurrentUserSupabase } from "@/hooks/supabase/useCurrentUserSupabase";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
@@ -24,7 +24,7 @@ const CommentInputSupabase: FC<Props> = ({
   placeholder = "댓글을 입력하세요...",
   className,
 }) => {
-  const { user } = useCurrentUserSupabase();
+  const { user } = useCurrentUser();
   const { open: openLogin } = useAuthOverlay();
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -88,7 +88,7 @@ const CommentInputSupabase: FC<Props> = ({
           onFocus={handleInputFocus}
           placeholder={placeholder}
           disabled={isSubmitting}
-          className="flex-1 rounded-xl border border-gray-500/30 bg-gray-500/30 px-4 py-3 text-sm text-plum-100 placeholder-plum-400/60 outline-none transition-colors hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
+          className="flex-1 rounded-xl border border-gray-500/30 bg-gray-500/30 px-4 py-3 text-sm text-plum-100 placeholder-plum-400/60 transition-colors outline-none hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
         />
         <Button
           variant="icon"
@@ -105,4 +105,3 @@ const CommentInputSupabase: FC<Props> = ({
 };
 
 export default CommentInputSupabase;
-
