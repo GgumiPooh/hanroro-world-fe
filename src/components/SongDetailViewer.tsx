@@ -69,10 +69,10 @@ const SongDetailViewer: FC = () => {
   return (
     <div className="mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0">
       {/* 상단: 앨범 커버 + 제목 & 소개 */}
-      <div className="mb-5 flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-10">
+      <div className="mb-5 flex flex-col items-center gap-6 md:justify-center md:gap-10 lg:flex-row">
         {/* 앨범 커버 (노래 이미지 우선, 없으면 앨범 커버) */}
         <ImageWithPlaceholder
-          className="h-[260px] w-[260px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px]"
+          className="ld:h-[350px] ld:w-[350px] h-[250px] w-[250px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px]"
           imgClassName="h-full w-full object-cover"
           src={
             detailView.imgUrl || album?.coverUrl || "/images/placeholder.png"
@@ -82,7 +82,7 @@ const SongDetailViewer: FC = () => {
 
         {/* 제목 & 소개 */}
         <div className="flex flex-col items-center text-center">
-          <div className="mb-5 flex items-center gap-5">
+          <div className="mb-10 flex items-center gap-5">
             <h2 className="text-2xl font-bold text-plum-200 md:text-4xl">
               {detailView.title}
             </h2>
@@ -102,7 +102,7 @@ const SongDetailViewer: FC = () => {
             )}
           </div>
           {detailView.description && (
-            <p className="max-w-[50ch] text-sm leading-loose whitespace-pre-wrap text-plum-200/90 italic md:text-lg">
+            <p className="md:text-md max-w-[50ch] text-sm leading-loose whitespace-pre-wrap text-plum-200/90 italic">
               {detailView.description}
             </p>
           )}

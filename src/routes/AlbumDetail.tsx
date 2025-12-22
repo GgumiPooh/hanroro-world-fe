@@ -75,7 +75,7 @@ const AlbumDetail: FC = () => {
                 </Button>
                 {/* 토글 시 설명 표시 */}
                 <div
-                  className={`overflow-hidden text-xs text-plum-200/80 transition-all duration-400 ease-in-out md:text-base ${showDescription ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+                  className={`overflow-hidden text-xs whitespace-pre-wrap text-plum-200/80 transition-all duration-400 ease-in-out md:text-base ${showDescription ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
                 >
                   {album.descriptionText}
                 </div>
@@ -84,7 +84,7 @@ const AlbumDetail: FC = () => {
           </div>
         )}
         {/* 곡 목록 - 앨범 커버 아래 */}
-        <div className="mx-5 text-sm md:text-base">
+        <div className="mx-5 mb-5 text-sm md:text-base">
           {albumId && <AlbumDetailViewer albumId={albumId} />}
         </div>
       </div>
