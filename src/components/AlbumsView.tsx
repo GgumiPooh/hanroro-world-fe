@@ -28,6 +28,13 @@ const AlbumsView: FC = () => {
         const cover = getUrlsByType(item.metadata ?? [], "img");
         const title = item.titleText || "Untitled Album";
         const dateStr = item.published_at ?? "";
+
+        const isDigitalSingle = item.album_type === "DIGITAL_SINGLE";
+        const targetPath =
+          isDigitalSingle && item.firstSongId
+            ? `/song/${item.firstSongId}`
+            : `/album/${item.id}`;
+
         return (
           <li
             key={String(item.id)}
@@ -37,7 +44,7 @@ const AlbumsView: FC = () => {
               variant="icon"
               size="sm"
               className="flex p-0"
-              onClick={() => navigate(`/album/${item.id}`)}
+              onClick={() => navigate(targetPath)}
             >
               <div className="flex items-center gap-5 sm:gap-15">
                 <ImageWithPlaceholder

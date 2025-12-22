@@ -12,13 +12,20 @@ type MetaData = {
   url: string;
 };
 
+type Song = {
+  id: number;
+  track_number?: number;
+};
+
 export type Album = {
   id: number;
   title: LanguageData[];
   description?: LanguageData[];
   metadata?: MetaData[];
+  album_type?: string;
   published_at?: string;
   created_at?: string;
+  songs?: Song[];
 };
 
 function resolveLocalizedText(
@@ -36,7 +43,7 @@ function resolveLocalizedText(
 async function fetchAlbums(): Promise<Album[]> {
   const { data, error } = await supabase
     .from("albums")
-    .select("*")
+    .select("*, songs(id, track_number)")
     .order("published_at", { ascending: false });
 
   if (error) {
@@ -68,11 +75,18 @@ export function useAlbumsSupabase() {
         lower[0]?.url ||
         "";
 
+      // Get first track's song id (track_number = 1 or just the first in list)
+      const sortedSongs = [...(album.songs ?? [])].sort(
+        (a, b) => (a.track_number ?? 0) - (b.track_number ?? 0),
+      );
+      const firstSongId = sortedSongs[0]?.id ?? null;
+
       return {
         ...album,
         titleText: resolveLocalizedText(album.title),
         descriptionText: resolveLocalizedText(album.description),
         coverUrl: cover,
+        firstSongId,
       };
     });
   }, [query.data]);
