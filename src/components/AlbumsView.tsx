@@ -31,9 +31,10 @@ const AlbumsView: FC = () => {
 
         const isDigitalSingle = item.album_type === "DIGITAL_SINGLE";
         const targetPath =
-          isDigitalSingle && item.firstSongId
+          `/album/${item.id}` +
+          (isDigitalSingle && item.firstSongId
             ? `/song/${item.firstSongId}`
-            : `/album/${item.id}`;
+            : "");
 
         return (
           <li
