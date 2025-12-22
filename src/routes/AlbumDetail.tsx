@@ -84,7 +84,7 @@ const AlbumDetail: FC = () => {
           </div>
         )}
         {/* 곡 목록 - 앨범 커버 아래 */}
-        <div className="mx-5 mb-5 text-sm md:text-base">
+        <div className="mx-5 mb-10 text-sm md:text-base">
           {albumId && <AlbumDetailViewer albumId={albumId} />}
         </div>
       </div>
