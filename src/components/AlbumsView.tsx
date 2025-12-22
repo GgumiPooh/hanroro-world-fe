@@ -47,10 +47,10 @@ const AlbumsView: FC = () => {
               className="flex p-0"
               onClick={() => navigate(targetPath)}
             >
-              <div className="flex items-center gap-5 sm:gap-15">
+              <div className="flex flex-row items-center gap-5">
                 <ImageWithPlaceholder
-                  className="h-25 shrink-0 bg-plum-800/60 sm:h-50 lg:h-60"
-                  imgClassName="h-full w-full object-cover"
+                  className="relative h-25 w-25 items-center gap-5 sm:h-50 sm:w-50 sm:gap-15 lg:h-60 lg:w-60"
+                  imgClassName="absolute size-full shrink-0 bg-plum-800/60 object-cover object-center"
                   src={cover}
                   alt={title}
                 />

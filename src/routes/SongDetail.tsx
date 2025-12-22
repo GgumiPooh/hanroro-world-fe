@@ -36,12 +36,12 @@ const SongDetail: FC = () => {
       <div className="fixed inset-0 -z-1 bg-gray-900/80" />
 
       <div className="z-2 mx-auto w-[min(92vw,1000px)]">
-        {/* 앨범으로 돌아가기 버튼 */}
+        {/* 이전으로 돌아가기 버튼 */}
         <Button
           variant="icon"
           size="md"
           className="mb-10 pl-10 text-sm text-plum-200"
-          onClick={() => navigate(`/album/${albumId}`)}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeftIcon className="size-5 text-plum-100" />
         </Button>
