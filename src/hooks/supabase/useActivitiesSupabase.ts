@@ -25,7 +25,7 @@ async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   let query = supabase.from("activities").select("*");
 
   // PERFORMANCE 타입만 필터링
-  query = query.eq("activity_type", "PERFORMANCE");
+  query = query.eq("type", "PERFORMANCE");
 
   // 연도 필터링
   if (year) {
