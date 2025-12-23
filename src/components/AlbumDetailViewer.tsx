@@ -9,7 +9,7 @@ const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
   return (
     <div className="w-full">
       <ul className="divide-y divide-plum-300/30">
-        {detailView?.songsView.map((song, idx) => (
+        {detailView?.songsView.map((song) => (
           <li key={song.id} className="py-5">
             <div className="flex">
               <Button
