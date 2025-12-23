@@ -9,8 +9,9 @@ import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { useEffect, useRef, useState, type FC } from "react";
+import { useRef, useState, type FC } from "react";
 import { Link, useNavigate } from "react-router";
+import { useClickAway } from "react-use";
 
 type Props = {
   className?: string;
@@ -23,6 +24,10 @@ const Header: FC<Props> = ({ className }) => {
   const { displayName, isLoading: isUserLoading } = useCurrentUser();
   const headerRef = useRef<HTMLDivElement | null>(null);
 
+  useClickAway(headerRef, () => {
+    setIsOpen(false);
+  });
+
   useBreakpoint("lg", (isMatch) => {
     if (!isMatch) {
       return;
@@ -30,22 +35,6 @@ const Header: FC<Props> = ({ className }) => {
 
     setIsOpen(false);
   });
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-    function handleDocumentClick(event: MouseEvent) {
-      const root = headerRef.current;
-      if (!root) return;
-      const target = event.target as Node | null;
-      if (target && !root.contains(target)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("click", handleDocumentClick);
-    return () => document.removeEventListener("click", handleDocumentClick);
-  }, [isOpen]);
 
   return (
     <div
