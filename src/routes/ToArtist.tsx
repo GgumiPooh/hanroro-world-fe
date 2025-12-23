@@ -44,7 +44,7 @@ const ToArtist: FC = () => {
       <CommentInput
         apiEndpoint="/api/public/message"
         onCommentSubmit={handleMessageSubmit}
-        placeholder="모욕적인 글 작성 시 관리자에 의해 삭제될 수 있습니다."
+        placeholder="비방적인 글 작성 시 관리자에 의해 삭제될 수 있습니다."
       />
     </div>
   );

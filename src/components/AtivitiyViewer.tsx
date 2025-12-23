@@ -58,7 +58,7 @@ const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
       className={cn("mr-3 flex items-center md:w-full", className)}
       key={`${index}-${sort}`}
     >
-      <div className="relative top-2/5 left-[-15px] h-6 w-6 rounded-2xl bg-plum-500/90 md:left-[-19px] md:h-8 md:w-8">
+      <div className="relative top-2/5 left-[-15px] h-6 w-6 rounded-2xl bg-gray-500/90 md:left-[-19px] md:h-8 md:w-8">
         <CheckCircleIcon
           className={cn(
             "size-6 md:size-8",

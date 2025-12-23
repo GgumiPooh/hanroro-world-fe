@@ -18,7 +18,7 @@ const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
                 className="w-full justify-start text-start text-2xl text-plum-100"
                 onClick={() => navigate(`/album/${albumId}/song/${song.id}`)}
               >
-                <span className="pr-5 text-2xl font-medium text-plum-300">
+                <span className="pr-5 text-2xl font-medium text-plum-500">
                   {song.track_number}
                 </span>
                 {song.title}

@@ -50,7 +50,7 @@ const Header: FC<Props> = ({ className }) => {
     <div
       ref={headerRef}
       className={cn(
-        "rounded-4xl bg-plum-600/40 px-6 py-3 backdrop-blur-sm",
+        "rounded-4xl bg-gray-600/40 px-6 py-3 backdrop-blur-sm",
         "transition-[max-height] duration-800",
         isOpen && "max-h-[1000px]",
         className,
@@ -64,7 +64,7 @@ const Header: FC<Props> = ({ className }) => {
             window.location.href = "/";
           }}
         >
-          <LogoIcon className="w-20 shrink-0 text-plum-200 md:w-25" />
+          <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
         </Button>
         {ENV_VARIABLE.IS_COMMING_SOON ? (
           <Button
@@ -89,7 +89,7 @@ const Header: FC<Props> = ({ className }) => {
           className="lg:hidden"
           onClick={handleToggleMenu}
         >
-          <Bars3Icon className="size-10 stroke-2 text-plum-200" />
+          <Bars3Icon className="size-10 stroke-2 text-plum-100" />
         </Button>
       </div>
 
@@ -208,7 +208,7 @@ const MobileMenuPanel: FC<{
           <Button
             variant="ghost"
             size="sm"
-            className="font-bold"
+            className="text-base font-bold"
             onClick={() => {
               if (item.href === "/login") {
                 if (isLoading) return;

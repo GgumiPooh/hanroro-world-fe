@@ -39,7 +39,7 @@ const AlbumsView: FC = () => {
         return (
           <li
             key={String(item.id)}
-            className="mb-20 rounded-xl bg-plum-900/40 backdrop-blur-md md:mb-50"
+            className="mb-20 rounded-xl bg-gray-900/40 backdrop-blur-md md:mb-50"
           >
             <Button
               variant="icon"
@@ -47,7 +47,7 @@ const AlbumsView: FC = () => {
               className="flex p-0"
               onClick={() => navigate(targetPath)}
             >
-              <div className="flex flex-row items-center gap-5">
+              <div className="flex flex-row items-center gap-7">
                 <ImageWithPlaceholder
                   className="relative h-25 w-25 items-center gap-5 sm:h-50 sm:w-50 sm:gap-15 lg:h-60 lg:w-60"
                   imgClassName="absolute size-full shrink-0 bg-plum-800/60 object-cover object-center"

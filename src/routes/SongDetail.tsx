@@ -1,3 +1,4 @@
+import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import SongDetailViewer from "@/components/SongDetailViewer";
@@ -26,12 +27,7 @@ const SongDetail: FC = () => {
           alt="album glow background"
         />
       ) : (
-        <ImageWithPlaceholder
-          className="fixed inset-0 -z-2 h-dvh w-full"
-          imgClassName="object-cover object-center blur-lg backdrop-blur"
-          src="/images/home-banner5.png"
-          alt="home banner"
-        />
+        <BlurBackground />
       )}
       <div className="fixed inset-0 -z-1 bg-gray-900/80" />
 

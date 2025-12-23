@@ -1,6 +1,6 @@
 import ActivityControls from "@/components/ActivityControls";
 import ActivityViewer from "@/components/AtivitiyViewer";
-import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
+import BlurBackground from "@/components/BlurBackground";
 import { useActivitiesSupabase } from "@/hooks/supabase/useActivitiesSupabase";
 import type { Sort } from "@/types/sort";
 
@@ -17,18 +17,12 @@ const Activity: FC = () => {
 
   return (
     <div className="relative overflow-y-auto pt-50">
-      <div className="fixed inset-0 -z-1 bg-gray-400/50" />
+      <BlurBackground overlay overlayClassName="bg-gray-400/50" />
       {/* <div className="pointer-events-none fixed inset-x-0 top-0 z-2 h-[150px] bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm" /> */}
 
       <h1 className="mb-50 text-center text-5xl font-bold text-gray-100 md:mb-70 md:text-8xl">
         Activity
       </h1>
-      <ImageWithPlaceholder
-        className="fixed inset-0 -z-2 h-dvh w-full"
-        imgClassName="object-cover object-center blur-lg backdrop-blur"
-        src="/images/home-banner5.png"
-        alt="home banner"
-      />
 
       <div className="z-2 mx-auto w-fit">
         <ActivityControls
@@ -38,7 +32,7 @@ const Activity: FC = () => {
           sort={sort}
           onSortChange={setSort}
         />
-        <ul className="relative mr-15 ml-10 w-fit border-l-6 border-plum-600/40">
+        <ul className="relative mr-15 ml-10 w-fit border-l-6 border-gray-600/40">
           {activities.map((item, index) => (
             <ActivityViewer
               className="mb-40 w-full max-w-[660px]"
