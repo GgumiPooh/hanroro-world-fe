@@ -15,6 +15,7 @@ type MetaData = {
 export type Activity = {
   id: number;
   title: Title[];
+  activityType?: string;
   activeFrom: string;
   activeTo: string;
   metaData: MetaData[];
@@ -22,6 +23,9 @@ export type Activity = {
 
 async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   let query = supabase.from("activities").select("*");
+
+  // PERFORMANCE 타입만 필터링
+  query = query.eq("activity_type", "PERFORMANCE");
 
   // 연도 필터링
   if (year) {
@@ -44,6 +48,7 @@ async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   return (data ?? []).map((item) => ({
     ...item,
     title: item.title ?? [],
+    activityType: item.activity_type,
     activeFrom: item.active_from, // snake_case from DB
     activeTo: item.active_to, // snake_case from DB
     metaData: item.meta_data ?? [], // snake_case from DB
