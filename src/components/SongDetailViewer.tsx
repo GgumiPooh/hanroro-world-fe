@@ -151,10 +151,9 @@ const SongDetailViewer: FC = () => {
 
       {/* YouTube 플레이어 - Safari 호환을 위해 화면에 보이게 표시 */}
       {showPlayer && youtubeId && (
-        <div className="fixed right-4 bottom-24 z-50 overflow-hidden rounded-xl shadow-2xl md:right-8 md:bottom-8">
+        <div className="fixed right-4 bottom-25 z-50 overflow-hidden rounded-lg shadow-2xl md:rounded-xl">
           <iframe
-            width="280"
-            height="158"
+            className="h-[73px] w-[130px] lg:h-[158px] lg:w-[280px]"
             src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&playsinline=1`}
             title="YouTube video player"
             frameBorder="0"

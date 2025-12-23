@@ -19,7 +19,7 @@ const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
                 onClick={() => navigate(`/album/${albumId}/song/${song.id}`)}
               >
                 <span className="pr-5 text-2xl font-medium text-plum-300">
-                  {idx + 1}
+                  {song.track_number}
                 </span>
                 {song.title}
               </Button>
