@@ -48,7 +48,7 @@ async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   return (data ?? []).map((item) => ({
     ...item,
     title: item.title ?? [],
-    activityType: item.activity_type,
+    activityType: item.type,
     activeFrom: item.active_from, // snake_case from DB
     activeTo: item.active_to, // snake_case from DB
     metaData: item.meta_data ?? [], // snake_case from DB
