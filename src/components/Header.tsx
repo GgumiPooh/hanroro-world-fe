@@ -10,6 +10,7 @@ import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState, type FC } from "react";
+import { Link, useNavigate } from "react-router";
 
 type Props = {
   className?: string;
@@ -57,15 +58,17 @@ const Header: FC<Props> = ({ className }) => {
       )}
     >
       <div className="flex items-center justify-between">
-        <Button
-          variant="icon"
-          size="sm"
-          onClick={() => {
-            window.location.href = "/";
-          }}
-        >
-          <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
-        </Button>
+        <Link to="/">
+          <Button
+            variant="icon"
+            size="sm"
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          >
+            <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
+          </Button>
+        </Link>
         {ENV_VARIABLE.IS_COMMING_SOON ? (
           <Button
             variant="ghost"
@@ -144,12 +147,20 @@ const Header: FC<Props> = ({ className }) => {
   }
 };
 
-const DesktopMenuList: FC<{
+type MenuListProps = {
   className?: string;
   displayName?: string | null;
   isLoading?: boolean;
   onUserClick?: () => void;
-}> = ({ className, displayName, isLoading, onUserClick }) => {
+};
+
+const DesktopMenuList: FC<MenuListProps> = ({
+  className,
+  displayName,
+  isLoading,
+  onUserClick,
+}) => {
+  const navigate = useNavigate();
   const { open } = useAuthOverlay();
 
   const getLoginLabel = () => {
@@ -176,7 +187,7 @@ const DesktopMenuList: FC<{
                 open();
                 return;
               }
-              window.location.href = item.href;
+              navigate(item.href);
             }}
           >
             {item.href === "/login" ? getLoginLabel() : item.label}
@@ -187,12 +198,13 @@ const DesktopMenuList: FC<{
   );
 };
 
-const MobileMenuPanel: FC<{
-  className?: string;
-  displayName?: string | null;
-  isLoading?: boolean;
-  onUserClick?: () => void;
-}> = ({ className, displayName, isLoading, onUserClick }) => {
+const MobileMenuPanel: FC<MenuListProps> = ({
+  className,
+  displayName,
+  isLoading,
+  onUserClick,
+}) => {
+  const navigate = useNavigate();
   const { open } = useAuthOverlay();
 
   const getLoginLabel = () => {
@@ -219,7 +231,7 @@ const MobileMenuPanel: FC<{
                 open();
                 return;
               }
-              window.location.href = item.href;
+              navigate(item.href);
             }}
           >
             {item.href === "/login" ? getLoginLabel() : item.label}

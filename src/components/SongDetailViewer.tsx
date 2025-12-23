@@ -4,6 +4,8 @@ import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
 import { useSongSupabase } from "@/hooks/supabase/useSongSupabase";
+import { useYouTubePlayer } from "@/hooks/useYouTubePlayer";
+import { cn } from "@/utils/styles";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
@@ -26,11 +28,12 @@ function extractYouTubeId(url: string): string | null {
 
 const SongDetailViewer: FC = () => {
   const { albumId, songId } = useParams();
+
   const { detailView, isLoading, error } = useSongSupabase(albumId, songId);
   const { albumsView } = useAlbumsSupabase();
+  const { videoId: currentVideoId, isPlaying, toggle } = useYouTubePlayer();
+
   const [showLyrics, setShowLyrics] = useState(false);
-  const [showPlayer, setShowPlayer] = useState(false);
-  const lyricsRef = useRef<HTMLDivElement>(null);
   const commentListRef = useRef<CommentListRef>(null);
 
   const album = useMemo(
@@ -42,6 +45,8 @@ const SongDetailViewer: FC = () => {
     () => (detailView?.videoUrl ? extractYouTubeId(detailView.videoUrl) : null),
     [detailView?.videoUrl],
   );
+
+  const isCurrentSongPlaying = youtubeId === currentVideoId && isPlaying;
 
   const handleCommentSubmit = (newComment: CommentData) => {
     commentListRef.current?.addComment(newComment);
@@ -90,10 +95,10 @@ const SongDetailViewer: FC = () => {
               <Button
                 variant="icon"
                 size="sm"
-                onClick={() => setShowPlayer(!showPlayer)}
+                onClick={() => toggle(youtubeId)}
                 className="mb-1 h-6.5 w-6.5 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
               >
-                {showPlayer ? (
+                {isCurrentSongPlaying ? (
                   <PauseIcon className="size-5 text-plum-100" />
                 ) : (
                   <PlayIcon className="size-5 text-plum-100" />
@@ -122,10 +127,10 @@ const SongDetailViewer: FC = () => {
           </Button>
 
           <div
-            ref={lyricsRef}
-            className={`ml-10 overflow-hidden text-sm leading-relaxed whitespace-pre-wrap text-plum-200/90 transition-all duration-500 ease-in-out md:text-base ${
-              showLyrics ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
-            }`}
+            className={cn(
+              "ml-10 overflow-hidden text-sm leading-relaxed whitespace-pre-wrap text-plum-200/90 transition-all duration-500 ease-in-out md:text-base",
+              showLyrics ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0",
+            )}
           >
             {detailView.lyrics}
           </div>
@@ -147,20 +152,6 @@ const SongDetailViewer: FC = () => {
           apiEndpoint={`/api/public/song/${songId}/comment`}
           onCommentSubmit={handleCommentSubmit}
         />
-      )}
-
-      {/* YouTube 플레이어 - Safari 호환을 위해 화면에 보이게 표시 */}
-      {showPlayer && youtubeId && (
-        <div className="fixed right-4 bottom-25 z-50 overflow-hidden rounded-lg shadow-2xl md:rounded-xl">
-          <iframe
-            className="h-[73px] w-[130px] lg:h-[158px] lg:w-[280px]"
-            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&playsinline=1`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        </div>
       )}
     </div>
   );
