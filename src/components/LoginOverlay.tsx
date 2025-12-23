@@ -53,8 +53,7 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
             variant="icon"
             size="sm"
             className="w-full hover:scale-100"
-            // onClick={() => handleRedirect("naver")}
-            disabled
+            onClick={() => handleRedirect("naver")}
           >
             <img src={NaverLogin} alt="Naver" />
           </Button>
