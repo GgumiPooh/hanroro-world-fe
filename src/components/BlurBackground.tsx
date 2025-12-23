@@ -10,7 +10,7 @@ type Props = {
 };
 
 const BlurBackground: FC<Props> = ({
-  src = "/images/home-banner8.png",
+  src = "/images/home-banner6.webp",
   alt = "background",
   blur = true,
   overlay = false,

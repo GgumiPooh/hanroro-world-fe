@@ -44,16 +44,16 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
         className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className="relative mx-auto mt-40 w-[min(90vw,280px)] rounded-4xl bg-plum-800/90 py-1 shadow-xl">
-        <h2 className="mb-5 border-b border-plum-400 py-3 text-center text-xl font-bold text-plum-100">
+      <div className="relative mx-auto mt-40 w-[min(90vw,280px)] rounded-4xl bg-gray-800/70 py-5 shadow-xl">
+        <h2 className="mb-5 border-b border-gray-400 py-3 text-center text-xl font-bold text-plum-100">
           메뉴
         </h2>
 
-        <div className="mb-3">
+        <div className="mb-3 space-y-3">
           <Button
             variant="icon"
             size="md"
-            className="w-full py-3 text-plum-200"
+            className="w-full py-3 text-plum-200 md:text-xl"
             onClick={handleNicknameChange}
           >
             닉네임 변경
@@ -61,10 +61,10 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
           <Button
             variant="icon"
             size="md"
-            className="w-full py-3 text-plum-200"
+            className="w-full py-3 text-plum-200 md:text-xl"
             onClick={handleLogout}
           >
-            로그아웃
+            지수와로그아웃
           </Button>
         </div>
       </div>

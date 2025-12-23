@@ -77,23 +77,19 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
         className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className="relative mx-auto mt-40 w-[min(90vw,420px)] rounded-4xl bg-plum-800/90 p-6 shadow-xl">
-        <h2 className="mb-6 text-center text-xl font-bold text-plum-100">
-          닉네임 변경
-        </h2>
+      <div className="relative mx-auto mt-40 w-[min(90vw,420px)] rounded-4xl bg-gray-800/70 p-12 shadow-xl">
+        <h2 className="mb-6 text-center text-xl text-plum-100">닉네임 변경</h2>
 
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-plum-300">
-              새 닉네임
-            </label>
+            <label className="mb-2 block text-sm text-plum-300"></label>
             <input
               type="text"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               placeholder="새 닉네임을 입력하세요"
-              className="w-full rounded-xl border border-plum-600/30 bg-plum-900/50 px-4 py-3 text-plum-100 placeholder:text-plum-400/60 focus:border-plum-500 focus:outline-none"
+              className="w-full rounded-xl border border-plum-600/30 bg-plum-900/30 px-4 py-3 text-plum-100 transition-colors duration-200 placeholder:text-plum-400/60 hover:border-plum-300 focus:border-plum-500 focus:outline-none"
               maxLength={20}
               disabled={isSubmitting}
             />
@@ -107,7 +103,7 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
             <Button
               variant="ghost"
               size="md"
-              className="flex-1"
+              className="flex-1 border border-gray-400"
               onClick={onClose}
               disabled={isSubmitting}
             >
