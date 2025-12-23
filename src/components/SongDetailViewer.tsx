@@ -149,14 +149,17 @@ const SongDetailViewer: FC = () => {
         />
       )}
 
-      {/* 숨겨진 YouTube iframe - 음악만 재생 */}
+      {/* YouTube 플레이어 - Safari 호환을 위해 화면에 보이게 표시 */}
       {showPlayer && youtubeId && (
-        <div className="pointer-events-none fixed h-0 w-0 overflow-hidden opacity-0">
+        <div className="fixed right-4 bottom-24 z-50 overflow-hidden rounded-xl shadow-2xl md:right-8 md:bottom-8">
           <iframe
-            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+            width="280"
+            height="158"
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&playsinline=1`}
             title="YouTube video player"
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
           />
         </div>
       )}
