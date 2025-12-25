@@ -11,7 +11,7 @@ export type CurrentUser = {
 
 function resolveDisplayName(user: CurrentUser | null): string | null {
   if (!user) return null;
-  return user.name || user.nickname || user.username || user.email || null;
+  return user.name || user.nickname || null;
 }
 
 async function fetchCurrentUser(): Promise<CurrentUser | null> {
