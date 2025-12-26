@@ -12,8 +12,7 @@ type UseCommentsConfig = {
 
 type ApiResponse = {
   id: number;
-  comment?: string;
-  message?: string;
+  content: string;
   author: string;
   createdAt: string;
 };
@@ -44,7 +43,7 @@ export function useComments(config: UseCommentsConfig) {
       const mapped: CommentData[] = data.map((c) => ({
         id: c.id,
         author: c.author,
-        content: c.comment ?? c.message ?? "",
+        content: c.content,
         createdAt: c.createdAt,
       }));
 

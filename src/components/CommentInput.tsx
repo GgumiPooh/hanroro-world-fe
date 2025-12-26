@@ -51,7 +51,7 @@ const CommentInput: FC<Props> = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ comment: comment.trim() }),
+        body: JSON.stringify({ content: comment.trim() }),
       });
 
       if (!res.ok) {
@@ -61,7 +61,7 @@ const CommentInput: FC<Props> = ({
       // 백엔드 응답에서 실제 댓글 데이터 사용 (실제 ID 포함)
       const savedData = (await res.json()) as {
         id: number;
-        comment: string;
+        content: string;
         author: string;
         createdAt: string;
       };
@@ -69,7 +69,7 @@ const CommentInput: FC<Props> = ({
       const newComment: CommentData = {
         id: savedData.id,
         author: savedData.author,
-        content: savedData.comment,
+        content: savedData.content,
         createdAt: savedData.createdAt,
       };
 

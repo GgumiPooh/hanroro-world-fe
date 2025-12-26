@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { ENV_VARIABLE } from "@/utils/env-variable";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, type FC } from "react";
 import { createPortal } from "react-dom";
 
@@ -9,6 +10,8 @@ type Props = {
 };
 
 const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     function handleKeydown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -28,7 +31,7 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
       });
     } catch (err) {
       console.error("Logout failed:", err);
-    } finally {
+      queryClient.clear();
       window.location.href = "/";
     }
   };
@@ -36,6 +39,32 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
   const handleNicknameChange = () => {
     onClose();
     onNicknameChange();
+  };
+
+  const handleDeleteAccount = async () => {
+    // 확인 다이얼로그
+    const confirmed = window.confirm(
+      "정말 회원탈퇴 하시겠습니까?\n\n탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.",
+    );
+    if (!confirmed) return;
+
+    try {
+      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+      const res = await fetch(`${baseUrl}/api/auth/delete`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        throw new Error("회원 탈퇴 실패");
+      }
+      // 캐시 삭제
+      localStorage.removeItem("privacyConsent");
+      queryClient.clear(); // React Query 캐시 삭제
+      window.location.reload();
+    } catch (err) {
+      console.error("회원 탈퇴 실패:", err);
+      alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return createPortal(
@@ -65,6 +94,14 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
             onClick={handleLogout}
           >
             지수와로그아웃
+          </Button>
+          <Button
+            variant="icon"
+            size="md"
+            className="w-full py-3 text-xl text-plum-600"
+            onClick={handleDeleteAccount}
+          >
+            회원 탈퇴
           </Button>
         </div>
       </div>
