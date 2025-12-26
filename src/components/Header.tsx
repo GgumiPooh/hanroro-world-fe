@@ -4,6 +4,7 @@ import UserMenuOverlay from "@/components/UserMenuOverlay";
 import { DESKTOP_MENU_LIST } from "@/constants/navigation";
 import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import LogoIcon from "@/icons/LogoIcon";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
@@ -54,12 +55,7 @@ const Header: FC<Props> = ({ className }) => {
               window.location.href = "/";
             }}
           >
-            <img
-              src="/src/icons/RoroworldIcon.svg"
-              alt="Logo"
-              className="w-20 shrink-0 text-plum-100 md:w-25"
-            />
-            {/* <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" /> */}
+            <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
           </Button>
         </Link>
         {ENV_VARIABLE.IS_COMMING_SOON ? (
