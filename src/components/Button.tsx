@@ -20,8 +20,7 @@ const Button: FC<Props> = ({
       type="button"
       className={cn(
         "inline-flex items-center justify-center rounded-4xl font-medium transition-all focus:outline-none",
-        variant === "primary" &&
-          "bg-plum-500 text-white hover:bg-plum-600 focus:ring-plum-500 active:bg-plum-700",
+        variant === "primary" && "bg-gray-600 text-white hover:bg-gray-500",
         variant === "secondary" &&
           "bg-plum-500/50 text-plum-300 hover:scale-107 hover:bg-plum-500/40 hover:text-plum-300 focus:ring-plum-400 active:scale-95 active:bg-plum-400/60 active:text-plum-300",
         variant === "ghost" &&

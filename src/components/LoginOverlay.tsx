@@ -46,8 +46,8 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
         className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
       />
-      <div className="relative mx-auto mt-40 w-[min(90vw,420px)] rounded-4xl bg-plum-800/80 p-6 text-center shadow-xl">
-        <h2 className="m-5 text-xl font-bold text-plum-100">로그인</h2>
+      <div className="relative mx-auto mt-40 w-[min(90vw,420px)] rounded-4xl bg-gray-800/80 p-10 text-center shadow-xl">
+        <h2 className="mb-10 text-xl font-bold text-plum-300">로그인</h2>
         <div className="space-y-3">
           <Button
             variant="icon"
@@ -66,7 +66,7 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
             <img src={KakaoLogin} alt="Kakao" />
           </Button>
         </div>
-        <Button variant="ghost" size="sm" className="mt-5" onClick={onClose}>
+        <Button variant="ghost" size="md" className="mt-5" onClick={onClose}>
           취소
         </Button>
       </div>

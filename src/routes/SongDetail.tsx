@@ -37,7 +37,11 @@ const SongDetail: FC = () => {
           variant="icon"
           size="md"
           className="mb-10 pl-10 text-sm text-plum-200"
-          onClick={() => navigate(-1)}
+          onClick={() =>
+            album?.album_type === "DIGITAL_SINGLE"
+              ? navigate("/albums")
+              : navigate(`/album/${albumId}`)
+          }
         >
           <ArrowLeftIcon className="size-5 text-plum-100" />
         </Button>

@@ -153,7 +153,7 @@ const DesktopMenuList: FC<MenuListProps> = ({
   const { open } = useAuthOverlay();
 
   const getLoginLabel = () => {
-    if (isLoading) return "...";
+    if (isLoading) return ". . .";
     if (displayName) return displayName + " 님!";
     return "Log In";
   };
@@ -197,7 +197,6 @@ const MobileMenuPanel: FC<MenuListProps> = ({
   const { open } = useAuthOverlay();
 
   const getLoginLabel = () => {
-    if (isLoading) return "...";
     if (displayName) return displayName + " 님!";
     return "Log In";
   };
