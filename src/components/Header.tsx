@@ -19,8 +19,8 @@ type Props = {
 
 const Header: FC<Props> = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
+  const [isUserOverlayOpen, setIsUserOverlayOpen] = useState(false);
+  const [isNicknameOverlayOpen, setIsNicknameOverlayOpen] = useState(false);
   const { displayName, isLoading: isUserLoading } = useCurrentUser();
   const headerRef = useRef<HTMLDivElement | null>(null);
 
@@ -67,7 +67,7 @@ const Header: FC<Props> = ({ className }) => {
               className="hidden lg:flex"
               displayName={displayName}
               isLoading={isUserLoading}
-              onUserClick={() => setIsUserMenuOpen(true)}
+              onUserClick={() => setIsUserOverlayOpen(true)}
             />
           )}
           <Button
@@ -103,28 +103,26 @@ const Header: FC<Props> = ({ className }) => {
               className="mt-5 ml-1"
               displayName={displayName}
               isLoading={isUserLoading}
-              onUserClick={() => setIsUserMenuOpen(true)}
+              onUserClick={() => setIsUserOverlayOpen(true)}
               onNavigate={handleToggleMenu(false)}
             />
           )}
         </div>
-
-        {/* 유저 메뉴 모달 */}
-        {isUserMenuOpen && (
-          <UserMenuOverlay
-            onClose={() => setIsUserMenuOpen(false)}
-            onNicknameChange={() => setIsNicknameModalOpen(true)}
-          />
-        )}
-
-        {/* 닉네임 변경 모달 */}
-        {isNicknameModalOpen && (
-          <NicknameChangeOverlay
-            currentNickname={displayName}
-            onClose={() => setIsNicknameModalOpen(false)}
-          />
-        )}
       </div>
+
+      {isUserOverlayOpen && (
+        <UserMenuOverlay
+          onClose={() => setIsUserOverlayOpen(false)}
+          onNicknameChange={() => setIsNicknameOverlayOpen(true)}
+        />
+      )}
+
+      {isNicknameOverlayOpen && (
+        <NicknameChangeOverlay
+          currentNickname={displayName}
+          onClose={() => setIsNicknameOverlayOpen(false)}
+        />
+      )}
     </>
   );
 
@@ -151,7 +149,7 @@ const DesktopMenuList: FC<MenuListProps> = ({
   onNavigate,
 }) => {
   const navigate = useNavigate();
-  const { open } = useAuthOverlay();
+  const { open: openAuthOverlay } = useAuthOverlay();
 
   const getLoginLabel = () => {
     if (isLoading) return ". . .";
@@ -164,22 +162,25 @@ const DesktopMenuList: FC<MenuListProps> = ({
       {DESKTOP_MENU_LIST.map((item) => (
         <li key={item.href} className="mr-7">
           <Button
+            className="font-bold"
             variant="ghost"
             size="md"
-            className="font-bold"
+            disabled={isLoading}
             onClick={() => {
               onNavigate?.();
 
-              if (item.href === "/login") {
-                if (isLoading) return;
-                if (displayName) {
-                  onUserClick?.();
-                  return;
-                }
-                open();
+              if (item.href !== "/login") {
+                navigate(item.href);
                 return;
               }
-              navigate(item.href);
+
+              if (displayName) {
+                onUserClick?.();
+                return;
+              }
+
+              openAuthOverlay();
+              return;
             }}
           >
             {item.href === "/login" ? getLoginLabel() : item.label}
@@ -198,7 +199,7 @@ const MobileMenuPanel: FC<MenuListProps> = ({
   onNavigate,
 }) => {
   const navigate = useNavigate();
-  const { open } = useAuthOverlay();
+  const { open: openAuthOverlay } = useAuthOverlay();
 
   const getLoginLabel = () => {
     if (displayName) return displayName + " 님!";
@@ -210,22 +211,25 @@ const MobileMenuPanel: FC<MenuListProps> = ({
       {DESKTOP_MENU_LIST.map((item) => (
         <li key={item.href} className="mb-3">
           <Button
+            className="text-base font-bold"
             variant="ghost"
             size="sm"
-            className="text-base font-bold"
+            disabled={isLoading}
             onClick={() => {
               onNavigate?.();
 
-              if (item.href === "/login") {
-                if (isLoading) return;
-                if (displayName) {
-                  onUserClick?.();
-                  return;
-                }
-                open();
+              if (item.href !== "/login") {
+                navigate(item.href);
                 return;
               }
-              navigate(item.href);
+
+              if (displayName) {
+                onUserClick?.();
+                return;
+              }
+
+              openAuthOverlay();
+              return;
             }}
           >
             {item.href === "/login" ? getLoginLabel() : item.label}
