@@ -31,8 +31,9 @@ const CommentInput: FC<Props> = ({
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputFocus = () => {
+  const handleInputClick = (e: React.MouseEvent) => {
     if (!displayName) {
+      e.preventDefault();
       openLogin();
     }
   };
@@ -93,9 +94,12 @@ const CommentInput: FC<Props> = ({
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          onFocus={handleInputFocus}
-          placeholder={placeholder}
+          onMouseDown={handleInputClick}
+          placeholder={
+            displayName ? placeholder : "로그인 후 댓글을 작성할 수 있습니다!"
+          }
           disabled={isSubmitting}
+          readOnly={!displayName}
           className="h-11 flex-1 rounded-xl border border-plum-500/30 bg-plum-100/10 px-3 text-sm text-plum-100 placeholder-plum-400/50 transition-colors outline-none placeholder:text-xs hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
         />
         <Button
