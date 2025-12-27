@@ -96,7 +96,7 @@ const SongDetailViewer: FC = () => {
                 variant="icon"
                 size="sm"
                 onClick={() => toggle(youtubeId)}
-                className="mb-1 h-6.5 w-6.5 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
+                className="mb-1 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
               >
                 {isCurrentSongPlaying ? (
                   <PauseIcon className="size-5 text-plum-100" />

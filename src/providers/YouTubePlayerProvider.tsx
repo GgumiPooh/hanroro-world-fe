@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import type { Nullable } from "@/types/misc";
 import {
   createContext,
@@ -65,17 +66,29 @@ const YouTubePlayerProvider: FC<PropsWithChildren> = ({ children }) => {
       {children}
 
       {playerState.videoId && playerState.isPlaying && (
-        <GlobalYouTubePlayer videoId={playerState.videoId} />
+        <GlobalYouTubePlayer videoId={playerState.videoId} onClose={stop} />
       )}
     </YouTubePlayerContext.Provider>
   );
 };
 
-const GlobalYouTubePlayer: FC<{ videoId: string }> = ({ videoId }) => {
+const GlobalYouTubePlayer: FC<{ videoId: string; onClose: () => void }> = ({
+  videoId,
+  onClose,
+}) => {
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1`;
 
   return (
     <div className="fixed right-4 bottom-25 z-50 overflow-hidden rounded-lg shadow-2xl md:rounded-xl">
+      <Button
+        variant="icon"
+        size="sm"
+        onClick={onClose}
+        aria-label="플레이어 닫기"
+        className="absolute -right-0 z-10 size-2 rounded-full bg-gray-800/50 p-2 text-gray-300"
+      >
+        ✕
+      </Button>
       <iframe
         className="h-[73px] w-[130px] lg:h-[158px] lg:w-[280px]"
         src={embedUrl}

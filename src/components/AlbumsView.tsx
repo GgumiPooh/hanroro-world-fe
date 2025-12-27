@@ -47,7 +47,7 @@ const AlbumsView: FC = () => {
               className="flex p-0"
               onClick={() => navigate(targetPath)}
             >
-              <div className="flex flex-row items-center gap-7">
+              <div className="flex flex-row items-center gap-5">
                 <ImageWithPlaceholder
                   className="relative h-25 w-25 items-center gap-5 sm:h-50 sm:w-50 sm:gap-15 lg:h-60 lg:w-60"
                   imgClassName="absolute size-full shrink-0 bg-plum-800/60 object-cover object-center"
@@ -55,7 +55,7 @@ const AlbumsView: FC = () => {
                   alt={title}
                 />
                 <div className="min-w-0 text-left">
-                  <h2 className="text-base font-bold text-plum-100 sm:text-2xl md:text-3xl">
+                  <h2 className="text-base text-plum-100 sm:text-2xl md:text-3xl">
                     {title}
                   </h2>
                   {dateStr && (
