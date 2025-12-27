@@ -1,8 +1,9 @@
 import Button from "@/components/Button";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 import { createPortal } from "react-dom";
+import { useEvent } from "react-use";
 
 type Props = {
   currentNickname?: string | null;
@@ -15,61 +16,13 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    function handleKeydown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    }
-    window.addEventListener("keydown", handleKeydown);
-    return () => window.removeEventListener("keydown", handleKeydown);
-  }, [onClose]);
-
-  const handleSubmit = async () => {
-    if (!nickname.trim()) {
-      setError("닉네임을 입력해주세요.");
+  useEvent("keydown", (event) => {
+    if (event.key !== "Escape") {
       return;
     }
 
-    if (nickname.trim().length < 2) {
-      setError("닉네임은 2자 이상이어야 합니다.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError(null);
-
-    try {
-      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
-      const res = await fetch(`${baseUrl}/api/auth/nickname`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ nickname: nickname.trim() }),
-      });
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          setError("이미 사용 중인 닉네임입니다.");
-          return;
-        }
-        if (res.status === 400) {
-          setError("닉네임은 2자 이상이어야 합니다.");
-          return;
-        }
-        throw new Error("Failed to update nickname");
-      }
-
-      // Invalidate current user query to refresh the data
-      await queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      onClose();
-    } catch (err) {
-      console.error("Nickname update failed:", err);
-      setError("닉네임 변경에 실패했습니다.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    onClose();
+  });
 
   return createPortal(
     <div className="fixed inset-0 z-50">
@@ -124,6 +77,53 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
     </div>,
     document.body,
   );
+
+  async function handleSubmit() {
+    if (!nickname.trim()) {
+      setError("닉네임을 입력해주세요.");
+      return;
+    }
+
+    if (nickname.trim().length < 2) {
+      setError("닉네임은 2자 이상이어야 합니다.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const res = await fetch(
+        `${ENV_VARIABLE.API_BASE_URL}/api/auth/nickname`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ nickname: nickname.trim() }),
+        },
+      );
+
+      if (res.status === 409) {
+        setError("이미 사용 중인 닉네임입니다.");
+        return;
+      }
+      if (res.status === 400) {
+        setError("닉네임은 2자 이상이어야 합니다.");
+        return;
+      }
+      if (!res.ok) {
+        throw new Error("Failed to update nickname");
+      }
+
+      await queryClient.refetchQueries({ queryKey: ["currentUser"] });
+      onClose();
+    } catch (err) {
+      console.error("Nickname update failed:", err);
+      setError("닉네임 변경에 실패했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 };
 
 export default NicknameChangeOverlay;

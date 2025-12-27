@@ -1,4 +1,4 @@
-export const DESKTOP_MENU_LIST = [
+export const HEADER_MENU_LIST = [
   {
     label: "Activity",
     href: "/activity",

@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import NicknameChangeOverlay from "@/components/NicknameChangeOverlay";
 import UserMenuOverlay from "@/components/UserMenuOverlay";
-import { DESKTOP_MENU_LIST } from "@/constants/navigation";
+import { HEADER_MENU_LIST } from "@/constants/navigation";
 import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import LogoIcon from "@/icons/LogoIcon";
@@ -164,37 +164,15 @@ const DesktopMenuList: FC<MenuListProps> = ({
   const navigate = useNavigate();
   const { open: openAuthOverlay } = useAuthOverlay();
 
-  const getLoginLabel = () => {
-    if (isLoading) return ". . .";
-    if (displayName) return displayName + " 님!";
-    return "Log In";
-  };
-
   return (
     <ul className={cn("flex items-center", className)}>
-      {DESKTOP_MENU_LIST.map((item) => (
+      {HEADER_MENU_LIST.map((item) => (
         <li key={item.href} className="mr-7">
           <Button
             className="font-bold"
             variant="ghost"
             size="md"
-            disabled={isLoading}
-            onClick={() => {
-              onNavigate?.();
-
-              if (item.href !== "/login") {
-                navigate(item.href);
-                return;
-              }
-
-              if (displayName) {
-                onUserClick?.();
-                return;
-              }
-
-              openAuthOverlay();
-              return;
-            }}
+            onClick={handleMenuClick(item)}
           >
             {item.href === "/login" ? getLoginLabel() : item.label}
           </Button>
@@ -202,6 +180,30 @@ const DesktopMenuList: FC<MenuListProps> = ({
       ))}
     </ul>
   );
+
+  function handleMenuClick(item: (typeof HEADER_MENU_LIST)[number]) {
+    return () => {
+      onNavigate?.();
+
+      if (item.href !== "/login") {
+        navigate(item.href);
+        return;
+      }
+
+      if (displayName) {
+        onUserClick?.();
+        return;
+      }
+
+      openAuthOverlay();
+    };
+  }
+
+  function getLoginLabel() {
+    if (isLoading) return ". . .";
+    if (displayName) return displayName + " 님!";
+    return "Log In";
+  }
 };
 
 const MobileMenuPanel: FC<MenuListProps> = ({
@@ -214,36 +216,15 @@ const MobileMenuPanel: FC<MenuListProps> = ({
   const navigate = useNavigate();
   const { open: openAuthOverlay } = useAuthOverlay();
 
-  const getLoginLabel = () => {
-    if (displayName) return displayName + " 님!";
-    return "Log In";
-  };
-
   return (
     <ul className={cn("", className)}>
-      {DESKTOP_MENU_LIST.map((item) => (
+      {HEADER_MENU_LIST.map((item) => (
         <li key={item.href} className="mb-3">
           <Button
             className="text-base font-bold"
             variant="ghost"
             size="sm"
-            disabled={isLoading}
-            onClick={() => {
-              onNavigate?.();
-
-              if (item.href !== "/login") {
-                navigate(item.href);
-                return;
-              }
-
-              if (displayName) {
-                onUserClick?.();
-                return;
-              }
-
-              openAuthOverlay();
-              return;
-            }}
+            onClick={handleMenuClick(item)}
           >
             {item.href === "/login" ? getLoginLabel() : item.label}
           </Button>
@@ -251,6 +232,30 @@ const MobileMenuPanel: FC<MenuListProps> = ({
       ))}
     </ul>
   );
+
+  function handleMenuClick(item: (typeof HEADER_MENU_LIST)[number]) {
+    return () => {
+      onNavigate?.();
+
+      if (item.href !== "/login") {
+        navigate(item.href);
+        return;
+      }
+
+      if (displayName) {
+        onUserClick?.();
+        return;
+      }
+
+      openAuthOverlay();
+    };
+  }
+
+  function getLoginLabel() {
+    if (isLoading) return ". . .";
+    if (displayName) return displayName + " 님!";
+    return "Log In";
+  }
 };
 
 export default Header;
