@@ -6,6 +6,7 @@ import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import LogoIcon from "@/icons/LogoIcon";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
+import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Bars3Icon } from "@heroicons/react/24/outline";
@@ -22,9 +23,9 @@ const Header: FC<Props> = ({ className }) => {
   const [isUserOverlayOpen, setIsUserOverlayOpen] = useState(false);
   const [isNicknameOverlayOpen, setIsNicknameOverlayOpen] = useState(false);
 
-  const headerRef = useRef<HTMLDivElement | null>(null);
-
   const { displayName, isLoading: isUserLoading } = useCurrentUser();
+
+  const headerRef = useRef<Nullable<HTMLDivElement>>(null);
 
   useClickAway(headerRef, () => {
     setIsHeaderMenuOpen(false);
@@ -118,24 +119,30 @@ const Header: FC<Props> = ({ className }) => {
 
       {isUserOverlayOpen && (
         <UserMenuOverlay
-          onClose={() => setIsUserOverlayOpen(false)}
-          onNicknameChange={() => setIsNicknameOverlayOpen(true)}
+          onClose={handleToggleUserOverlay(false)}
+          onNicknameMenuClick={handleToggleNicknameOverlay(true)}
         />
       )}
 
       {isNicknameOverlayOpen && (
         <NicknameChangeOverlay
           currentNickname={displayName}
-          onClose={() => setIsNicknameOverlayOpen(false)}
+          onClose={handleToggleNicknameOverlay(false)}
         />
       )}
     </>
   );
 
   function handleToggleHeaderMenu(isOpen?: boolean) {
-    return () => {
-      setIsHeaderMenuOpen((prev) => isOpen ?? !prev);
-    };
+    return () => setIsHeaderMenuOpen((prev) => isOpen ?? !prev);
+  }
+
+  function handleToggleUserOverlay(isOpen?: boolean) {
+    return () => setIsUserOverlayOpen((prev) => isOpen ?? !prev);
+  }
+
+  function handleToggleNicknameOverlay(isOpen?: boolean) {
+    return () => setIsNicknameOverlayOpen((prev) => isOpen ?? !prev);
   }
 };
 

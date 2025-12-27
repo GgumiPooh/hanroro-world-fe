@@ -1,71 +1,22 @@
 import Button from "@/components/Button";
 import { ENV_VARIABLE } from "@/utils/env-variable";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import { createPortal } from "react-dom";
+import { useEvent } from "react-use";
 
 type Props = {
   onClose: () => void;
-  onNicknameChange: () => void;
+  onNicknameMenuClick: () => void;
 };
 
-const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    function handleKeydown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        onClose();
-      }
+const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameMenuClick }) => {
+  useEvent("keydown", (event) => {
+    if (event.key !== "Escape") {
+      return;
     }
-    window.addEventListener("keydown", handleKeydown);
-    return () => window.removeEventListener("keydown", handleKeydown);
-  }, [onClose]);
 
-  const handleLogout = async () => {
-    try {
-      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
-      await fetch(`${baseUrl}/api/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-      window.location.reload();
-    } catch (err) {
-      console.error("Logout failed:", err);
-      window.location.reload();
-    }
-  };
-
-  const handleNicknameChange = () => {
     onClose();
-    onNicknameChange();
-  };
-
-  const handleDeleteAccount = async () => {
-    // 확인 다이얼로그
-    const confirmed = window.confirm(
-      "정말 회원탈퇴 하시겠습니까?\n\n탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.",
-    );
-    if (!confirmed) return;
-
-    try {
-      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
-      const res = await fetch(`${baseUrl}/api/auth/delete`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (!res.ok) {
-        throw new Error("회원 탈퇴 실패");
-      }
-      // 캐시 삭제
-      localStorage.removeItem("privacyConsent");
-      queryClient.clear(); // React Query 캐시 삭제
-      window.location.reload();
-    } catch (err) {
-      console.error("회원 탈퇴 실패:", err);
-      alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
+  });
 
   return createPortal(
     <div className="fixed inset-0 z-50">
@@ -83,7 +34,7 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
             variant="icon"
             size="md"
             className="w-full py-3 text-plum-200 md:text-xl"
-            onClick={handleNicknameChange}
+            onClick={handleNicknameMenuClick}
           >
             닉네임 변경
           </Button>
@@ -108,6 +59,49 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
     </div>,
     document.body,
   );
+
+  async function handleLogout() {
+    try {
+      await fetch(`${ENV_VARIABLE.API_BASE_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.reload();
+    } catch (err) {
+      console.error("Logout failed:", err);
+      window.location.reload();
+    }
+  }
+
+  async function handleDeleteAccount() {
+    const confirmed = window.confirm(
+      "정말 회원탈퇴 하시겠습니까?\n\n탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.",
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`${ENV_VARIABLE.API_BASE_URL}/api/auth/delete`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        throw new Error("회원 탈퇴 실패");
+      }
+
+      localStorage.removeItem("privacyConsent");
+      window.location.reload();
+    } catch (err) {
+      console.error("회원 탈퇴 실패:", err);
+      alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+    }
+  }
+
+  function handleNicknameMenuClick() {
+    onClose();
+    onNicknameMenuClick();
+  }
 };
 
 export default UserMenuOverlay;
