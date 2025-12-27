@@ -37,102 +37,101 @@ const Header: FC<Props> = ({ className }) => {
   });
 
   return (
-    <div
-      ref={headerRef}
-      className={cn(
-        "rounded-4xl bg-gray-600/40 px-6 py-3 backdrop-blur-sm",
-        "transition-[max-height] duration-800",
-        isOpen && "max-h-[1000px]",
-        className,
-      )}
-    >
-      <div className="flex items-center justify-between">
-        <Link to="/">
+    <>
+      <div
+        ref={headerRef}
+        className={cn(
+          "rounded-4xl bg-gray-600/40 px-6 py-3 backdrop-blur-sm",
+          "transition-[max-height] duration-800",
+          isOpen && "max-h-[1000px]",
+          className,
+        )}
+      >
+        <div className="flex items-center justify-between">
+          <Link to="/">
+            <Button variant="icon" size="sm" onClick={handleToggleMenu(false)}>
+              <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
+            </Button>
+          </Link>
+          {ENV_VARIABLE.IS_COMMING_SOON ? (
+            <Button
+              variant="ghost"
+              size="md"
+              className="font-bold not-lg:hidden"
+              onClick={() => window.alert("Comming soon")}
+            >
+              Comming soon
+            </Button>
+          ) : (
+            <DesktopMenuList
+              className="hidden lg:flex"
+              displayName={displayName}
+              isLoading={isUserLoading}
+              onUserClick={() => setIsUserMenuOpen(true)}
+            />
+          )}
           <Button
             variant="icon"
             size="sm"
-            onClick={() => {
-              window.location.href = "/";
-            }}
+            className="lg:hidden"
+            onClick={handleToggleMenu(!isOpen)}
           >
-            <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
+            <Bars3Icon className="size-10 stroke-2 text-plum-100" />
           </Button>
-        </Link>
-        {ENV_VARIABLE.IS_COMMING_SOON ? (
-          <Button
-            variant="ghost"
-            size="md"
-            className="font-bold not-lg:hidden"
-            onClick={() => window.alert("Comming soon")}
-          >
-            Comming soon
-          </Button>
-        ) : (
-          <DesktopMenuList
-            className="hidden lg:flex"
-            displayName={displayName}
-            isLoading={isUserLoading}
-            onUserClick={() => setIsUserMenuOpen(true)}
-          />
-        )}
-        <Button
-          variant="icon"
-          size="sm"
-          className="lg:hidden"
-          onClick={handleToggleMenu}
+        </div>
+
+        <div
+          className={cn(
+            "overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out",
+            "lg:hidden",
+            isOpen
+              ? "max-h-[600px] opacity-100"
+              : "pointer-events-none max-h-0 opacity-0",
+          )}
         >
-          <Bars3Icon className="size-10 stroke-2 text-plum-100" />
-        </Button>
-      </div>
+          {ENV_VARIABLE.IS_COMMING_SOON ? (
+            <Button
+              variant="ghost"
+              size="md"
+              className="font-bold"
+              onClick={() => window.alert("Comming soon")}
+            >
+              Comming soon
+            </Button>
+          ) : (
+            <MobileMenuPanel
+              className="mt-5 ml-1"
+              displayName={displayName}
+              isLoading={isUserLoading}
+              onUserClick={() => setIsUserMenuOpen(true)}
+              onNavigate={handleToggleMenu(false)}
+            />
+          )}
+        </div>
 
-      <div
-        className={cn(
-          "overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out",
-          "lg:hidden",
-          isOpen
-            ? "max-h-[600px] opacity-100"
-            : "pointer-events-none max-h-0 opacity-0",
+        {/* 유저 메뉴 모달 */}
+        {isUserMenuOpen && (
+          <UserMenuOverlay
+            onClose={() => setIsUserMenuOpen(false)}
+            onNicknameChange={() => setIsNicknameModalOpen(true)}
+          />
         )}
-      >
-        {ENV_VARIABLE.IS_COMMING_SOON ? (
-          <Button
-            variant="ghost"
-            size="md"
-            className="font-bold"
-            onClick={() => window.alert("Comming soon")}
-          >
-            Comming soon
-          </Button>
-        ) : (
-          <MobileMenuPanel
-            className="mt-5 ml-1"
-            displayName={displayName}
-            isLoading={isUserLoading}
-            onUserClick={() => setIsUserMenuOpen(true)}
+
+        {/* 닉네임 변경 모달 */}
+        {isNicknameModalOpen && (
+          <NicknameChangeOverlay
+            currentNickname={displayName}
+            onClose={() => setIsNicknameModalOpen(false)}
           />
         )}
       </div>
-
-      {/* 유저 메뉴 모달 */}
-      {isUserMenuOpen && (
-        <UserMenuOverlay
-          onClose={() => setIsUserMenuOpen(false)}
-          onNicknameChange={() => setIsNicknameModalOpen(true)}
-        />
-      )}
-
-      {/* 닉네임 변경 모달 */}
-      {isNicknameModalOpen && (
-        <NicknameChangeOverlay
-          currentNickname={displayName}
-          onClose={() => setIsNicknameModalOpen(false)}
-        />
-      )}
-    </div>
+    </>
   );
 
-  function handleToggleMenu() {
-    setIsOpen((prev) => !prev);
+  function handleToggleMenu(isOpen: boolean) {
+    return () => {
+      setIsOpen(isOpen);
+    };
   }
 };
 
@@ -141,6 +140,7 @@ type MenuListProps = {
   displayName?: string | null;
   isLoading?: boolean;
   onUserClick?: () => void;
+  onNavigate?: () => void;
 };
 
 const DesktopMenuList: FC<MenuListProps> = ({
@@ -148,6 +148,7 @@ const DesktopMenuList: FC<MenuListProps> = ({
   displayName,
   isLoading,
   onUserClick,
+  onNavigate,
 }) => {
   const navigate = useNavigate();
   const { open } = useAuthOverlay();
@@ -167,6 +168,8 @@ const DesktopMenuList: FC<MenuListProps> = ({
             size="md"
             className="font-bold"
             onClick={() => {
+              onNavigate?.();
+
               if (item.href === "/login") {
                 if (isLoading) return;
                 if (displayName) {
@@ -192,6 +195,7 @@ const MobileMenuPanel: FC<MenuListProps> = ({
   displayName,
   isLoading,
   onUserClick,
+  onNavigate,
 }) => {
   const navigate = useNavigate();
   const { open } = useAuthOverlay();
@@ -210,6 +214,8 @@ const MobileMenuPanel: FC<MenuListProps> = ({
             size="sm"
             className="text-base font-bold"
             onClick={() => {
+              onNavigate?.();
+
               if (item.href === "/login") {
                 if (isLoading) return;
                 if (displayName) {
