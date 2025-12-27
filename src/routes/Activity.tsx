@@ -35,7 +35,7 @@ const Activity: FC = () => {
         <ul className="relative mr-15 ml-10 w-fit border-l-6 border-gray-600/40">
           {activities.map((item, index) => (
             <ActivityViewer
-              className="mb-40 w-full max-w-[660px]"
+              className="mb-50 w-full max-w-[660px]"
               key={`${index}-${sort}`}
               activity={item}
               index={index}

@@ -1,8 +1,7 @@
-import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
 import type { FC } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
   const found = meta.find((m) => m.type === type);
@@ -11,7 +10,6 @@ const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
 
 const AlbumsView: FC = () => {
   const { albumsView, isLoading, error } = useAlbumsSupabase();
-  const navigate = useNavigate();
 
   if (isLoading) {
     return <p className="mb-20 text-center text-plum-100/80">Loading...</p>;
@@ -41,13 +39,8 @@ const AlbumsView: FC = () => {
             key={String(item.id)}
             className="mb-20 rounded-xl bg-gray-900/40 backdrop-blur-md md:mb-50"
           >
-            <Button
-              variant="icon"
-              size="sm"
-              className="flex p-0"
-              onClick={() => navigate(targetPath)}
-            >
-              <div className="flex flex-row items-center gap-5">
+            <Link to={targetPath} className="flex p-0">
+              <div className="flex flex-row items-center gap-5 sm:gap-10 md:gap-15">
                 <ImageWithPlaceholder
                   className="relative h-25 w-25 items-center gap-5 sm:h-50 sm:w-50 sm:gap-15 lg:h-60 lg:w-60"
                   imgClassName="absolute size-full shrink-0 bg-plum-800/60 object-cover object-center"
@@ -55,7 +48,7 @@ const AlbumsView: FC = () => {
                   alt={title}
                 />
                 <div className="min-w-0 text-left">
-                  <h2 className="text-base text-plum-100 sm:text-2xl md:text-3xl">
+                  <h2 className="font-medium text-plum-100 sm:text-2xl md:text-3xl">
                     {title}
                   </h2>
                   {dateStr && (
@@ -65,7 +58,7 @@ const AlbumsView: FC = () => {
                   )}
                 </div>
               </div>
-            </Button>
+            </Link>
           </li>
         );
       })}

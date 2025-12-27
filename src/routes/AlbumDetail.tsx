@@ -6,11 +6,10 @@ import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 const AlbumDetail: FC = () => {
   const { albumId } = useParams();
-  const navigate = useNavigate();
   const { albumsView } = useAlbumsSupabase();
   const [showDescription, setShowDescription] = useState(false);
 
@@ -38,14 +37,9 @@ const AlbumDetail: FC = () => {
         {/* 앨범 커버 + 제목 */}
         {album?.coverUrl && (
           <div className="relative mx-5 mb-10">
-            <Button
-              variant="icon"
-              size="md"
-              className="mb-10 text-sm text-plum-200"
-              onClick={() => navigate("/albums")}
-            >
+            <Link to="/albums" className="mb-10 inline-flex text-sm text-plum-200">
               <ArrowLeftIcon className="size-5 text-plum-100" />
-            </Button>
+            </Link>
             <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:items-end lg:gap-20">
               <ImageWithPlaceholder
                 src={album.coverUrl}

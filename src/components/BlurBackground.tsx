@@ -17,7 +17,7 @@ const BlurBackground: FC<Props> = ({
   overlayClassName = "bg-gray-400/50",
 }) => {
   const imgClassName = blur
-    ? "object-cover object-center blur-lg backdrop-blur"
+    ? "object-cover object-center blur-xs backdrop-blur"
     : "object-cover object-center";
 
   return (
