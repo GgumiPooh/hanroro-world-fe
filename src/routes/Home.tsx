@@ -18,7 +18,7 @@ const Home: FC = () => {
           CONTACT : hyoeun.jin2@gmail.com
         </h3>
       </div>
-      <div className="absolute right-[5%] bottom-20 flex flex-col gap-15 md:gap-25 lg:flex-row">
+      <div className="absolute right-[5%] bottom-15 flex flex-col gap-10 md:gap-25">
         <Button
           variant="icon"
           size="sm"
@@ -30,7 +30,17 @@ const Home: FC = () => {
           }}
           aria-label="Blog 채널로 이동"
         >
-          <BlogIcon className="h-12 p-2 text-[#2DB400] md:h-15" />
+          <BlogIcon className="h-11 p-2 text-[#38bb0c] md:h-15" />
+        </Button>
+        <Button
+          variant="icon"
+          size="sm"
+          onClick={() => {
+            window.open("https://www.instagram.com/hanr0r0/?hl=ko", "_blank");
+          }}
+          aria-label="Instagram 채널로 이동"
+        >
+          <InstagramIcon className="h-11 md:h-15" />
         </Button>
         <Button
           variant="icon"
@@ -46,11 +56,15 @@ const Home: FC = () => {
           variant="icon"
           size="sm"
           onClick={() => {
-            window.open("https://www.instagram.com/hanr0r0/?hl=ko", "_blank");
+            window.open("https://www.hanroro.com", "_blank");
           }}
-          aria-label="Instagram 채널로 이동"
+          aria-label="hanroro 홈페이지로 이동"
         >
-          <InstagramIcon className="h-12 md:h-15" />
+          <img
+            src="/images/hanroro-logo.png"
+            alt="hanroro 홈페이지"
+            className="h-7 md:h-9"
+          />
         </Button>
       </div>
     </div>

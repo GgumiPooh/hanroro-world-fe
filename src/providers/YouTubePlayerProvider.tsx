@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useMemo,
+  useRef,
   useState,
   type FC,
   type PropsWithChildren,
@@ -19,6 +20,7 @@ type PlayerActions = {
   pause: () => void;
   stop: () => void;
   toggle: (videoId: string) => void;
+  iframeRef: React.RefObject<HTMLIFrameElement | null>;
 };
 
 type YouTubePlayerContextValue = PlayerState & PlayerActions;
@@ -33,8 +35,13 @@ const INITIAL_STATE: PlayerState = {
 
 const YouTubePlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const [playerState, setPlayerState] = useState<PlayerState>(INITIAL_STATE);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const play = useCallback((videoId: string) => {
+    // iOS Safari: 클릭 이벤트 내에서 동기적으로 iframe src 설정
+    if (iframeRef.current) {
+      iframeRef.current.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&controls=1`;
+    }
     setPlayerState({ videoId, isPlaying: true });
   }, []);
 
@@ -43,55 +50,70 @@ const YouTubePlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const stop = useCallback(() => {
+    if (iframeRef.current) {
+      iframeRef.current.src = "";
+    }
     setPlayerState(INITIAL_STATE);
   }, []);
 
-  const toggle = useCallback((videoId: string) => {
-    setPlayerState((prev) => {
-      const isSameVideo = prev.videoId === videoId;
-      if (isSameVideo) {
-        return { ...prev, isPlaying: !prev.isPlaying };
+  const toggle = useCallback(
+    (videoId: string) => {
+      const isSameVideo = playerState.videoId === videoId;
+      if (isSameVideo && playerState.isPlaying) {
+        stop();
+      } else {
+        play(videoId);
       }
-      return { videoId, isPlaying: true };
-    });
-  }, []);
+    },
+    [playerState.videoId, playerState.isPlaying, play, stop],
+  );
 
   const contextValue = useMemo(
-    () => ({ ...playerState, play, pause, stop, toggle }),
+    () => ({ ...playerState, play, pause, stop, toggle, iframeRef }),
     [playerState, play, pause, stop, toggle],
   );
 
   return (
     <YouTubePlayerContext.Provider value={contextValue}>
       {children}
-
-      {playerState.videoId && playerState.isPlaying && (
-        <GlobalYouTubePlayer videoId={playerState.videoId} onClose={stop} />
-      )}
+      <GlobalYouTubePlayer
+        isVisible={playerState.isPlaying && !!playerState.videoId}
+        iframeRef={iframeRef}
+        onClose={stop}
+      />
     </YouTubePlayerContext.Provider>
   );
 };
 
-const GlobalYouTubePlayer: FC<{ videoId: string; onClose: () => void }> = ({
-  videoId,
+type GlobalPlayerProps = {
+  isVisible: boolean;
+  iframeRef: React.RefObject<HTMLIFrameElement | null>;
+  onClose: () => void;
+};
+
+const GlobalYouTubePlayer: FC<GlobalPlayerProps> = ({
+  isVisible,
+  iframeRef,
   onClose,
 }) => {
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1`;
-
   return (
-    <div className="fixed right-4 bottom-25 z-50 overflow-hidden rounded-lg shadow-2xl md:rounded-xl">
+    <div
+      className={`fixed right-4 bottom-25 z-50 overflow-hidden rounded-xl shadow-2xl transition-opacity duration-300 ${
+        isVisible ? "opacity-100" : "pointer-events-none opacity-0"
+      }`}
+    >
       <Button
         variant="icon"
         size="sm"
         onClick={onClose}
         aria-label="플레이어 닫기"
-        className="absolute -right-0 z-10 size-2 rounded-full bg-gray-800/50 p-2 text-gray-300"
+        className="absolute top-0 right-0 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-gray-900/80 text-xs text-white"
       >
         ✕
       </Button>
       <iframe
-        className="h-[73px] w-[130px] lg:h-[158px] lg:w-[280px]"
-        src={embedUrl}
+        ref={iframeRef}
+        className="h-[120px] w-[213px] md:h-[158px] md:w-[280px]"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
