@@ -24,18 +24,18 @@ const Activity: FC = () => {
         Activity
       </h1>
 
-      <div className="z-2 mx-auto w-fit">
+      <div className="z-2 mx-auto w-full max-w-[750px] overflow-x-hidden px-4">
         <ActivityControls
-          className="mb-25 ml-15 gap-15 md:ml-50 md:gap-20"
+          className="mb-15 ml-10 gap-15 md:mb-25 md:ml-40 md:gap-20"
           year={year}
           onYearChange={setYear}
           sort={sort}
           onSortChange={setSort}
         />
-        <ul className="relative mr-15 ml-10 w-fit border-l-6 border-gray-600/40">
+        <ul className="relative ml-6 border-l-6 border-gray-600/40 md:ml-10">
           {activities.map((item, index) => (
             <ActivityViewer
-              className="mb-50 w-full max-w-[660px]"
+              className="mb-40 w-full max-w-[660px]"
               key={`${index}-${sort}`}
               activity={item}
               index={index}

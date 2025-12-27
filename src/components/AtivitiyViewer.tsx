@@ -55,7 +55,7 @@ type Props = {
 const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
   return (
     <li
-      className={cn("mr-3 flex items-center md:w-full", className)}
+      className={cn("flex w-full items-center", className)}
       key={`${index}-${sort}`}
     >
       <div className="relative top-2/5 left-[-15px] h-6 w-6 rounded-2xl bg-gray-500/90 md:left-[-19px] md:h-8 md:w-8">
@@ -74,7 +74,7 @@ const ActivityViewer: FC<Props> = ({ className, activity, index, sort }) => {
             className="h-auto w-full rounded-lg shadow-[0_13px_25px_rgba(97,120,150,0.4)]"
           />
         </div>
-        <div className="mr-5 h-auto border-l-3 border-slateBlue-600/40 pl-5">
+        <div className="mr-5 h-auto border-l-3 border-gray-600/40 pl-5">
           <h1 className="text-lg font-bold text-plum-300">
             {getDate(activity.activeFrom)}
           </h1>
