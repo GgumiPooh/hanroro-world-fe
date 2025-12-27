@@ -33,10 +33,9 @@ const CommentList = forwardRef<CommentListRef, Props>(
     },
     ref,
   ) => {
-    const finalFetchEndpoint =
-      fetchEndpoint ?? `/api/public/song/${songId}/comments`;
+    const finalFetchEndpoint = fetchEndpoint ?? `/api/song/${songId}/comments`;
     const finalDeleteEndpoint =
-      deleteEndpoint ?? ((id: number) => `/api/public/song/comment/${id}`);
+      deleteEndpoint ?? ((id: number) => `/api/song/comment/${id}`);
 
     const {
       comments,
