@@ -18,14 +18,16 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ className }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
   const [isUserOverlayOpen, setIsUserOverlayOpen] = useState(false);
   const [isNicknameOverlayOpen, setIsNicknameOverlayOpen] = useState(false);
-  const { displayName, isLoading: isUserLoading } = useCurrentUser();
+
   const headerRef = useRef<HTMLDivElement | null>(null);
 
+  const { displayName, isLoading: isUserLoading } = useCurrentUser();
+
   useClickAway(headerRef, () => {
-    setIsOpen(false);
+    setIsHeaderMenuOpen(false);
   });
 
   useBreakpoint("lg", (isMatch) => {
@@ -33,7 +35,7 @@ const Header: FC<Props> = ({ className }) => {
       return;
     }
 
-    setIsOpen(false);
+    setIsHeaderMenuOpen(false);
   });
 
   return (
@@ -43,21 +45,25 @@ const Header: FC<Props> = ({ className }) => {
         className={cn(
           "rounded-4xl bg-gray-600/40 px-6 py-3 backdrop-blur-sm",
           "transition-[max-height] duration-800",
-          isOpen && "max-h-[1000px]",
+          isHeaderMenuOpen && "max-h-[1000px]",
           className,
         )}
       >
         <div className="flex items-center justify-between">
           <Link to="/">
-            <Button variant="icon" size="sm" onClick={handleToggleMenu(false)}>
+            <Button
+              variant="icon"
+              size="sm"
+              onClick={handleToggleHeaderMenu(false)}
+            >
               <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
             </Button>
           </Link>
           {ENV_VARIABLE.IS_COMMING_SOON ? (
             <Button
+              className="font-bold not-lg:hidden"
               variant="ghost"
               size="md"
-              className="font-bold not-lg:hidden"
               onClick={() => window.alert("Comming soon")}
             >
               Comming soon
@@ -71,10 +77,10 @@ const Header: FC<Props> = ({ className }) => {
             />
           )}
           <Button
+            className="lg:hidden"
             variant="icon"
             size="sm"
-            className="lg:hidden"
-            onClick={handleToggleMenu(!isOpen)}
+            onClick={handleToggleHeaderMenu()}
           >
             <Bars3Icon className="size-10 stroke-2 text-plum-100" />
           </Button>
@@ -84,7 +90,7 @@ const Header: FC<Props> = ({ className }) => {
           className={cn(
             "overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out",
             "lg:hidden",
-            isOpen
+            isHeaderMenuOpen
               ? "max-h-[600px] opacity-100"
               : "pointer-events-none max-h-0 opacity-0",
           )}
@@ -104,7 +110,7 @@ const Header: FC<Props> = ({ className }) => {
               displayName={displayName}
               isLoading={isUserLoading}
               onUserClick={() => setIsUserOverlayOpen(true)}
-              onNavigate={handleToggleMenu(false)}
+              onNavigate={handleToggleHeaderMenu(false)}
             />
           )}
         </div>
@@ -126,9 +132,9 @@ const Header: FC<Props> = ({ className }) => {
     </>
   );
 
-  function handleToggleMenu(isOpen: boolean) {
+  function handleToggleHeaderMenu(isOpen?: boolean) {
     return () => {
-      setIsOpen(isOpen);
+      setIsHeaderMenuOpen((prev) => isOpen ?? !prev);
     };
   }
 };

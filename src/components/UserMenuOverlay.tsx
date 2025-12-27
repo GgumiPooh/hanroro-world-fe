@@ -29,10 +29,10 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameChange }) => {
         method: "POST",
         credentials: "include",
       });
+      window.location.reload();
     } catch (err) {
       console.error("Logout failed:", err);
-      queryClient.clear();
-      window.location.href = "/";
+      window.location.reload();
     }
   };
 
