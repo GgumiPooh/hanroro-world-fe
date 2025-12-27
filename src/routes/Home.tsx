@@ -18,7 +18,7 @@ const Home: FC = () => {
           CONTACT : hyoeun.jin2@gmail.com
         </h3>
       </div>
-      <div className="absolute right-[5%] bottom-15 flex flex-col gap-10 md:gap-25">
+      <div className="absolute right-[5%] bottom-5 flex flex-col gap-10 sm:gap-20 md:bottom-15 md:gap-25">
         <Button
           variant="icon"
           size="sm"
