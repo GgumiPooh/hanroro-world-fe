@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RORO WORLD (로로월드)</title>
+    <link>https://roroworld.org</link>
+    <description>싱어송라이터 한로로(HANRORO) 팬사이트 로로월드입니다! 한로로와 관련된 다양한 정보를 제공합니다.</description>
+    <language>ko</language>
+    <lastBuildDate>Sat, 28 Dec 2024 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://roroworld.org/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://roroworld.org/images/og-thumbnail.png</url>
+      <title>RORO WORLD</title>
+      <link>https://roroworld.org</link>
+    </image>
+
+    <item>
+      <title>Albums</title>
+      <link>https://roroworld.org/albums</link>
+      <guid isPermaLink="true">https://roroworld.org/albums</guid>
+      <pubDate>Sat, 28 Dec 2024 00:00:00 GMT</pubDate>
+      <description>한로로의 앨범 정보를 확인해보세요. 전체 디스코그래피와 수록곡 정보를 제공합니다.</description>
+    </item>
+
+    <item>
+      <title>Activity</title>
+      <link>https://roroworld.org/activity</link>
+      <guid isPermaLink="true">https://roroworld.org/activity</guid>
+      <pubDate>Sat, 28 Dec 2024 00:00:00 GMT</pubDate>
+      <description>한로로의 공연 및 활동 일정을 확인해보세요.</description>
+    </item>
+
+    <item>
+      <title>아티스트에게 메시지 보내기</title>
+      <link>https://roroworld.org/toArtist</link>
+      <guid isPermaLink="true">https://roroworld.org/toArtist</guid>
+      <pubDate>Sat, 28 Dec 2024 00:00:00 GMT</pubDate>
+      <description>한로로에게 응원 메시지를 남겨보세요!</description>
+    </item>
+  </channel>
+</rss>
+
