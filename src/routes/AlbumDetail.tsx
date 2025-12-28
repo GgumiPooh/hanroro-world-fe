@@ -20,31 +20,28 @@ const AlbumDetail: FC = () => {
 
   return (
     <div className="relative overflow-y-auto pt-30 md:pt-50">
-      {/* Glow background from album cover (fallback to default banner) */}
-      {album?.coverUrl ? (
-        <ImageWithPlaceholder
-          className="fixed inset-0 -z-2 h-dvh w-full"
-          imgClassName="h-full w-full scale-110 object-cover blur-lg saturate-150 backdrop-blur"
-          src={album.coverUrl}
-          alt="album glow background"
-        />
-      ) : (
-        <BlurBackground />
-      )}
-      <div className="fixed inset-0 -z-1 bg-gray-900/80" />
+      <BlurBackground
+        src={album?.coverUrl}
+        alt={album?.titleText}
+        imgClassName="scale-105 blur-sm"
+      />
+      <div className="fixed inset-0 -z-1 bg-gray-800/75" />
 
       <div className="z-2 mx-auto w-[min(92vw,900px)]">
         {/* 앨범 커버 + 제목 */}
         {album?.coverUrl && (
           <div className="relative mx-5 mb-10">
-            <Link to="/albums" className="mb-10 inline-flex text-sm text-plum-200">
+            <Link
+              to="/albums"
+              className="mb-10 inline-flex text-sm text-plum-200"
+            >
               <ArrowLeftIcon className="size-5 text-plum-100" />
             </Link>
             <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:items-end lg:gap-20">
               <ImageWithPlaceholder
                 src={album.coverUrl}
-                alt={album.titleText || "Album cover"}
-                className="h-60 w-60 shrink-0 object-cover shadow-lg sm:h-70 sm:w-70 md:h-75 md:w-75 lg:h-85 lg:w-85"
+                alt={album.titleText}
+                className="h-60 w-60 shrink-0 object-cover shadow-md sm:h-70 sm:w-70 md:h-75 md:w-75 lg:h-85 lg:w-85"
               />
               <div className="flex flex-col items-center gap-2 md:items-start">
                 <div className="text-2xl font-bold text-plum-100 sm:text-3xl md:text-4xl">

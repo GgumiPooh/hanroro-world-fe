@@ -1,6 +1,5 @@
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
-import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import SongDetailViewer from "@/components/SongDetailViewer";
 import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -18,18 +17,13 @@ const SongDetail: FC = () => {
   );
   return (
     <div className="relative overflow-y-auto pt-40 md:pt-50">
-      {/* Glow background from album cover (fallback to default banner) */}
-      {album?.coverUrl ? (
-        <ImageWithPlaceholder
-          className="fixed inset-0 -z-2 h-dvh w-full"
-          imgClassName="h-full w-full scale-110 object-cover blur-lg saturate-150 backdrop-blur"
-          src={album.coverUrl}
-          alt="album glow background"
-        />
-      ) : (
-        <BlurBackground />
-      )}
-      <div className="fixed inset-0 -z-1 bg-gray-900/80" />
+      <BlurBackground
+        src={album?.coverUrl}
+        alt={album?.titleText}
+        imgClassName="scale-105 blur-md"
+      />
+
+      <div className="fixed inset-0 -z-1 bg-gray-800/75" />
 
       <div className="z-2 mx-auto w-[min(92vw,1000px)]">
         {/* 이전으로 돌아가기 버튼 */}
