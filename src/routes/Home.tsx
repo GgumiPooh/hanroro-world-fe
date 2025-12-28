@@ -10,15 +10,15 @@ const Home: FC = () => {
   return (
     <div className="relative h-dvh text-black">
       <BlurBackground />
-      <SignIcon className="absolute bottom-15 left-[2%] w-60 text-gray-700 sm:w-100 md:bottom-20 md:left-5 md:w-120" />
-      <div className="absolute bottom-5 left-[3%]">
+      <SignIcon className="absolute bottom-[8%] left-[2%] w-60 text-gray-700 sm:w-100 md:bottom-20 md:left-5 md:w-120" />
+      <div className="absolute bottom-[2.5%] left-[3%]">
         <h3 className="text-left text-xs font-bold text-gray-400 md:text-sm">
           NOT OFFICIAL SITE
           <br />
           CONTACT : hyoeun.jin2@gmail.com
         </h3>
       </div>
-      <div className="absolute right-[5%] bottom-5 flex flex-col gap-10 sm:gap-23 md:bottom-15">
+      <div className="absolute right-[3%] bottom-[2.5%] flex flex-col gap-10 sm:gap-23 md:bottom-15">
         <Button
           variant="icon"
           size="sm"
@@ -40,7 +40,7 @@ const Home: FC = () => {
           }}
           aria-label="Instagram 채널로 이동"
         >
-          <InstagramIcon className="h-11 sm:h-15" />
+          <InstagramIcon className="h-10 sm:h-14" />
         </Button>
         <Button
           variant="icon"
@@ -50,7 +50,7 @@ const Home: FC = () => {
           }}
           aria-label="YouTube 채널로 이동"
         >
-          <YoutubeIcon className="h-8 sm:h-13" />
+          <YoutubeIcon className="h-8 sm:h-12" />
         </Button>
         <Button
           variant="icon"
@@ -61,9 +61,9 @@ const Home: FC = () => {
           aria-label="hanroro 홈페이지로 이동"
         >
           <img
-            src="/images/hanroro-logo-black.png"
+            src="/images/hanroro.webp"
             alt="hanroro 홈페이지"
-            className="h-6 sm:h-9"
+            className="h-9 rounded-4xl sm:h-13"
           />
         </Button>
       </div>
