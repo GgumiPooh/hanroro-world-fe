@@ -44,7 +44,7 @@ const Header: FC<Props> = ({ className }) => {
       <div
         ref={headerRef}
         className={cn(
-          "rounded-4xl bg-gray-600/40 px-6 py-3 backdrop-blur-sm",
+          "rounded-4xl bg-gray-600/40 px-3 py-1.5 backdrop-blur-sm md:px-6",
           "transition-[max-height] duration-800",
           isHeaderMenuOpen && "max-h-[1000px]",
           className,
@@ -57,7 +57,7 @@ const Header: FC<Props> = ({ className }) => {
               size="sm"
               onClick={handleToggleHeaderMenu(false)}
             >
-              <LogoIcon className="w-20 shrink-0 text-plum-100 md:w-25" />
+              <LogoIcon className="w-18 shrink-0 pt-0.5 text-plum-100 md:w-25" />
             </Button>
           </Link>
           {ENV_VARIABLE.IS_COMMING_SOON ? (
@@ -83,7 +83,7 @@ const Header: FC<Props> = ({ className }) => {
             size="sm"
             onClick={handleToggleHeaderMenu()}
           >
-            <Bars3Icon className="size-10 stroke-2 text-plum-100" />
+            <Bars3Icon className="size-9 stroke-2 text-plum-100" />
           </Button>
         </div>
 
