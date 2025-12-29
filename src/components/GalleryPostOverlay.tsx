@@ -1,16 +1,17 @@
 import Button from "@/components/Button";
+import { ENV_VARIABLE } from "@/utils/env-variable";
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRef, useState, type FC } from "react";
 
 type Props = {
   onClose: () => void;
-  onSubmit?: (data: { title: string; images: File[] }) => void;
+  onSuccess?: () => void;
 };
 
-const GalleryPostOverlay: FC<Props> = ({ onClose, onSubmit }) => {
+const GalleryPostOverlay: FC<Props> = ({ onClose, onSuccess }) => {
   const [title, setTitle] = useState("");
-  const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,9 +19,8 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSubmit }) => {
     if (!files) return;
 
     const newFiles = Array.from(files);
-    setImages((prev) => [...prev, ...newFiles]);
 
-    // 미리보기 URL 생성
+    // 미리보기 URL 생성 (Base64)
     newFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -31,22 +31,48 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSubmit }) => {
   };
 
   const handleRemoveImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title.trim()) {
       alert("제목을 입력해주세요.");
       return;
     }
-    if (images.length === 0) {
+    if (previews.length === 0) {
       alert("사진을 최소 1장 이상 추가해주세요.");
       return;
     }
 
-    onSubmit?.({ title: title.trim(), images });
-    onClose();
+    setIsSubmitting(true);
+
+    try {
+      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+      const res = await fetch(`${baseUrl}/api/public/gallery`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          title: title.trim(),
+          description: null,
+          imageUrls: previews,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || "게시물 등록에 실패했습니다.");
+      }
+
+      alert("게시물이 등록되었습니다!");
+      onSuccess?.();
+      onClose();
+    } catch (err) {
+      console.error("Failed to create gallery:", err);
+      alert(err instanceof Error ? err.message : "게시물 등록에 실패했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,7 +92,7 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSubmit }) => {
         {/* 사진 추가 영역 */}
         <div className="mb-6">
           <label className="mb-2 block text-sm font-medium text-plum-300">
-            사진 ({images.length}장)
+            사진 ({previews.length}장)
           </label>
 
           {/* 사진 미리보기 그리드 */}
@@ -125,9 +151,10 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSubmit }) => {
             variant="ghost"
             size="md"
             onClick={handleSubmit}
-            className="flex-1 rounded-xl bg-plum-500 py-3 text-white hover:bg-plum-400"
+            disabled={isSubmitting}
+            className="flex-1 rounded-xl bg-plum-500 py-3 text-white hover:bg-plum-400 disabled:opacity-50"
           >
-            게시하기
+            {isSubmitting ? "게시 중..." : "게시하기"}
           </Button>
         </div>
       </div>

@@ -18,6 +18,7 @@ type Props = {
   onCommentSubmit?: (comment: CommentData) => void;
   placeholder?: string;
   className?: string;
+  inline?: boolean; // 오버레이 등 내부에서 사용할 때 true
 };
 
 const CommentInput: FC<Props> = ({
@@ -25,6 +26,7 @@ const CommentInput: FC<Props> = ({
   onCommentSubmit,
   placeholder = "댓글을 입력하세요...",
   className,
+  inline = false,
 }) => {
   const { displayName } = useCurrentUser();
   const { open: openLogin } = useAuthOverlay();
@@ -63,13 +65,14 @@ const CommentInput: FC<Props> = ({
       const savedData = (await res.json()) as {
         id: number;
         content: string;
-        author: string;
+        author?: string;
+        authorName?: string;
         createdAt: string;
       };
 
       const newComment: CommentData = {
         id: savedData.id,
-        author: savedData.author,
+        author: savedData.author ?? savedData.authorName ?? "",
         content: savedData.content,
         createdAt: savedData.createdAt,
       };
@@ -86,9 +89,19 @@ const CommentInput: FC<Props> = ({
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 ${className ?? ""}`}
+      className={
+        inline
+          ? `flex w-full ${className ?? ""}`
+          : `fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 ${className ?? ""}`
+      }
     >
-      <div className="flex w-[min(92vw,1000px)] items-center gap-3 rounded-2xl bg-gray-800/50 px-4 py-3 backdrop-blur-md">
+      <div
+        className={
+          inline
+            ? "flex w-full items-center gap-3"
+            : "flex w-[min(92vw,1000px)] items-center gap-3 rounded-2xl bg-gray-800/50 px-4 py-3 backdrop-blur-md"
+        }
+      >
         <input
           type="text"
           value={comment}

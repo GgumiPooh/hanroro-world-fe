@@ -138,7 +138,7 @@
   scrollbar-color: rgba(136, 136, 136, 0.5) transparent;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 1px;
   }
 
   &::-webkit-scrollbar-track {

@@ -16,7 +16,7 @@ const Activity: FC = () => {
   const { activities } = useActivitiesSupabase(sort, year);
 
   return (
-    <div className="relative overflow-y-auto pt-50">
+    <div className="relative scrollbar-hide h-dvh overflow-y-auto pt-50">
       <BlurBackground overlay overlayClassName="bg-gray-400/50" />
       {/* <div className="pointer-events-none fixed inset-x-0 top-0 z-2 h-[150px] bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm" /> */}
 

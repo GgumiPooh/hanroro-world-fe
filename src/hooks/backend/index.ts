@@ -5,3 +5,7 @@ export {
   useCurrentUser,
   type CurrentUser,
 } from "@/hooks/backend/useCurrentUser";
+export {
+  useGalleries,
+  type GalleryItem,
+} from "@/hooks/backend/useGalleries";

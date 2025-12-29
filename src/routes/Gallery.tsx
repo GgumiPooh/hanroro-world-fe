@@ -1,6 +1,18 @@
 import Button from "@/components/Button";
+import GalleryDetailOverlay from "@/components/GalleryDetailOverlay";
 import GalleryPostOverlay from "@/components/GalleryPostOverlay";
 import SearchBar from "@/components/SearchBar";
+import {
+  useCurrentUser,
+  useGalleries,
+  type GalleryItem,
+} from "@/hooks/backend";
+import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
+import {
+  ChatBubbleLeftIcon,
+  EyeIcon,
+  HeartIcon,
+} from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState, type FC } from "react";
 
@@ -18,29 +30,47 @@ const RECOMMENDED_TAGS = [
 const Gallery: FC = () => {
   const [selectedTag, setSelectedTag] = useState("전체");
   const [isPostOverlayOpen, setIsPostOverlayOpen] = useState(false);
+  const [selectedGalleryId, setSelectedGalleryId] = useState<number | null>(
+    null,
+  );
+
+  const { displayName } = useCurrentUser();
+  const { open: openLogin } = useAuthOverlay();
+
+  const { galleries, isLoading, error, hasMore, loadMore, search, refresh } =
+    useGalleries();
 
   const handleSearch = (query: string) => {
-    console.log("검색:", query);
-    // TODO: 검색 로직 구현
+    if (query.trim()) {
+      search(query);
+    } else {
+      refresh();
+    }
   };
 
   const handleAddPost = () => {
+    if (!displayName) {
+      openLogin();
+      return;
+    }
     setIsPostOverlayOpen(true);
   };
 
-  const handlePostSubmit = (data: { title: string; images: File[] }) => {
-    console.log("게시물 작성:", data);
-    // TODO: 백엔드 API 호출
+  const handlePostSuccess = () => {
+    refresh();
   };
 
   const handleTagClick = (tag: string) => {
     setSelectedTag(tag);
-    console.log("태그 선택:", tag);
-    // TODO: 태그 필터링 로직 구현
+    if (tag === "전체") {
+      refresh();
+    } else {
+      search(tag);
+    }
   };
 
   return (
-    <div className="relative h-dvh overflow-y-auto bg-gray-900 pt-50">
+    <div className="relative scrollbar-hide h-dvh overflow-y-auto bg-gray-900 pt-50">
       <h1 className="mb-15 text-center text-5xl font-bold text-gray-100 md:mb-20 md:text-8xl">
         Gallery
       </h1>
@@ -91,8 +121,44 @@ const Gallery: FC = () => {
           ))}
         </div>
 
-        {/* TODO: GalleryView 컴포넌트 추가 예정 */}
-        <p className="text-center text-gray-300">Coming soon...</p>
+        {/* 갤러리 그리드 */}
+        {isLoading && galleries.length === 0 ? (
+          <div className="flex justify-center py-20">
+            <div className="size-8 animate-spin rounded-full border-2 border-plum-400 border-t-transparent" />
+          </div>
+        ) : error ? (
+          <p className="text-center text-gray-400">{error}</p>
+        ) : galleries.length === 0 ? (
+          <p className="py-20 text-center text-gray-400">
+            아직 게시물이 없습니다.
+          </p>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 gap-4 pb-20 md:grid-cols-3">
+              {galleries.map((gallery) => (
+                <GalleryCard
+                  key={gallery.id}
+                  gallery={gallery}
+                  onClick={() => setSelectedGalleryId(gallery.id)}
+                />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="flex justify-center pb-20">
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={loadMore}
+                  disabled={isLoading}
+                  className="rounded-xl bg-gray-700/50 px-6 py-3 text-gray-300 hover:bg-gray-600/50"
+                >
+                  {isLoading ? "로딩 중..." : "더 보기"}
+                </Button>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* 플로팅 추가 버튼 */}
@@ -109,9 +175,73 @@ const Gallery: FC = () => {
       {isPostOverlayOpen && (
         <GalleryPostOverlay
           onClose={() => setIsPostOverlayOpen(false)}
-          onSubmit={handlePostSubmit}
+          onSuccess={handlePostSuccess}
         />
       )}
+
+      {/* 게시물 상세보기 오버레이 */}
+      {selectedGalleryId !== null && (
+        <GalleryDetailOverlay
+          galleryId={selectedGalleryId}
+          onClose={() => setSelectedGalleryId(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+// 갤러리 카드 컴포넌트
+type GalleryCardProps = {
+  gallery: GalleryItem;
+  onClick: () => void;
+};
+
+const GalleryCard: FC<GalleryCardProps> = ({ gallery, onClick }) => {
+  const thumbnailUrl = gallery.imageUrls[0] || "";
+
+  return (
+    <div
+      onClick={onClick}
+      className="group cursor-pointer overflow-hidden rounded-xl bg-gray-700/40 transition-transform hover:scale-[1.02]"
+    >
+      {/* 썸네일 */}
+      <div className="aspect-3/4 overflow-hidden">
+        {thumbnailUrl ? (
+          <img
+            src={thumbnailUrl}
+            alt={gallery.title}
+            className="size-full object-cover transition-transform group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex size-full items-center justify-center bg-gray-700">
+            <span className="text-gray-500">No Image</span>
+          </div>
+        )}
+      </div>
+
+      {/* 정보 */}
+      <div className="p-3">
+        <h3 className="mb-1 truncate text-sm font-medium text-plum-100">
+          {gallery.title}
+        </h3>
+        <p className="mb-2 text-xs text-gray-400">{gallery.authorName}</p>
+
+        {/* 좋아요 & 댓글 & 조회수 */}
+        <div className="flex items-center gap-3 text-xs text-gray-500">
+          <span className="flex items-center gap-1">
+            <HeartIcon className="size-3.5" />
+            {gallery.likeCount}
+          </span>
+          <span className="flex items-center gap-1">
+            <ChatBubbleLeftIcon className="size-3.5" />
+            {gallery.commentCount}
+          </span>
+          <span className="flex items-center gap-1">
+            <EyeIcon className="size-3.5" />
+            {gallery.viewCount}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
