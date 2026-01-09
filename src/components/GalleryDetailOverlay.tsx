@@ -4,6 +4,7 @@ import { useCurrentUser } from "@/hooks/backend";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import {
+  ArrowDownTrayIcon,
   ChatBubbleLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -43,6 +44,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   const { displayName } = useCurrentUser();
   const { open: openLogin } = useAuthOverlay();
@@ -146,6 +148,43 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     });
   };
 
+  const downloadImage = async (imageUrl: string, filename: string) => {
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed:", err);
+    }
+  };
+
+  const handleDownloadCurrent = () => {
+    if (gallery) {
+      const filename = `${gallery.title}_${currentImageIndex + 1}.jpg`;
+      downloadImage(gallery.imageUrls[currentImageIndex], filename);
+    }
+    setShowDownloadMenu(false);
+  };
+
+  const handleDownloadAll = async () => {
+    if (gallery) {
+      for (let i = 0; i < gallery.imageUrls.length; i++) {
+        const filename = `${gallery.title}_${i + 1}.jpg`;
+        await downloadImage(gallery.imageUrls[i], filename);
+        // 각 다운로드 사이에 약간의 지연 추가
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+    }
+    setShowDownloadMenu(false);
+  };
+
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -168,18 +207,57 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/60 px-10 backdrop-blur-sm">
-      <div className="relative scrollbar-hide flex h-[85vh] w-[min(100vw,1300px)] flex-col overflow-y-auto rounded-2xl bg-black/50">
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-1 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-        >
-          <XMarkIcon className="size-6" />
-        </button>
+    <div
+      className="fixed inset-0 z-60 flex items-center justify-center px-10 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative scrollbar-hide flex h-[85vh] w-[min(60vw,1300px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 상단 버튼들 */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+          {/* 다운로드 버튼 */}
+          <div className="relative">
+            <button
+              onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+              className="rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+            >
+              <ArrowDownTrayIcon className="size-4 md:size-6" />
+            </button>
+
+            {/* 다운로드 메뉴 */}
+            {showDownloadMenu && (
+              <div className="absolute top-full right-0 mt-2 w-40 overflow-hidden rounded-xl bg-gray-800/95 shadow-lg backdrop-blur-sm">
+                <button
+                  onClick={handleDownloadCurrent}
+                  className="w-full px-4 py-3 text-left text-sm text-white transition-colors hover:bg-gray-700/50"
+                >
+                  이 사진만 저장
+                </button>
+                {gallery && gallery.imageUrls.length > 1 && (
+                  <button
+                    onClick={handleDownloadAll}
+                    className="w-full border-t border-gray-700 px-4 py-3 text-left text-sm text-white transition-colors hover:bg-gray-700/50"
+                  >
+                    전체 사진 저장 ({gallery.imageUrls.length}장)
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* 닫기 버튼 */}
+          <button
+            onClick={onClose}
+            className="rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+          >
+            <XMarkIcon className="size-4 md:size-6" />
+          </button>
+        </div>
 
         {/* 이미지 슬라이더 */}
-        <div className="relative mx-auto flex h-3/4 w-3/4 shrink-0 flex-col items-center justify-center pt-20 md:w-4/7">
+        <div className="relative mx-auto flex h-3/4 w-3/4 shrink-0 flex-col items-center justify-center md:w-4/7">
           {/* 이미지 */}
           <img
             src={gallery.imageUrls[currentImageIndex]}
@@ -194,13 +272,13 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
                 onClick={handlePrevImage}
                 className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
               >
-                <ChevronLeftIcon className="size-6" />
+                <ChevronLeftIcon className="size-4 md:size-6" />
               </button>
               <button
                 onClick={handleNextImage}
                 className="absolute top-1/2 right-0 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
               >
-                <ChevronRightIcon className="size-6" />
+                <ChevronRightIcon className="size-4 md:size-6" />
               </button>
             </>
           )}

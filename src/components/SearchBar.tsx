@@ -24,24 +24,24 @@ const SearchBar: FC<Props> = ({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-4xl bg-gray-500/50 px-4 py-3 backdrop-blur-md",
+        "flex items-center gap-3 rounded-4xl border border-gray-300/30 px-3 py-2 md:px-4 md:py-3",
         className,
       )}
     >
-      <MagnifyingGlassIcon className="size-5 shrink-0 text-plum-400" />
+      <MagnifyingGlassIcon className="size-5 shrink-0 text-plum-300" />
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         placeholder={placeholder}
-        className="h-10 flex-1 rounded-2xl border border-gray-500/30 bg-plum-500/20 px-4 text-sm text-plum-100 placeholder-plum-400/50 outline-none hover:border-plum-400 focus:border-plum-400 md:text-base"
+        className="h-8 flex-1 rounded-2xl border border-gray-300/30 bg-gray-500/20 px-4 text-sm text-plum-300 placeholder-plum-300/80 outline-none focus:border-plum-400/50 md:h-10 md:text-base"
       />
       <Button
         variant="icon"
         size="sm"
         onClick={handleSearch}
-        className="h-10 shrink-0 rounded-3xl border border-gray-500/30 bg-plum-900/30 px-4 text-sm font-medium text-gray-300 transition-colors"
+        className="h-9 shrink-0 rounded-3xl border border-gray-300/30 bg-plum-500/30 px-4 text-sm font-medium text-gray-300 transition-colors hover:border-plum-400/50"
       >
         검색
       </Button>

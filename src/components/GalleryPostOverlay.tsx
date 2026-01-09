@@ -1,6 +1,10 @@
 import Button from "@/components/Button";
 import { ENV_VARIABLE } from "@/utils/env-variable";
-import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUpTrayIcon,
+  PhotoIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useRef, useState, type FC } from "react";
 
 type Props = {
@@ -64,7 +68,7 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSuccess }) => {
         throw new Error(errorText || "게시물 등록에 실패했습니다.");
       }
 
-      alert("게시물이 등록되었습니다!");
+      // alert("게시물이 등록되었습니다!");
       onSuccess?.();
       onClose();
     } catch (err) {
@@ -76,15 +80,17 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="relative max-h-[90vh] scrollbar-pretty w-[min(95vw,600px)] overflow-y-auto rounded-3xl bg-gray-800 p-6">
+    <div className="fixed inset-0 z-60 flex items-center justify-center backdrop-blur-lg">
+      <div className="relative max-h-[90vh] scrollbar-pretty w-[min(95vw,600px)] overflow-y-auto rounded-3xl border border-gray-500/60 bg-black p-6">
         {/* 닫기 버튼 */}
-        <button
+        <Button
           onClick={onClose}
-          className="absolute top-4 right-4 rounded-full p-2 text-gray-400 transition-colors hover:bg-gray-700 hover:text-gray-200"
+          variant="icon"
+          size="sm"
+          className="absolute top-4 right-4"
         >
-          <XMarkIcon className="size-6" />
-        </button>
+          <XMarkIcon className="size-6 text-gray-400" />
+        </Button>
 
         {/* 제목 */}
         <h2 className="mb-6 text-2xl font-bold text-plum-100">새 게시물</h2>
@@ -148,13 +154,17 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSuccess }) => {
         {/* 버튼 */}
         <div className="flex">
           <Button
-            variant="ghost"
+            variant="icon"
             size="md"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="flex-1 rounded-xl bg-plum-500 py-3 text-white hover:bg-plum-400 disabled:opacity-50"
+            className="flex-1 rounded-xl bg-plum-300 py-3 disabled:opacity-50"
           >
-            {isSubmitting ? "게시 중..." : "게시하기"}
+            {isSubmitting ? (
+              <div className="size-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            ) : (
+              <ArrowUpTrayIcon className="size-5" />
+            )}
           </Button>
         </div>
       </div>

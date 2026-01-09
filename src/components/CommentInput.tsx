@@ -99,7 +99,7 @@ const CommentInput: FC<Props> = ({
         className={
           inline
             ? "flex w-full items-center gap-3"
-            : "flex w-[min(92vw,1000px)] items-center gap-3 rounded-2xl bg-gray-800/50 px-4 py-3 backdrop-blur-md"
+            : "flex w-[min(92vw,1000px)] items-center gap-3 rounded-2xl bg-gray-200/10 px-4 py-3 backdrop-blur-lg"
         }
       >
         <input
@@ -113,16 +113,16 @@ const CommentInput: FC<Props> = ({
           }
           disabled={isSubmitting}
           readOnly={!displayName}
-          className="h-11 flex-1 rounded-xl border border-plum-500/30 bg-plum-100/10 px-3 text-sm text-plum-100 placeholder-plum-400/50 transition-colors outline-none placeholder:text-xs hover:border-plum-400 focus:border-plum-400 disabled:opacity-50 md:text-base"
+          className="h-11 flex-1 rounded-xl border border-gray-300/50 bg-gray-100/10 px-3 text-sm text-plum-100 placeholder-plum-200/50 transition-colors outline-none placeholder:text-xs focus:border-plum-300 disabled:opacity-50 md:text-base"
         />
         <Button
           variant="icon"
           size="sm"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="hover:plum-400 h-11 w-11 shrink-0 rounded-xl border border-plum-500/30 bg-plum-300/10 hover:bg-plum-400/30 disabled:opacity-50"
+          className="h-11 w-11 shrink-0 rounded-xl border border-plum-500/30 bg-plum-500/20 disabled:opacity-50"
         >
-          <PaperAirplaneIcon className="size-5 text-plum-300 hover:text-plum-100" />
+          <PaperAirplaneIcon className="size-5 text-plum-300" />
         </Button>
       </div>
     </div>

@@ -70,14 +70,14 @@ const Gallery: FC = () => {
   };
 
   return (
-    <div className="relative scrollbar-hide h-dvh overflow-y-auto bg-gray-900 pt-50">
-      <h1 className="mb-15 text-center text-5xl font-bold text-gray-100 md:mb-20 md:text-8xl">
+    <div className="relative scrollbar-hide h-dvh overflow-y-auto bg-black pt-50">
+      <h1 className="mb-15 text-center text-5xl font-bold text-gray-100 md:mb-30 md:text-8xl">
         Gallery
       </h1>
 
       {/* 왼쪽 고정 추천 검색어 메뉴 */}
       <aside className="fixed top-70 left-10 z-40 hidden w-48 md:block">
-        <div className="rounded-2xl bg-gray-800/50 p-4 backdrop-blur-md">
+        <div className="rounded-2xl border border-gray-300/30 p-4">
           <h2 className="mb-4 text-sm font-semibold text-plum-300">
             추천 태그
           </h2>
@@ -88,7 +88,7 @@ const Gallery: FC = () => {
                   onClick={() => handleTagClick(tag)}
                   className={`w-full rounded-xl px-3 py-2 text-left text-sm transition-colors ${
                     selectedTag === tag
-                      ? "bg-plum-500/40 text-plum-100"
+                      ? "bg-plum-300/30 text-plum-100"
                       : "text-gray-400 hover:bg-gray-700/50 hover:text-gray-200"
                   }`}
                 >
@@ -101,11 +101,11 @@ const Gallery: FC = () => {
       </aside>
 
       {/* 메인 콘텐츠 */}
-      <div className="z-2 mx-auto w-[min(92vw,760px)] px-4">
+      <div className="z-2 mx-auto w-[min(92vw,760px)]">
         <SearchBar className="mb-10" onSearch={handleSearch} />
 
         {/* 모바일용 태그 가로 스크롤 */}
-        <div className="mb-6 flex gap-2 overflow-x-auto pb-2 md:hidden">
+        <div className="mb-6 scrollbar-hide flex gap-2 overflow-x-auto pb-2 md:hidden">
           {RECOMMENDED_TAGS.map((tag) => (
             <button
               key={tag}
@@ -202,7 +202,7 @@ const GalleryCard: FC<GalleryCardProps> = ({ gallery, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="group cursor-pointer overflow-hidden rounded-xl bg-gray-700/40 transition-transform hover:scale-[1.02]"
+      className="group cursor-pointer overflow-hidden transition-transform"
     >
       {/* 썸네일 */}
       <div className="aspect-3/4 overflow-hidden">

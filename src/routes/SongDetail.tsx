@@ -23,7 +23,7 @@ const SongDetail: FC = () => {
         imgClassName="scale-105 blur-md"
       />
 
-      <div className="fixed inset-0 -z-1 bg-gray-800/75" />
+      <div className="fixed inset-0 -z-1 bg-gray-800/60" />
 
       <div className="z-2 mx-auto w-[min(92vw,1000px)]">
         {/* 이전으로 돌아가기 버튼 */}
