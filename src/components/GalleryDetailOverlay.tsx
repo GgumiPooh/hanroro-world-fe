@@ -208,11 +208,11 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-60 flex items-center justify-center px-10 backdrop-blur-sm"
+      className="fixed inset-0 z-60 flex items-center justify-center px-2 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative scrollbar-hide flex h-[85vh] w-[min(60vw,1300px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
+        className="relative scrollbar-hide flex h-[85vh] w-[min(95vw,900px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 상단 버튼들 */}
@@ -255,33 +255,32 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
             <XMarkIcon className="size-4 md:size-6" />
           </button>
         </div>
+        {/* 이미지 네비게이션 버튼 */}
+        {gallery.imageUrls.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevImage}
+              className="absolute top-3/7 left-0 mx-3 -translate-y-1/2 rounded-full border border-gray-700/60 bg-black/50 p-2 text-white transition-colors"
+            >
+              <ChevronLeftIcon className="size-4 md:size-6" />
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="absolute top-3/7 right-0 mx-3 -translate-y-1/2 rounded-full border border-gray-700/60 bg-black/50 p-2 text-white transition-colors"
+            >
+              <ChevronRightIcon className="size-4 md:size-6" />
+            </button>
+          </>
+        )}
 
         {/* 이미지 슬라이더 */}
-        <div className="relative mx-auto flex h-3/4 w-3/4 shrink-0 flex-col items-center justify-center md:w-4/7">
+        <div className="relative mx-auto flex w-[90%] shrink-0 flex-col items-center justify-center p-5">
           {/* 이미지 */}
           <img
             src={gallery.imageUrls[currentImageIndex]}
             alt={gallery.title}
             className="max-h-[60vh] max-w-full object-contain"
           />
-
-          {/* 이미지 네비게이션 버튼 */}
-          {gallery.imageUrls.length > 1 && (
-            <>
-              <button
-                onClick={handlePrevImage}
-                className="absolute top-1/2 left-0 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-              >
-                <ChevronLeftIcon className="size-4 md:size-6" />
-              </button>
-              <button
-                onClick={handleNextImage}
-                className="absolute top-1/2 right-0 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-              >
-                <ChevronRightIcon className="size-4 md:size-6" />
-              </button>
-            </>
-          )}
 
           {/* 이미지 인디케이터 - 이미지 아래에 자연스럽게 배치 */}
           {gallery.imageUrls.length > 1 && (
@@ -302,7 +301,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
         {/* 정보 및 댓글 */}
         <div className="relative scrollbar-hide flex w-full flex-col">
           {/* 헤더 */}
-          <div className="border-b border-gray-700/60 p-6">
+          <div className="border-b border-gray-700/60 p-4 md:p-6">
             <h2 className="text-2xl font-bold text-white">{gallery.title}</h2>
             <p className="mt-2 text-sm text-gray-400">
               by {gallery.authorName} · {formatDate(gallery.createdAt)}
@@ -333,7 +332,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           </div>
 
           {/* 댓글 목록 */}
-          <div className="flex-1 p-6">
+          <div className="flex-1 p-4 md:p-6">
             <h3 className="mb-4 text-lg font-semibold text-white">댓글</h3>
 
             {gallery.comments.length === 0 ? (
@@ -361,7 +360,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           </div>
 
           {/* 댓글 입력 */}
-          <div className="sticky bottom-0 z-50 bg-gray-900/60 p-4 backdrop-blur-sm">
+          <div className="sticky bottom-0 z-50 bg-gray-900/60 p-3 backdrop-blur-sm md:p-4">
             <CommentInput
               apiEndpoint={`/api/public/gallery/${galleryId}/comments`}
               onCommentSubmit={handleCommentSubmit}

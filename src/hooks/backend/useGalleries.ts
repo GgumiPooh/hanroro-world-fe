@@ -30,7 +30,7 @@ type UseGalleriesConfig = {
 };
 
 export function useGalleries(config: UseGalleriesConfig = {}) {
-  const { pageSize = 12, autoFetch = true } = config;
+  const { pageSize = 6, autoFetch = true } = config;
 
   const [galleries, setGalleries] = useState<GalleryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);

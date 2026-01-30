@@ -14,17 +14,18 @@ import {
   HeartIcon,
 } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 
 const RECOMMENDED_TAGS = [
   "전체",
   "안경",
+  "단발",
   "굿즈",
   "콘서트",
   "일상",
-  "밈",
-  "커버",
-  "브이로그",
+  "화보",
+  "뮤비",
+  "인스타",
 ];
 
 const Gallery: FC = () => {
@@ -69,6 +70,26 @@ const Gallery: FC = () => {
     }
   };
 
+  // 무한 스크롤
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, loadMore]);
+
   return (
     <div className="relative scrollbar-hide h-dvh overflow-y-auto bg-black pt-50">
       <h1 className="mb-15 text-center text-5xl font-bold text-gray-100 md:mb-30 md:text-8xl">
@@ -76,7 +97,7 @@ const Gallery: FC = () => {
       </h1>
 
       {/* 왼쪽 고정 추천 검색어 메뉴 */}
-      <aside className="fixed top-70 left-10 z-40 hidden w-48 md:block">
+      {/* <aside className="fixed top-70 left-10 z-40 hidden w-35 lg:block">
         <div className="rounded-2xl border border-gray-300/30 p-4">
           <h2 className="mb-4 text-sm font-semibold text-plum-300">
             추천 태그
@@ -98,14 +119,14 @@ const Gallery: FC = () => {
             ))}
           </ul>
         </div>
-      </aside>
+      </aside> */}
 
       {/* 메인 콘텐츠 */}
       <div className="z-2 mx-auto w-[min(92vw,760px)]">
         <SearchBar className="mb-10" onSearch={handleSearch} />
 
         {/* 모바일용 태그 가로 스크롤 */}
-        <div className="mb-6 scrollbar-hide flex gap-2 overflow-x-auto pb-2 md:hidden">
+        <div className="mb-6 scrollbar-hide flex gap-2 overflow-x-auto pb-2">
           {RECOMMENDED_TAGS.map((tag) => (
             <button
               key={tag}
@@ -144,19 +165,17 @@ const Gallery: FC = () => {
               ))}
             </div>
 
-            {hasMore && (
-              <div className="flex justify-center pb-20">
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={loadMore}
-                  disabled={isLoading}
-                  className="rounded-xl bg-gray-700/50 px-6 py-3 text-gray-300 hover:bg-gray-600/50"
-                >
-                  {isLoading ? "로딩 중..." : "더 보기"}
-                </Button>
-              </div>
-            )}
+            {/* 무한 스크롤 트리거 */}
+            <div ref={observerRef} className="flex justify-center py-10">
+              {isLoading && (
+                <div className="size-6 animate-spin rounded-full border-2 border-plum-400 border-t-transparent" />
+              )}
+              {!hasMore && galleries.length > 0 && (
+                <p className="text-sm text-gray-500">
+                  모든 게시물을 불러왔습니다
+                </p>
+              )}
+            </div>
           </>
         )}
       </div>
