@@ -3,25 +3,11 @@ import ExternalLink from "@/components/ExternalLink";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import type { Activity } from "@/types/activity";
 import type { Sort } from "@/types/sort";
+import { selectLocalizedText } from "@/utils/localization";
+import { findMetadataUrl } from "@/utils/metadata";
 import { cn } from "@/utils/styles";
 import { CheckCircleIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
-
-function selectLocalizedTitle(
-  titles: { language: string; content: string }[],
-  targetLanguage = "kor",
-): string {
-  const matched = titles.find((item) => item.language === targetLanguage);
-  return matched ? matched.content : (titles[0]?.content ?? "");
-}
-
-function findMetadataUrl(
-  metadata: { type: string; url: string }[],
-  targetType: string,
-): string {
-  const matched = metadata.find((item) => item.type === targetType);
-  return matched ? matched.url : (metadata[0]?.url ?? "");
-}
 
 function isLocalDateFormat(value: string): boolean {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
@@ -81,9 +67,9 @@ const ActivityCard: FC<Props> = ({ className, activity, index, sort }) => {
       <div className="ml-3 flex flex-row md:ml-30">
         <div className="mr-5 w-30 shrink-0 md:mr-10 md:w-45">
           <ImageWithPlaceholder
+            className="h-auto w-full rounded-lg shadow-[0_13px_25px_rgba(97,120,150,0.4)]"
             src={findMetadataUrl(activity.metaData, "img")}
             alt="img"
-            className="h-auto w-full rounded-lg shadow-[0_13px_25px_rgba(97,120,150,0.4)]"
           />
         </div>
         <div className="mr-5 h-auto border-l-3 border-gray-600/40 pl-5">
@@ -91,7 +77,7 @@ const ActivityCard: FC<Props> = ({ className, activity, index, sort }) => {
             {formatDateString(activity.activeFrom)}
           </h1>
           <h1 className="mb-5 text-base font-bold text-gray-100 md:text-lg">
-            {selectLocalizedTitle(activity.title, "kor")}
+            {selectLocalizedText(activity.title, ["ko"])}
           </h1>
           <ExternalLink href={findMetadataUrl(activity.metaData, "video")}>
             <Button variant="secondary" size="sm">

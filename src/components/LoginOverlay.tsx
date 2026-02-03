@@ -9,11 +9,7 @@ type Props = {
 };
 
 const LoginOverlay: FC<Props> = ({ onClose }) => {
-  useEvent("keydown", (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  });
+  useEvent("keydown", (e: KeyboardEvent) => e.key === "Escape" && onClose());
 
   return (
     <div className="fixed inset-0 z-50">
@@ -25,23 +21,23 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
         <h2 className="mb-10 text-xl font-bold text-plum-300">로그인</h2>
         <div className="space-y-3">
           <Button
+            className="w-full hover:scale-100"
             variant="icon"
             size="sm"
-            className="w-full hover:scale-100"
             onClick={() => handleRedirect("naver")}
           >
             <img src="/images/naver-login.png" alt="Naver" />
           </Button>
           <Button
+            className="w-full hover:scale-100"
             variant="icon"
             size="sm"
-            className="w-full hover:scale-100"
             onClick={() => handleRedirect("kakao")}
           >
             <img src="/images/kakao-login.png" alt="Kakao" />
           </Button>
         </div>
-        <Button variant="ghost" size="md" className="mt-5" onClick={onClose}>
+        <Button className="mt-5" variant="ghost" size="md" onClick={onClose}>
           취소
         </Button>
       </div>

@@ -16,7 +16,6 @@ const Button: FC<Props> = ({
 }) => {
   return (
     <button
-      type="button"
       className={cn(
         "inline-flex items-center justify-center rounded-4xl font-medium transition-all focus:outline-none",
         variant === "primary" && "bg-gray-600 text-white hover:bg-gray-500",
@@ -32,6 +31,7 @@ const Button: FC<Props> = ({
 
         className,
       )}
+      type="button"
       {...props}
     >
       {children}

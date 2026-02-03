@@ -5,9 +5,19 @@
 - Flat structure: `src/hooks/*.ts`, not `src/hooks/backend/*.ts`
 - Zod schemas: `src/schemas/{feature}.ts` (export schemas only)
 - Types: `src/types/{feature}.ts` using `z.infer<typeof schema>` (export all)
-- Shared utilities: `src/utils/{name}.ts` (e.g., `localization.ts` for `selectLocalizedText`)
-- Constants: `src/constants/{name}.ts` (e.g., `misc.ts` for time units, `navigation.ts` for routes)
+- Shared utilities: `src/utils/{name}.ts`
+  - `localization.ts`: `selectLocalizedText`
+  - `metadata.ts`: `findMetadataUrl`, `findCoverUrl`
+- Constants: `src/constants/{name}.ts`
+  - `misc.ts`: time units (`A_MINUTE`), `EARLIEST_ACTIVITY_YEAR`, `ACTIVITY_TYPE`
+  - `navigation.ts`: routes, menu lists
 - No `export type { X } from '...'` re-exports; define types directly
+
+## Abstraction
+
+- Only extract utilities for non-trivial logic (5+ lines, complex fallbacks)
+- Keep simple patterns inline (e.g., escape key handler as one-liner)
+- No wrapper hooks for single-line operations
 
 ## Naming
 
@@ -35,6 +45,8 @@
   return schema.parse(data);
   ```
 - Use utility types from `src/types/misc.ts`: `Nullable<T>`, `Optional<T>`, `Maybe<T>`
+- Prefer type unions over enums: `type Sort = "latest" | "oldest"`
+- Use `as const` objects for runtime constants: `ACTIVITY_TYPE = { ... } as const`
 
 ## Code Style
 
@@ -64,11 +76,26 @@
 - UI components must accept `className` prop and apply it to the outermost element
 - In Props type definition, `className` must be the first property
 
+### JSX Attribute Order
+
+1. `className` (first)
+2. Other attributes (`type`, `value`, `disabled`, etc.)
+3. Event handlers (`onClick`, `onChange`, etc.) (last)
+
   ```typescript
-  const MyComponent: FC = () => {
+  type Props = {
+    className?: string;
+    label: string;
+  };
+
+  const MyComponent: FC<Props> = ({ className, label }) => {
     const [count, setCount] = useState(0);
 
-    return <button onClick={handleClick}>Click</button>;
+    return (
+      <button className={className} onClick={handleClick}>
+        {label}: {count}
+      </button>
+    );
 
     function handleClick() {
       setCount(count + 1);
@@ -76,10 +103,6 @@
   };
 
   export default MyComponent;
-
-  function formatDate(date: Date): string {
-    return date.toLocaleDateString();
-  }
   ```
 
 ### Declarative React Patterns

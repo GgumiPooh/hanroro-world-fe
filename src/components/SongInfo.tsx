@@ -65,7 +65,12 @@ const SongInfo: FC<Props> = ({ className }) => {
   }
 
   return (
-    <div className={cn("mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0", className)}>
+    <div
+      className={cn(
+        "mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0",
+        className,
+      )}
+    >
       <div className="mb-5 flex flex-col items-center gap-6 md:justify-center md:gap-10 lg:flex-row">
         <ImageWithPlaceholder
           className="ld:h-[350px] ld:w-[350px] h-[250px] w-[250px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px]"
@@ -83,10 +88,10 @@ const SongInfo: FC<Props> = ({ className }) => {
             </h2>
             {youtubeId && (
               <Button
+                className="mb-1 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
                 variant="icon"
                 size="sm"
                 onClick={handleTogglePlay}
-                className="mb-1 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
               >
                 {isCurrentSongPlaying ? (
                   <PauseIcon className="size-5 text-plum-100" />
@@ -107,10 +112,10 @@ const SongInfo: FC<Props> = ({ className }) => {
       {detailView.lyrics && (
         <div className="flex flex-col items-start">
           <Button
+            className="mb-4 pl-10 text-sm text-plum-200"
             variant="icon"
             size="sm"
             onClick={handleToggleLyrics}
-            className="mb-4 pl-10 text-sm text-plum-200"
           >
             {showLyrics ? "▲ 가사" : "▼ 가사"}
           </Button>
@@ -128,9 +133,9 @@ const SongInfo: FC<Props> = ({ className }) => {
 
       {songId && (
         <CommentList
+          className="mt-8 mb-24"
           ref={commentListRef}
           songId={songId}
-          className="mt-8 mb-24"
         />
       )}
 

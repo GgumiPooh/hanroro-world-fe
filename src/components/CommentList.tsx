@@ -87,8 +87,8 @@ const CommentList = forwardRef<CommentListRef, Props>(
               const isOwn = isOwnComment(comment.author);
               return (
                 <li
-                  key={comment.id}
                   className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                  key={comment.id}
                 >
                   <div
                     className={`relative w-full rounded-2xl bg-plum-300/20 px-4 py-3 ${
@@ -106,10 +106,10 @@ const CommentList = forwardRef<CommentListRef, Props>(
                       </div>
                       {isOwn && (
                         <Button
+                          className="hover:text-red-400/80 h-8 w-8 text-plum-300"
                           variant="icon"
                           size="sm"
                           onClick={() => handleDeleteComment(comment.id)}
-                          className="hover:text-red-400/80 h-8 w-8 text-plum-300"
                         >
                           <XMarkIcon className="size-4" />
                         </Button>

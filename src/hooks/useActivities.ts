@@ -1,4 +1,4 @@
-import { A_MINUTE } from "@/constants/misc";
+import { A_MINUTE, ACTIVITY_TYPE } from "@/constants/misc";
 import { supabase } from "@/lib/supabase";
 import { activityArraySchema } from "@/schemas/activity";
 import type { Activity } from "@/types/activity";
@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   let query = supabase.from("activities").select("*");
 
-  query = query.eq("type", "PERFORMANCE");
+  query = query.eq("type", ACTIVITY_TYPE.PERFORMANCE);
 
   if (year) {
     const startDate = `${year}-01-01`;

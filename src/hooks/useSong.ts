@@ -4,6 +4,7 @@ import { songSchema } from "@/schemas/song";
 import type { Nullable } from "@/types/misc";
 import type { Song } from "@/types/song";
 import { selectLocalizedText } from "@/utils/localization";
+import { findMetadataUrl } from "@/utils/metadata";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -38,16 +39,14 @@ export function useSong(songId?: string | number) {
     if (!query.data) return null;
 
     const metadata = query.data.metadata ?? [];
-    const videoUrl = metadata.find((item) => item.type === "video")?.url ?? "";
-    const imageUrl = metadata.find((item) => item.type === "img")?.url ?? "";
 
     return {
       ...query.data,
       title: selectLocalizedText(query.data.title),
       description: selectLocalizedText(query.data.description),
       lyrics: selectLocalizedText(query.data.lyrics),
-      videoUrl,
-      imageUrl,
+      videoUrl: findMetadataUrl(metadata, "video"),
+      imageUrl: findMetadataUrl(metadata, "img"),
     };
   }, [query.data]);
 

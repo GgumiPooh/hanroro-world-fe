@@ -98,9 +98,9 @@ const Header: FC<Props> = ({ className }) => {
         >
           {ENV_VARIABLE.IS_COMING_SOON ? (
             <Button
+              className="font-bold"
               variant="ghost"
               size="md"
-              className="font-bold"
               onClick={() => window.alert("Coming soon")}
             >
               Coming soon
@@ -167,7 +167,7 @@ const DesktopMenuList: FC<MenuListProps> = ({
   return (
     <ul className={cn("flex items-center", className)}>
       {HEADER_MENU_LIST.map((item) => (
-        <li key={item.href} className="mr-7">
+        <li className="mr-7" key={item.href}>
           <Button
             className="font-bold"
             variant="ghost"
@@ -219,7 +219,7 @@ const MobileMenuPanel: FC<MenuListProps> = ({
   return (
     <ul className={cn("", className)}>
       {HEADER_MENU_LIST.map((item) => (
-        <li key={item.href} className="mb-3">
+        <li className="mb-3" key={item.href}>
           <Button
             className="text-base font-bold"
             variant="ghost"

@@ -1,5 +1,6 @@
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
+import { findMetadataUrl } from "@/utils/metadata";
 import { cn } from "@/utils/styles";
 import type { FC } from "react";
 import { Link } from "react-router";
@@ -7,14 +8,6 @@ import { Link } from "react-router";
 type Props = {
   className?: string;
 };
-
-function findMetadataUrl(
-  metadata: { type: string; url: string }[],
-  targetType: string,
-): string {
-  const matched = metadata.find((item) => item.type === targetType);
-  return matched ? matched.url : (metadata[0]?.url ?? "");
-}
 
 const AlbumList: FC<Props> = ({ className }) => {
   const { albumsView, isLoading, error } = useAlbums();
@@ -44,10 +37,10 @@ const AlbumList: FC<Props> = ({ className }) => {
 
         return (
           <li
-            key={String(albumItem.id)}
             className="mb-20 rounded-xl bg-gray-900/40 backdrop-blur-md md:mb-50"
+            key={String(albumItem.id)}
           >
-            <Link to={targetPath} className="flex p-0">
+            <Link className="flex p-0" to={targetPath}>
               <div className="flex flex-row items-center gap-5 sm:gap-10 md:gap-15">
                 <ImageWithPlaceholder
                   className="relative h-25 w-25 items-center gap-5 sm:h-50 sm:w-50 sm:gap-15 lg:h-60 lg:w-60"

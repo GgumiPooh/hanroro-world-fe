@@ -20,13 +20,7 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
   const [error, setError] = useState<Nullable<string>>(null);
   const queryClient = useQueryClient();
 
-  useEvent("keydown", (event) => {
-    if (event.key !== "Escape") {
-      return;
-    }
-
-    onClose();
-  });
+  useEvent("keydown", (e) => e.key === "Escape" && onClose());
 
   return createPortal(
     <div className="fixed inset-0 z-50">
@@ -40,14 +34,14 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
         <div className="space-y-4">
           <div>
             <input
+              className="w-full rounded-xl border border-plum-600/30 bg-plum-900/30 px-4 py-3 text-plum-100 transition-colors duration-200 placeholder:text-plum-400/60 hover:border-plum-300 focus:border-plum-500 focus:outline-none"
               type="text"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               placeholder="새 닉네임을 입력하세요"
-              className="w-full rounded-xl border border-plum-600/30 bg-plum-900/30 px-4 py-3 text-plum-100 transition-colors duration-200 placeholder:text-plum-400/60 hover:border-plum-300 focus:border-plum-500 focus:outline-none"
               maxLength={MAX_NICKNAME_LENGTH}
               disabled={isSubmitting}
+              onChange={(e) => setNickname(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
           </div>
 
@@ -57,20 +51,20 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
 
           <div className="flex gap-3 pt-2">
             <Button
+              className="flex-1 border border-gray-400"
               variant="ghost"
               size="md"
-              className="flex-1 border border-gray-400"
-              onClick={onClose}
               disabled={isSubmitting}
+              onClick={onClose}
             >
               취소
             </Button>
             <Button
+              className="flex-1"
               variant="primary"
               size="md"
-              className="flex-1"
-              onClick={handleSubmit}
               disabled={isSubmitting || !nickname.trim()}
+              onClick={handleSubmit}
             >
               {isSubmitting ? "변경 중..." : "변경하기"}
             </Button>

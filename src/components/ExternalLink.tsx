@@ -9,10 +9,10 @@ type Props = PropsWithChildren<{
 const ExternalLink: FC<Props> = ({ href, className, ariaLabel, children }) => {
   return (
     <a
+      className={className}
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={className}
       aria-label={ariaLabel}
     >
       {children}

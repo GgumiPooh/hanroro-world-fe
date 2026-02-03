@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { albumArraySchema } from "@/schemas/album";
 import type { Album } from "@/types/album";
 import { selectLocalizedText } from "@/utils/localization";
+import { findCoverUrl } from "@/utils/metadata";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -30,16 +31,7 @@ export function useAlbums() {
     if (!query.data) return [];
 
     return query.data.map((album) => {
-      const metadata = album.metadata ?? [];
-      const normalizedMetadata = metadata.map((item) => ({
-        type: (item.type || "").toLowerCase(),
-        url: item.url,
-      }));
-      const coverUrl =
-        normalizedMetadata.find((item) => item.type.includes("cover"))?.url ||
-        normalizedMetadata.find((item) => item.type.includes("image"))?.url ||
-        normalizedMetadata[0]?.url ||
-        "";
+      const coverUrl = findCoverUrl(album.metadata ?? []);
 
       const sortedSongs = [...(album.songs ?? [])].sort(
         (songA, songB) => (songA.track_number ?? 0) - (songB.track_number ?? 0),
