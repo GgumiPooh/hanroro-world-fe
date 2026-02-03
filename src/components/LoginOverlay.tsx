@@ -8,17 +8,6 @@ type Props = {
   onClose: () => void;
 };
 
-function resolveOAuthUrl(provider: "naver" | "kakao"): Nullable<string> {
-  if (provider === "naver" && ENV_VARIABLE.NAVER_OAUTH_URL) {
-    return ENV_VARIABLE.NAVER_OAUTH_URL;
-  }
-  if (provider === "kakao" && ENV_VARIABLE.KAKAO_OAUTH_URL) {
-    return ENV_VARIABLE.KAKAO_OAUTH_URL;
-  }
-
-  return null;
-}
-
 const LoginOverlay: FC<Props> = ({ onClose }) => {
   useEffect(() => {
     function handleKeydown(event: KeyboardEvent) {
@@ -29,15 +18,6 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
     window.addEventListener("keydown", handleKeydown);
     return () => window.removeEventListener("keydown", handleKeydown);
   }, [onClose]);
-
-  function handleRedirect(provider: "naver" | "kakao") {
-    const url = resolveOAuthUrl(provider);
-    if (!url) {
-      window.alert("OAuth URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
-      return;
-    }
-    window.location.assign(url);
-  }
 
   return (
     <div className="fixed inset-0 z-50">
@@ -71,6 +51,26 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
       </div>
     </div>
   );
+
+  function handleRedirect(provider: "naver" | "kakao") {
+    const redirectUrl = getOAuthRedirectUrl(provider);
+    if (!redirectUrl) {
+      window.alert("OAuth URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
+      return;
+    }
+    window.location.assign(redirectUrl);
+  }
 };
 
 export default LoginOverlay;
+
+function getOAuthRedirectUrl(provider: "naver" | "kakao"): Nullable<string> {
+  if (provider === "naver" && ENV_VARIABLE.NAVER_OAUTH_URL) {
+    return ENV_VARIABLE.NAVER_OAUTH_URL;
+  }
+  if (provider === "kakao" && ENV_VARIABLE.KAKAO_OAUTH_URL) {
+    return ENV_VARIABLE.KAKAO_OAUTH_URL;
+  }
+
+  return null;
+}

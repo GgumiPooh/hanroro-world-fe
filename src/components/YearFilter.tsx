@@ -1,3 +1,4 @@
+import { EARLIEST_ACTIVITY_YEAR } from "@/constants/misc";
 import { cn } from "@/utils/styles";
 import type { FC } from "react";
 import { useMemo } from "react";
@@ -9,14 +10,13 @@ type Props = {
 };
 
 const YearFilter: FC<Props> = ({ className, year, onChange }) => {
-  const years = useMemo(() => {
-    const current = new Date().getFullYear();
-    const start = 2022;
-    const list: string[] = [];
-    for (let y = current; y >= start; y--) {
-      list.push(String(y));
-    }
-    return list;
+  const yearOptions = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const yearCount = currentYear - EARLIEST_ACTIVITY_YEAR + 1;
+
+    return Array.from({ length: yearCount }, (_, index) =>
+      String(currentYear - index),
+    );
   }, []);
 
   return (
@@ -32,9 +32,9 @@ const YearFilter: FC<Props> = ({ className, year, onChange }) => {
         <option className="font-bold" value="">
           전체
         </option>
-        {years.map((y) => (
-          <option key={y} value={y}>
-            {y}
+        {yearOptions.map((yearValue) => (
+          <option key={yearValue} value={yearValue}>
+            {yearValue}
           </option>
         ))}
       </select>

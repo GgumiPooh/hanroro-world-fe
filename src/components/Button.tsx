@@ -6,7 +6,6 @@ type Props = {
   size: "sm" | "md" | "lg";
   className?: string;
 } & ComponentProps<"button">;
-// } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<Props> = ({
   variant,

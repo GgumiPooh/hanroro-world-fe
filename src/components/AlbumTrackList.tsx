@@ -1,9 +1,9 @@
-import { useAlbumDetailSupabase } from "@/hooks/useAlbumDetailSupabase";
+import { useAlbumDetail } from "@/hooks/useAlbumDetail";
 import type { FC } from "react";
 import { Link } from "react-router";
 
-const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
-  const { detailView } = useAlbumDetailSupabase(albumId);
+const AlbumTrackList: FC<{ albumId: string | number }> = ({ albumId }) => {
+  const { detailView } = useAlbumDetail(albumId);
 
   return (
     <div className="w-full">
@@ -28,4 +28,4 @@ const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
   );
 };
 
-export default AlbumDetailViewer;
+export default AlbumTrackList;

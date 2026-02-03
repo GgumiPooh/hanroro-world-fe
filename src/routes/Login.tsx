@@ -29,7 +29,6 @@ const Login: FC = () => {
       return ENV_VARIABLE.KAKAO_OAUTH_URL;
     }
     if (ENV_VARIABLE.API_BASE_URL) {
-      // Fallback to Spring's "/oauth2.0/authorization/{provider}" path
       return `${ENV_VARIABLE.API_BASE_URL}/oauth2.0/authorization/${provider}`;
     }
     return null;

@@ -14,10 +14,8 @@ import { Route, Routes } from "react-router";
 const App: FC = () => {
   return (
     <Routes>
-      {/* 헤더 없는 페이지 */}
       <Route path="/signup-complete" element={<SignupComplete />} />
 
-      {/* 헤더 있는 페이지 */}
       <Route element={<GlobalLayout />} errorElement={<Error />}>
         <Route path="/" element={<Home />} />
         <Route path="/activity" element={<Activity />} />

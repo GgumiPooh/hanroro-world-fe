@@ -5,3 +5,5 @@ export const A_DAY = 24 * A_HOUR;
 export const A_WEEK = 7 * A_DAY;
 export const A_MONTH = 30 * A_DAY;
 export const A_YEAR = 365 * A_DAY;
+
+export const EARLIEST_ACTIVITY_YEAR = 2022;

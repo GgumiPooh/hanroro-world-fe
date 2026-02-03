@@ -1,7 +1,7 @@
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
-import SongDetailViewer from "@/components/SongDetailViewer";
-import { useAlbumsSupabase } from "@/hooks/useAlbumsSupabase";
+import SongInfo from "@/components/SongInfo";
+import { useAlbums } from "@/hooks/useAlbums";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 import { useMemo } from "react";
@@ -10,9 +10,9 @@ import { useNavigate, useParams } from "react-router";
 const SongDetail: FC = () => {
   const { albumId } = useParams();
   const navigate = useNavigate();
-  const { albumsView } = useAlbumsSupabase();
+  const { albumsView } = useAlbums();
   const album = useMemo(
-    () => albumsView.find((a) => String(a.id) === albumId),
+    () => albumsView.find((albumItem) => String(albumItem.id) === albumId),
     [albumsView, albumId],
   );
   return (
@@ -26,23 +26,26 @@ const SongDetail: FC = () => {
       <div className="fixed inset-0 -z-1 bg-gray-800/75" />
 
       <div className="z-2 mx-auto w-[min(92vw,1000px)]">
-        {/* 이전으로 돌아가기 버튼 */}
         <Button
           variant="icon"
           size="md"
           className="mb-10 pl-10 text-sm text-plum-200"
-          onClick={() =>
-            album?.album_type === "DIGITAL_SINGLE"
-              ? navigate("/albums")
-              : navigate(`/album/${albumId}`)
-          }
+          onClick={handleNavigateBack}
         >
           <ArrowLeftIcon className="size-5 text-plum-100" />
         </Button>
-        <SongDetailViewer />
+        <SongInfo />
       </div>
     </div>
   );
+
+  function handleNavigateBack() {
+    if (album?.album_type === "DIGITAL_SINGLE") {
+      navigate("/albums");
+    } else {
+      navigate(`/album/${albumId}`);
+    }
+  }
 };
 
 export default SongDetail;

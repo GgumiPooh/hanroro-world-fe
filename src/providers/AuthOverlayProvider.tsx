@@ -19,11 +19,11 @@ const AuthOverlayContext =
   createContext<Nullable<AuthOverlayContextValue>>(null);
 
 export const useAuthOverlay = (): AuthOverlayContextValue => {
-  const ctx = useContext(AuthOverlayContext);
-  if (!ctx) {
+  const context = useContext(AuthOverlayContext);
+  if (!context) {
     throw new Error("useAuthOverlay must be used within AuthOverlayProvider");
   }
-  return ctx;
+  return context;
 };
 
 const AuthOverlayProvider: FC<PropsWithChildren> = ({ children }) => {

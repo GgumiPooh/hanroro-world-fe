@@ -1,19 +1,79 @@
 # Project Instructions
 
-## Server Response Handling
+## File Organization
 
-- Validate all server response data with zod
-- Define zod schemas in `src/schemas/{featureName}.ts`, export schemas only (no type exports)
-- Define types in `src/types/{featureName}.ts` using `z.infer<typeof schema>`, export all
-- Never use `export type { X } from '...'` re-export syntax; define types directly
+- Flat structure: `src/hooks/*.ts`, not `src/hooks/backend/*.ts`
+- Zod schemas: `src/schemas/{feature}.ts` (export schemas only)
+- Types: `src/types/{feature}.ts` using `z.infer<typeof schema>` (export all)
+- No `export type { X } from '...'` re-exports; define types directly
 
-## Folder Structure
+## Naming
 
-- Use flat structure: files directly under feature folder, no nested subfolders
-- Example: `src/hooks/*.ts` (not `src/hooks/backend/*.ts`)
-- When refactoring: move files up, eliminate intermediate folders
+### Forbidden
 
-## Post-Change Verification
+- Implementation suffixes: `-Supabase`, `-Backend`, `-API`, `-Service`
+- Redundant suffixes: `-Viewer`, `-View`, `-Component`
+- Generic names: `data`, `item`, `temp`, `result`, `info`
+- Single-letter variables (except trivial lambdas: `x => x * 2`)
+- Magic numbers without named constants
 
-- After completing code modifications, ALWAYS run `npx tsc --noEmit` to verify no type errors
-- If type errors exist, fix them before reporting completion
+### Required
+
+- Descriptive names: `albumItem`, `matchedContent`, `publishedDate`
+- Examples: `useAlbumsSupabase` → `useAlbums`, `SongDetailViewer` → `SongInfo`
+
+## Type Safety
+
+- No `any` type
+- No non-null assertions (`!`); use explicit null checks
+- API response typed as `unknown` before zod validation:
+  ```typescript
+  const data: unknown = await res.json();
+  return schema.parse(data);
+  ```
+- Use utility types from `src/types/misc.ts`: `Nullable<T>`, `Optional<T>`, `Maybe<T>`
+
+## Code Style
+
+### Imports
+
+- No blank lines between import statements
+- Use `@/` path alias for all imports
+
+### Functional Programming
+
+- Prefer `.map()`, `.filter()`, `.find()`, `.some()`, `.every()`, `.reduce()` over loops
+- Use `Array.from({ length: n }, (_, i) => ...)` instead of `for` loops
+
+### Comments
+
+- Self-documenting code; avoid unnecessary comments
+- Remove all commented-out code
+- Required prefix: `// TODO:`, `// NOTE:`, `// WARN:`
+- JSDoc only for public API (exported types, function params)
+
+### Component Structure
+
+- Handler functions: `handle-` prefix, hoist after `return`
+- Utility functions: place outside component
+
+  ```typescript
+  const MyComponent: FC = () => {
+    const [count, setCount] = useState(0);
+
+    return <button onClick={handleClick}>Click</button>;
+
+    function handleClick() {
+      setCount(count + 1);
+    }
+  };
+
+  function formatDate(date: Date): string {
+    return date.toLocaleDateString();
+  }
+  ```
+
+## Verification
+
+- Run `npx tsc --noEmit` after all code changes
+- Fix type errors before completion

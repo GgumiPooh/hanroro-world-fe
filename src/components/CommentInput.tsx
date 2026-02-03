@@ -26,47 +26,6 @@ const CommentInput: FC<Props> = ({
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputClick = (e: React.MouseEvent) => {
-    if (!displayName) {
-      e.preventDefault();
-      openLogin();
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!displayName) {
-      openLogin();
-      return;
-    }
-    if (!comment.trim() || isSubmitting) return;
-
-    setIsSubmitting(true);
-    try {
-      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
-      const res = await fetch(`${baseUrl}${apiEndpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ content: comment.trim() }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to submit comment");
-      }
-
-      const data = await res.json();
-      const newComment = commentSchema.parse(data);
-
-      onCommentSubmit?.(newComment);
-      setComment("");
-    } catch (err) {
-      console.error("Comment submission failed:", err);
-      alert("댓글 등록에 실패했습니다.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div
       className={`fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 ${className ?? ""}`}
@@ -97,6 +56,47 @@ const CommentInput: FC<Props> = ({
       </div>
     </div>
   );
+
+  function handleInputClick(e: React.MouseEvent) {
+    if (!displayName) {
+      e.preventDefault();
+      openLogin();
+    }
+  }
+
+  async function handleSubmit() {
+    if (!displayName) {
+      openLogin();
+      return;
+    }
+    if (!comment.trim() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+      const res = await fetch(`${baseUrl}${apiEndpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ content: comment.trim() }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to submit comment");
+      }
+
+      const responseData: unknown = await res.json();
+      const newComment = commentSchema.parse(responseData);
+
+      onCommentSubmit?.(newComment);
+      setComment("");
+    } catch (err) {
+      console.error("Comment submission failed:", err);
+      alert("댓글 등록에 실패했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 };
 
 export default CommentInput;

@@ -6,6 +6,13 @@ import SignIcon from "@/icons/SignIcon";
 import YoutubeIcon from "@/icons/YoutubeIcon";
 import { type FC } from "react";
 
+const SOCIAL_LINKS = {
+  blog: "https://m.blog.naver.com/PostList.naver?blogId=hanr0r0&tab=1",
+  instagram: "https://www.instagram.com/hanr0r0/?hl=ko",
+  youtube: "https://www.youtube.com/@hanroro6055",
+  homepage: "https://www.hanroro.com",
+} as const;
+
 const Home: FC = () => {
   return (
     <div className="relative h-dvh text-black">
@@ -22,12 +29,7 @@ const Home: FC = () => {
         <Button
           variant="icon"
           size="sm"
-          onClick={() => {
-            window.open(
-              "https://m.blog.naver.com/PostList.naver?blogId=hanr0r0&tab=1",
-              "_blank",
-            );
-          }}
+          onClick={handleOpenBlog}
           aria-label="Blog 채널로 이동"
         >
           <BlogIcon className="h-7 text-[#38bb0c] sm:h-10" />
@@ -35,9 +37,7 @@ const Home: FC = () => {
         <Button
           variant="icon"
           size="sm"
-          onClick={() => {
-            window.open("https://www.instagram.com/hanr0r0/?hl=ko", "_blank");
-          }}
+          onClick={handleOpenInstagram}
           aria-label="Instagram 채널로 이동"
         >
           <InstagramIcon className="h-10 sm:h-14" />
@@ -45,9 +45,7 @@ const Home: FC = () => {
         <Button
           variant="icon"
           size="sm"
-          onClick={() => {
-            window.open("https://www.youtube.com/@hanroro6055", "_blank");
-          }}
+          onClick={handleOpenYoutube}
           aria-label="YouTube 채널로 이동"
         >
           <YoutubeIcon className="h-8 sm:h-12" />
@@ -55,9 +53,7 @@ const Home: FC = () => {
         <Button
           variant="icon"
           size="sm"
-          onClick={() => {
-            window.open("https://www.hanroro.com", "_blank");
-          }}
+          onClick={handleOpenHomepage}
           aria-label="hanroro 홈페이지로 이동"
         >
           <img
@@ -69,6 +65,22 @@ const Home: FC = () => {
       </div>
     </div>
   );
+
+  function handleOpenBlog() {
+    window.open(SOCIAL_LINKS.blog, "_blank");
+  }
+
+  function handleOpenInstagram() {
+    window.open(SOCIAL_LINKS.instagram, "_blank");
+  }
+
+  function handleOpenYoutube() {
+    window.open(SOCIAL_LINKS.youtube, "_blank");
+  }
+
+  function handleOpenHomepage() {
+    window.open(SOCIAL_LINKS.homepage, "_blank");
+  }
 };
 
 export default Home;

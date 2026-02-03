@@ -32,7 +32,7 @@ export function useComments(config: UseCommentsConfig) {
         throw new Error("Failed to fetch comments");
       }
 
-      const data = await res.json();
+      const data: unknown = await res.json();
       const validated = commentArraySchema.parse(data);
 
       setComments(validated);
@@ -69,7 +69,9 @@ export function useComments(config: UseCommentsConfig) {
           throw new Error("Failed to delete");
         }
 
-        setComments((prev) => prev.filter((c) => c.id !== commentId));
+        setComments((prev) =>
+          prev.filter((comment) => comment.id !== commentId),
+        );
         return true;
       } catch (err) {
         console.error("Failed to delete:", err);

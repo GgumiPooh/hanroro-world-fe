@@ -83,11 +83,11 @@ const CommentList = forwardRef<CommentListRef, Props>(
           <p className="text-center text-sm text-plum-300/60">{emptyMessage}</p>
         ) : (
           <ul className="mb-50 flex w-full flex-col gap-5">
-            {comments.map((c) => {
-              const isOwn = isOwnComment(c.author);
+            {comments.map((comment) => {
+              const isOwn = isOwnComment(comment.author);
               return (
                 <li
-                  key={c.id}
+                  key={comment.id}
                   className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
                 >
                   <div
@@ -98,17 +98,17 @@ const CommentList = forwardRef<CommentListRef, Props>(
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <span className="md:text-md text-sm text-plum-300">
-                          {c.author}
+                          {comment.author}
                         </span>
                         <span className="text-xs text-plum-200/90">
-                          {c.createdAt}
+                          {comment.createdAt}
                         </span>
                       </div>
                       {isOwn && (
                         <Button
                           variant="icon"
                           size="sm"
-                          onClick={() => deleteComment(c.id)}
+                          onClick={() => handleDeleteComment(comment.id)}
                           className="hover:text-red-400/80 h-8 w-8 text-plum-300"
                         >
                           <XMarkIcon className="size-4" />
@@ -116,7 +116,7 @@ const CommentList = forwardRef<CommentListRef, Props>(
                       )}
                     </div>
                     <p className="text-base leading-relaxed font-medium text-plum-300 md:text-lg">
-                      {c.content}
+                      {comment.content}
                     </p>
                   </div>
                 </li>
@@ -126,6 +126,10 @@ const CommentList = forwardRef<CommentListRef, Props>(
         )}
       </section>
     );
+
+    function handleDeleteComment(commentId: number) {
+      deleteComment(commentId);
+    }
   },
 );
 

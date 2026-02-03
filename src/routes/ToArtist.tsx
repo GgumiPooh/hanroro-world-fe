@@ -1,19 +1,11 @@
 import CommentInput from "@/components/CommentInput";
 import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
+import type { Comment } from "@/types/comment";
 import { useRef, type FC } from "react";
 
 const ToArtist: FC = () => {
   const commentListRef = useRef<CommentListRef>(null);
-
-  const handleMessageSubmit = (comment: {
-    id: number;
-    author: string;
-    content: string;
-    createdAt: string;
-  }) => {
-    commentListRef.current?.addComment(comment);
-  };
 
   return (
     <div className="relative min-h-screen overflow-y-auto pt-50">
@@ -30,7 +22,6 @@ const ToArtist: FC = () => {
           To. RORO
         </h1>
 
-        {/* 메시지 목록 */}
         <CommentList
           ref={commentListRef}
           fetchEndpoint="/api/public/message"
@@ -40,7 +31,6 @@ const ToArtist: FC = () => {
         />
       </div>
 
-      {/* 메시지 입력 바 */}
       <CommentInput
         apiEndpoint="/api/public/message"
         onCommentSubmit={handleMessageSubmit}
@@ -48,6 +38,10 @@ const ToArtist: FC = () => {
       />
     </div>
   );
+
+  function handleMessageSubmit(newComment: Comment) {
+    commentListRef.current?.addComment(newComment);
+  }
 };
 
 export default ToArtist;

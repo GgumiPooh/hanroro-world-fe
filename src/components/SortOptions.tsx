@@ -12,12 +12,13 @@ type Props = {
 
 const SortOptions: FC<Props> = ({ className, sort, onChange }) => {
   const isSmallBreakpoint = useBreakpoint("sm");
+
   return (
     <div className={cn("flex gap-2 text-nowrap sm:gap-8", className)}>
       <Button
         variant="ghost"
         size={isSmallBreakpoint ? "md" : "sm"}
-        onClick={() => onChange("latest")}
+        onClick={handleSortLatest}
         className={cn(
           "w-full cursor-default font-bold ring-1 sm:w-auto",
           sort === "latest"
@@ -30,7 +31,7 @@ const SortOptions: FC<Props> = ({ className, sort, onChange }) => {
       <Button
         variant="ghost"
         size={isSmallBreakpoint ? "md" : "sm"}
-        onClick={() => onChange("oldest")}
+        onClick={handleSortOldest}
         className={cn(
           "w-full cursor-default font-bold ring-1 sm:w-auto",
           sort === "oldest"
@@ -42,6 +43,14 @@ const SortOptions: FC<Props> = ({ className, sort, onChange }) => {
       </Button>
     </div>
   );
+
+  function handleSortLatest() {
+    onChange("latest");
+  }
+
+  function handleSortOldest() {
+    onChange("oldest");
+  }
 };
 
 export default SortOptions;

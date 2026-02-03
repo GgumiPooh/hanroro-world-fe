@@ -1,22 +1,10 @@
+import { A_MINUTE } from "@/constants/misc";
 import { supabase } from "@/lib/supabase";
 import { albumArraySchema } from "@/schemas/album";
 import type { Album } from "@/types/album";
-import type { LanguageData } from "@/types/common";
-import type { Optional } from "@/types/misc";
+import { selectLocalizedText } from "@/utils/localization";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-
-function resolveLocalizedText(
-  items: Optional<LanguageData[]>,
-  preferred: string[] = ["ko", "en"],
-): string {
-  if (!items || items.length === 0) return "";
-  for (const lang of preferred) {
-    const found = items.find((x) => x.language?.toLowerCase() === lang);
-    if (found?.content) return found.content;
-  }
-  return items[0]?.content ?? "";
-}
 
 async function fetchAlbums(): Promise<Album[]> {
   const { data, error } = await supabase
@@ -31,38 +19,38 @@ async function fetchAlbums(): Promise<Album[]> {
   return albumArraySchema.parse(data ?? []);
 }
 
-export function useAlbumsSupabase() {
+export function useAlbums() {
   const query = useQuery({
     queryKey: ["albums"],
     queryFn: fetchAlbums,
-    staleTime: 60_000,
+    staleTime: A_MINUTE,
   });
 
   const albumsView = useMemo(() => {
     if (!query.data) return [];
 
     return query.data.map((album) => {
-      const meta = album.metadata ?? [];
-      const lower = meta.map((m) => ({
-        type: (m.type || "").toLowerCase(),
-        url: m.url,
+      const metadata = album.metadata ?? [];
+      const normalizedMetadata = metadata.map((item) => ({
+        type: (item.type || "").toLowerCase(),
+        url: item.url,
       }));
-      const cover =
-        lower.find((m) => m.type.includes("cover"))?.url ||
-        lower.find((m) => m.type.includes("image"))?.url ||
-        lower[0]?.url ||
+      const coverUrl =
+        normalizedMetadata.find((item) => item.type.includes("cover"))?.url ||
+        normalizedMetadata.find((item) => item.type.includes("image"))?.url ||
+        normalizedMetadata[0]?.url ||
         "";
 
       const sortedSongs = [...(album.songs ?? [])].sort(
-        (a, b) => (a.track_number ?? 0) - (b.track_number ?? 0),
+        (songA, songB) => (songA.track_number ?? 0) - (songB.track_number ?? 0),
       );
       const firstSongId = sortedSongs[0]?.id ?? null;
 
       return {
         ...album,
-        titleText: resolveLocalizedText(album.title),
-        descriptionText: resolveLocalizedText(album.description),
-        coverUrl: cover,
+        titleText: selectLocalizedText(album.title),
+        descriptionText: selectLocalizedText(album.description),
+        coverUrl,
         firstSongId,
       };
     });

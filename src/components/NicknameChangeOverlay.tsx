@@ -6,6 +6,9 @@ import { useState, type FC } from "react";
 import { createPortal } from "react-dom";
 import { useEvent } from "react-use";
 
+const MIN_NICKNAME_LENGTH = 2;
+const MAX_NICKNAME_LENGTH = 20;
+
 type Props = {
   currentNickname?: Nullable<string>;
   onClose: () => void;
@@ -36,7 +39,6 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
 
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-plum-300"></label>
             <input
               type="text"
               value={nickname}
@@ -44,7 +46,7 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               placeholder="새 닉네임을 입력하세요"
               className="w-full rounded-xl border border-plum-600/30 bg-plum-900/30 px-4 py-3 text-plum-100 transition-colors duration-200 placeholder:text-plum-400/60 hover:border-plum-300 focus:border-plum-500 focus:outline-none"
-              maxLength={20}
+              maxLength={MAX_NICKNAME_LENGTH}
               disabled={isSubmitting}
             />
           </div>
@@ -85,8 +87,8 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
       return;
     }
 
-    if (nickname.trim().length < 2) {
-      setError("닉네임은 2자 이상이어야 합니다.");
+    if (nickname.trim().length < MIN_NICKNAME_LENGTH) {
+      setError(`닉네임은 ${MIN_NICKNAME_LENGTH}자 이상이어야 합니다.`);
       return;
     }
 
@@ -109,7 +111,7 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
         return;
       }
       if (res.status === 400) {
-        setError("닉네임은 2자 이상이어야 합니다.");
+        setError(`닉네임은 ${MIN_NICKNAME_LENGTH}자 이상이어야 합니다.`);
         return;
       }
       if (!res.ok) {

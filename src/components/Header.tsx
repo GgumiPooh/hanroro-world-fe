@@ -60,14 +60,14 @@ const Header: FC<Props> = ({ className }) => {
               <LogoIcon className="w-18 shrink-0 pt-0.5 text-plum-100 md:w-25" />
             </Button>
           </Link>
-          {ENV_VARIABLE.IS_COMMING_SOON ? (
+          {ENV_VARIABLE.IS_COMING_SOON ? (
             <Button
               className="font-bold not-lg:hidden"
               variant="ghost"
               size="md"
-              onClick={() => window.alert("Comming soon")}
+              onClick={() => window.alert("Coming soon")}
             >
-              Comming soon
+              Coming soon
             </Button>
           ) : (
             <DesktopMenuList
@@ -96,14 +96,14 @@ const Header: FC<Props> = ({ className }) => {
               : "pointer-events-none max-h-0 opacity-0",
           )}
         >
-          {ENV_VARIABLE.IS_COMMING_SOON ? (
+          {ENV_VARIABLE.IS_COMING_SOON ? (
             <Button
               variant="ghost"
               size="md"
               className="font-bold"
-              onClick={() => window.alert("Comming soon")}
+              onClick={() => window.alert("Coming soon")}
             >
-              Comming soon
+              Coming soon
             </Button>
           ) : (
             <MobileMenuPanel

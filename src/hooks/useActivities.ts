@@ -1,3 +1,4 @@
+import { A_MINUTE } from "@/constants/misc";
 import { supabase } from "@/lib/supabase";
 import { activityArraySchema } from "@/schemas/activity";
 import type { Activity } from "@/types/activity";
@@ -36,11 +37,11 @@ async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   return activityArraySchema.parse(transformed);
 }
 
-export function useActivitiesSupabase(sort: Sort, year: string) {
+export function useActivities(sort: Sort, year: string) {
   const query = useQuery({
     queryKey: ["activities", sort, year],
     queryFn: () => fetchActivities(sort, year),
-    staleTime: 60_000,
+    staleTime: A_MINUTE,
   });
 
   return {
