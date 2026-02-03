@@ -1,15 +1,16 @@
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
+import { useAlbums } from "@/hooks/useAlbums";
+import { findMetadataUrl } from "@/utils/metadata";
+import { cn } from "@/utils/styles";
 import type { FC } from "react";
 import { Link } from "react-router";
 
-const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
-  const found = meta.find((m) => m.type === type);
-  return found ? found.url : (meta[0]?.url ?? "");
+type Props = {
+  className?: string;
 };
 
-const AlbumsView: FC = () => {
-  const { albumsView, isLoading, error } = useAlbumsSupabase();
+const AlbumList: FC<Props> = ({ className }) => {
+  const { albumsView, isLoading, error } = useAlbums();
 
   if (isLoading) {
     return <p className="mb-20 text-center text-plum-100/80">Loading...</p>;
@@ -21,39 +22,39 @@ const AlbumsView: FC = () => {
   }
 
   return (
-    <ul className="">
-      {albumsView.map((item) => {
-        const cover = getUrlsByType(item.metadata ?? [], "img");
-        const title = item.titleText || "Untitled Album";
-        const dateStr = item.published_at ?? "";
+    <ul className={cn(className)}>
+      {albumsView.map((albumItem) => {
+        const coverUrl = findMetadataUrl(albumItem.metadata ?? [], "img");
+        const albumTitle = albumItem.titleText || "Untitled Album";
+        const publishedDate = albumItem.published_at ?? "";
 
-        const isDigitalSingle = item.album_type === "DIGITAL_SINGLE";
+        const isDigitalSingle = albumItem.album_type === "DIGITAL_SINGLE";
         const targetPath =
-          `/album/${item.id}` +
-          (isDigitalSingle && item.firstSongId
-            ? `/song/${item.firstSongId}`
+          `/album/${albumItem.id}` +
+          (isDigitalSingle && albumItem.firstSongId
+            ? `/song/${albumItem.firstSongId}`
             : "");
 
         return (
           <li
-            key={String(item.id)}
             className="mb-20 rounded-xl bg-gray-900/40 backdrop-blur-md md:mb-50"
+            key={String(albumItem.id)}
           >
-            <Link to={targetPath} className="flex p-0">
+            <Link className="flex p-0" to={targetPath}>
               <div className="flex flex-row items-center gap-5 sm:gap-10 md:gap-15">
                 <ImageWithPlaceholder
                   className="relative h-25 w-25 items-center gap-5 sm:h-50 sm:w-50 sm:gap-15 lg:h-60 lg:w-60"
                   imgClassName="absolute size-full shrink-0 bg-plum-800/60 object-cover object-center"
-                  src={cover}
-                  alt={title}
+                  src={coverUrl}
+                  alt={albumTitle}
                 />
                 <div className="min-w-0 text-left">
                   <h2 className="font-medium text-plum-100 sm:text-2xl md:text-3xl">
-                    {title}
+                    {albumTitle}
                   </h2>
-                  {dateStr && (
+                  {publishedDate && (
                     <p className="mt-2 text-sm text-plum-300/70 md:text-lg">
-                      {dateStr.replaceAll("-", ".")}
+                      {publishedDate.replaceAll("-", ".")}
                     </p>
                   )}
                 </div>
@@ -66,4 +67,4 @@ const AlbumsView: FC = () => {
   );
 };
 
-export default AlbumsView;
+export default AlbumList;

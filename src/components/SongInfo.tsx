@@ -1,43 +1,40 @@
 import Button from "@/components/Button";
-import CommentInput, { type CommentData } from "@/components/CommentInput";
+import CommentInput from "@/components/CommentInput";
 import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
-import { useSongSupabase } from "@/hooks/supabase/useSongSupabase";
+import { useAlbums } from "@/hooks/useAlbums";
+import { useSong } from "@/hooks/useSong";
 import { useYouTubePlayer } from "@/hooks/useYouTubePlayer";
+import type { Comment } from "@/types/comment";
+import type { Nullable } from "@/types/misc";
 import { cn } from "@/utils/styles";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 
-function extractYouTubeId(url: string): string | null {
-  if (!url) return null;
-  // Handle various YouTube URL formats
-  const patterns = [
-    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match?.[1]) return match[1];
-  }
-  return null;
-}
+const YOUTUBE_URL_PATTERNS = [
+  /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+  /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+];
 
-const SongDetailViewer: FC = () => {
+type Props = {
+  className?: string;
+};
+
+const SongInfo: FC<Props> = ({ className }) => {
   const { albumId, songId } = useParams();
 
-  const { detailView, isLoading, error } = useSongSupabase(albumId, songId);
-  const { albumsView } = useAlbumsSupabase();
+  const { detailView, isLoading, error } = useSong(songId);
+  const { albumsView } = useAlbums();
   const { videoId: currentVideoId, isPlaying, toggle } = useYouTubePlayer();
 
   const [showLyrics, setShowLyrics] = useState(false);
   const commentListRef = useRef<CommentListRef>(null);
 
   const album = useMemo(
-    () => albumsView.find((a) => String(a.id) === albumId),
+    () => albumsView.find((albumItem) => String(albumItem.id) === albumId),
     [albumsView, albumId],
   );
 
@@ -47,10 +44,6 @@ const SongDetailViewer: FC = () => {
   );
 
   const isCurrentSongPlaying = youtubeId === currentVideoId && isPlaying;
-
-  const handleCommentSubmit = (newComment: CommentData) => {
-    commentListRef.current?.addComment(newComment);
-  };
 
   if (isLoading) {
     return (
@@ -72,20 +65,22 @@ const SongDetailViewer: FC = () => {
   }
 
   return (
-    <div className="mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0">
-      {/* 상단: 앨범 커버 + 제목 & 소개 */}
+    <div
+      className={cn(
+        "mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0",
+        className,
+      )}
+    >
       <div className="mb-5 flex flex-col items-center gap-6 md:justify-center md:gap-10 lg:flex-row">
-        {/* 앨범 커버 (노래 이미지 우선, 없으면 앨범 커버) */}
         <ImageWithPlaceholder
           className="ld:h-[350px] ld:w-[350px] h-[250px] w-[250px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px]"
           imgClassName="h-full w-full object-cover"
           src={
-            detailView.imgUrl || album?.coverUrl || "/images/placeholder.png"
+            detailView.imageUrl || album?.coverUrl || "/images/placeholder.png"
           }
           alt="album cover"
         />
 
-        {/* 제목 & 소개 */}
         <div className="flex flex-col items-center text-center">
           <div className="mb-10 flex items-center gap-5">
             <h2 className="text-2xl font-bold text-plum-200 md:text-4xl">
@@ -93,10 +88,10 @@ const SongDetailViewer: FC = () => {
             </h2>
             {youtubeId && (
               <Button
+                className="mb-1 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
                 variant="icon"
                 size="sm"
-                onClick={() => toggle(youtubeId)}
-                className="mb-1 rounded-full bg-plum-600 hover:bg-plum-500 md:h-8.5 md:w-8.5"
+                onClick={handleTogglePlay}
               >
                 {isCurrentSongPlaying ? (
                   <PauseIcon className="size-5 text-plum-100" />
@@ -114,14 +109,13 @@ const SongDetailViewer: FC = () => {
         </div>
       </div>
 
-      {/* 하단: 가사 토글 */}
       {detailView.lyrics && (
         <div className="flex flex-col items-start">
           <Button
+            className="mb-4 pl-10 text-sm text-plum-200"
             variant="icon"
             size="sm"
-            onClick={() => setShowLyrics(!showLyrics)}
-            className="mb-4 pl-10 text-sm text-plum-200"
+            onClick={handleToggleLyrics}
           >
             {showLyrics ? "▲ 가사" : "▼ 가사"}
           </Button>
@@ -137,16 +131,14 @@ const SongDetailViewer: FC = () => {
         </div>
       )}
 
-      {/* 댓글 목록 */}
       {songId && (
         <CommentList
+          className="mt-8 mb-24"
           ref={commentListRef}
           songId={songId}
-          className="mt-8 mb-24"
         />
       )}
 
-      {/* 고정 댓글 입력 바 */}
       {songId && (
         <CommentInput
           apiEndpoint={`/api/public/song/${songId}/comment`}
@@ -155,6 +147,30 @@ const SongDetailViewer: FC = () => {
       )}
     </div>
   );
+
+  function handleTogglePlay() {
+    if (youtubeId) {
+      toggle(youtubeId);
+    }
+  }
+
+  function handleToggleLyrics() {
+    setShowLyrics(!showLyrics);
+  }
+
+  function handleCommentSubmit(newComment: Comment) {
+    commentListRef.current?.addComment(newComment);
+  }
 };
 
-export default SongDetailViewer;
+export default SongInfo;
+
+function extractYouTubeId(url: string): Nullable<string> {
+  if (!url) return null;
+
+  return (
+    YOUTUBE_URL_PATTERNS.map((pattern) => url.match(pattern)?.[1]).find(
+      (videoId) => videoId,
+    ) ?? null
+  );
+}

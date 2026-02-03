@@ -1,40 +1,21 @@
+import { A_MINUTE, ACTIVITY_TYPE } from "@/constants/misc";
 import { supabase } from "@/lib/supabase";
+import { activityArraySchema } from "@/schemas/activity";
+import type { Activity } from "@/types/activity";
 import type { Sort } from "@/types/sort";
 import { useQuery } from "@tanstack/react-query";
-
-type Title = {
-  language: string;
-  content: string;
-};
-
-type MetaData = {
-  type: string;
-  url: string;
-};
-
-export type Activity = {
-  id: number;
-  title: Title[];
-  activityType?: string;
-  activeFrom: string;
-  activeTo: string;
-  metaData: MetaData[];
-};
 
 async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
   let query = supabase.from("activities").select("*");
 
-  // PERFORMANCE 타입만 필터링
-  query = query.eq("type", "PERFORMANCE");
+  query = query.eq("type", ACTIVITY_TYPE.PERFORMANCE);
 
-  // 연도 필터링
   if (year) {
     const startDate = `${year}-01-01`;
     const endDate = `${year}-12-31`;
     query = query.gte("active_from", startDate).lte("active_from", endDate);
   }
 
-  // 정렬
   const ascending = sort === "oldest";
   query = query.order("active_from", { ascending });
 
@@ -44,22 +25,23 @@ async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
     throw new Error(error.message);
   }
 
-  // 필드명 변환 (snake_case -> camelCase for backward compatibility)
-  return (data ?? []).map((item) => ({
-    ...item,
+  const transformed = (data ?? []).map((item) => ({
+    id: item.id,
     title: item.title ?? [],
     activityType: item.type,
-    activeFrom: item.active_from, // snake_case from DB
-    activeTo: item.active_to, // snake_case from DB
-    metaData: item.meta_data ?? [], // snake_case from DB
-  })) as Activity[];
+    activeFrom: item.active_from,
+    activeTo: item.active_to,
+    metaData: item.meta_data ?? [],
+  }));
+
+  return activityArraySchema.parse(transformed);
 }
 
-export function useActivitiesSupabase(sort: Sort, year: string) {
+export function useActivities(sort: Sort, year: string) {
   const query = useQuery({
     queryKey: ["activities", sort, year],
     queryFn: () => fetchActivities(sort, year),
-    staleTime: 60_000,
+    staleTime: A_MINUTE,
   });
 
   return {

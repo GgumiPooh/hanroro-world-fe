@@ -8,7 +8,7 @@ type Props = {
 const SignIcon: FC<Props> = ({ className }) => {
   return (
     <svg
-    className={cn("fill-current", className)}
+      className={cn("fill-current", className)}
       xmlns="http://www.w3.org/2000/svg"
       width="300"
       viewBox="0, 0, 2666, 2000"

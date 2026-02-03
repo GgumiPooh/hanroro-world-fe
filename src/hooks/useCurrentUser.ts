@@ -1,6 +1,7 @@
 import { A_MINUTE } from "@/constants/misc";
-import { userSchema, type User } from "@/schemas/user";
+import { userSchema } from "@/schemas/user";
 import type { Nullable } from "@/types/misc";
+import type { User } from "@/types/user";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 
@@ -13,21 +14,24 @@ async function fetchCurrentUser(): Promise<Nullable<User>> {
     throw new Error("Failed to fetch current user");
   }
 
-  return userSchema.parseAsync(res.json());
+  const data: unknown = await res.json();
+  return userSchema.parse(data);
 }
 
 export function useCurrentUser() {
-  const query = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["currentUser"],
     staleTime: A_MINUTE,
     queryFn: fetchCurrentUser,
   });
 
-  const displayName = query.data?.name || query.data?.nickname || null;
+  const displayName = data?.name || data?.nickname || null;
 
   return {
-    ...query,
-    user: query.data,
+    user: data,
     displayName,
+    isLoading,
+    error,
+    refetch,
   };
 }

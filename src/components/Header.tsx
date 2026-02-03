@@ -2,8 +2,8 @@ import Button from "@/components/Button";
 import NicknameChangeOverlay from "@/components/NicknameChangeOverlay";
 import UserMenuOverlay from "@/components/UserMenuOverlay";
 import { HEADER_MENU_LIST } from "@/constants/navigation";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LogoIcon from "@/icons/LogoIcon";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import type { Nullable } from "@/types/misc";
@@ -60,14 +60,14 @@ const Header: FC<Props> = ({ className }) => {
               <LogoIcon className="w-18 shrink-0 pt-0.5 text-plum-100 md:w-25" />
             </Button>
           </Link>
-          {ENV_VARIABLE.IS_COMMING_SOON ? (
+          {ENV_VARIABLE.IS_COMING_SOON ? (
             <Button
               className="font-bold not-lg:hidden"
               variant="ghost"
               size="md"
-              onClick={() => window.alert("Comming soon")}
+              onClick={() => window.alert("Coming soon")}
             >
-              Comming soon
+              Coming soon
             </Button>
           ) : (
             <DesktopMenuList
@@ -96,14 +96,14 @@ const Header: FC<Props> = ({ className }) => {
               : "pointer-events-none max-h-0 opacity-0",
           )}
         >
-          {ENV_VARIABLE.IS_COMMING_SOON ? (
+          {ENV_VARIABLE.IS_COMING_SOON ? (
             <Button
+              className="font-bold"
               variant="ghost"
               size="md"
-              className="font-bold"
-              onClick={() => window.alert("Comming soon")}
+              onClick={() => window.alert("Coming soon")}
             >
-              Comming soon
+              Coming soon
             </Button>
           ) : (
             <MobileMenuPanel
@@ -148,7 +148,7 @@ const Header: FC<Props> = ({ className }) => {
 
 type MenuListProps = {
   className?: string;
-  displayName?: string | null;
+  displayName?: Nullable<string>;
   isLoading?: boolean;
   onUserClick?: () => void;
   onNavigate?: () => void;
@@ -167,7 +167,7 @@ const DesktopMenuList: FC<MenuListProps> = ({
   return (
     <ul className={cn("flex items-center", className)}>
       {HEADER_MENU_LIST.map((item) => (
-        <li key={item.href} className="mr-7">
+        <li className="mr-7" key={item.href}>
           <Button
             className="font-bold"
             variant="ghost"
@@ -219,7 +219,7 @@ const MobileMenuPanel: FC<MenuListProps> = ({
   return (
     <ul className={cn("", className)}>
       {HEADER_MENU_LIST.map((item) => (
-        <li key={item.href} className="mb-3">
+        <li className="mb-3" key={item.href}>
           <Button
             className="text-base font-bold"
             variant="ghost"

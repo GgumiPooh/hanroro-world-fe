@@ -1,4 +1,4 @@
-import AlbumsView from "@/components/AlbumsView";
+import AlbumList from "@/components/AlbumList";
 import BlurBackground from "@/components/BlurBackground";
 import type { FC } from "react";
 
@@ -11,7 +11,7 @@ const Albums: FC = () => {
       </h1>
 
       <div className="z-2 mx-auto w-[min(92vw,760px)] px-5.5">
-        <AlbumsView />
+        <AlbumList />
       </div>
     </div>
   );

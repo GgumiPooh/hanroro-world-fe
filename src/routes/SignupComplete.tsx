@@ -1,6 +1,6 @@
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { type FC } from "react";
 import { useNavigate } from "react-router";
 
@@ -10,7 +10,7 @@ function saveConsent() {
   try {
     localStorage.setItem(CONSENT_KEY, "true");
   } catch {
-    // localStorage 사용 불가 시 무시
+    // NOTE: Silently ignore when localStorage is unavailable (e.g., private browsing)
   }
 }
 

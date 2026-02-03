@@ -1,28 +1,26 @@
 import Button from "@/components/Button";
+import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, type FC } from "react";
 import { createPortal } from "react-dom";
 import { useEvent } from "react-use";
 
+const MIN_NICKNAME_LENGTH = 2;
+const MAX_NICKNAME_LENGTH = 20;
+
 type Props = {
-  currentNickname?: string | null;
+  currentNickname?: Nullable<string>;
   onClose: () => void;
 };
 
 const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
   const [nickname, setNickname] = useState(currentNickname ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Nullable<string>>(null);
   const queryClient = useQueryClient();
 
-  useEvent("keydown", (event) => {
-    if (event.key !== "Escape") {
-      return;
-    }
-
-    onClose();
-  });
+  useEvent("keydown", (e) => e.key === "Escape" && onClose());
 
   return createPortal(
     <div className="fixed inset-0 z-50">
@@ -35,16 +33,15 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
 
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-plum-300"></label>
             <input
+              className="w-full rounded-xl border border-plum-600/30 bg-plum-900/30 px-4 py-3 text-plum-100 transition-colors duration-200 placeholder:text-plum-400/60 hover:border-plum-300 focus:border-plum-500 focus:outline-none"
               type="text"
               value={nickname}
+              placeholder="새 닉네임을 입력하세요"
+              maxLength={MAX_NICKNAME_LENGTH}
+              disabled={isSubmitting}
               onChange={(e) => setNickname(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-              placeholder="새 닉네임을 입력하세요"
-              className="w-full rounded-xl border border-plum-600/30 bg-plum-900/30 px-4 py-3 text-plum-100 transition-colors duration-200 placeholder:text-plum-400/60 hover:border-plum-300 focus:border-plum-500 focus:outline-none"
-              maxLength={20}
-              disabled={isSubmitting}
             />
           </div>
 
@@ -54,20 +51,20 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
 
           <div className="flex gap-3 pt-2">
             <Button
+              className="flex-1 border border-gray-400"
               variant="ghost"
               size="md"
-              className="flex-1 border border-gray-400"
-              onClick={onClose}
               disabled={isSubmitting}
+              onClick={onClose}
             >
               취소
             </Button>
             <Button
+              className="flex-1"
               variant="primary"
               size="md"
-              className="flex-1"
-              onClick={handleSubmit}
               disabled={isSubmitting || !nickname.trim()}
+              onClick={handleSubmit}
             >
               {isSubmitting ? "변경 중..." : "변경하기"}
             </Button>
@@ -84,8 +81,8 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
       return;
     }
 
-    if (nickname.trim().length < 2) {
-      setError("닉네임은 2자 이상이어야 합니다.");
+    if (nickname.trim().length < MIN_NICKNAME_LENGTH) {
+      setError(`닉네임은 ${MIN_NICKNAME_LENGTH}자 이상이어야 합니다.`);
       return;
     }
 
@@ -108,7 +105,7 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
         return;
       }
       if (res.status === 400) {
-        setError("닉네임은 2자 이상이어야 합니다.");
+        setError(`닉네임은 ${MIN_NICKNAME_LENGTH}자 이상이어야 합니다.`);
         return;
       }
       if (!res.ok) {

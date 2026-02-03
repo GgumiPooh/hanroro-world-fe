@@ -10,13 +10,7 @@ type Props = {
 };
 
 const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameMenuClick }) => {
-  useEvent("keydown", (event) => {
-    if (event.key !== "Escape") {
-      return;
-    }
-
-    onClose();
-  });
+  useEvent("keydown", (e) => e.key === "Escape" && onClose());
 
   return createPortal(
     <div className="fixed inset-0 z-50">
@@ -31,25 +25,25 @@ const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameMenuClick }) => {
 
         <div className="mb-3 space-y-3">
           <Button
+            className="w-full py-3 text-plum-200 md:text-xl"
             variant="icon"
             size="md"
-            className="w-full py-3 text-plum-200 md:text-xl"
             onClick={handleNicknameMenuClick}
           >
             닉네임 변경
           </Button>
           <Button
+            className="w-full py-3 text-plum-200 md:text-xl"
             variant="icon"
             size="md"
-            className="w-full py-3 text-plum-200 md:text-xl"
             onClick={handleLogout}
           >
             지수와로그아웃
           </Button>
           <Button
+            className="w-full py-3 text-xl text-plum-600"
             variant="icon"
             size="md"
-            className="w-full py-3 text-xl text-plum-600"
             onClick={handleDeleteAccount}
           >
             회원 탈퇴

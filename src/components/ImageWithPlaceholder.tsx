@@ -30,7 +30,7 @@ type Props = {
 const ImageWithPlaceholder: FC<Props> = ({
   className,
   imgClassName,
-  src: _src,
+  src: sourceProp,
   alt,
   fallbackOnError = true,
   fallbackSrc,
@@ -40,14 +40,14 @@ const ImageWithPlaceholder: FC<Props> = ({
 }) => {
   const imgRef = useRef<HTMLImageElement>(null);
 
-  const [src, setSrc] = useState(_src);
+  const [currentSrc, setCurrentSrc] = useState(sourceProp);
   const [status, setStatus] = useState<ImageStatus>(ImageStatus.LOADING);
 
   useIsomorphicLayoutEffect(() => {
-    setSrc(_src);
+    setCurrentSrc(sourceProp);
     setStatus(ImageStatus.LOADING);
     onStatusChange?.(ImageStatus.LOADING);
-  }, [_src]);
+  }, [sourceProp]);
 
   useEffect(() => {
     if (!imgRef.current?.complete) {
@@ -61,7 +61,7 @@ const ImageWithPlaceholder: FC<Props> = ({
     }
 
     handleLoad();
-  }, [src, fallbackSrc]);
+  }, [currentSrc, fallbackSrc]);
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
@@ -77,8 +77,8 @@ const ImageWithPlaceholder: FC<Props> = ({
           imgClassName,
         )}
         ref={imgRef}
-        key={src?.toString()}
-        src={src}
+        key={currentSrc?.toString()}
+        src={currentSrc}
         alt={alt}
         onLoad={handleLoad}
         onError={handleError}
@@ -92,8 +92,8 @@ const ImageWithPlaceholder: FC<Props> = ({
   }
 
   function handleError() {
-    if (fallbackOnError && fallbackSrc && src !== fallbackSrc) {
-      setSrc(fallbackSrc);
+    if (fallbackOnError && fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc);
       setStatus(ImageStatus.LOADING);
       onStatusChange?.(ImageStatus.LOADING);
       return;

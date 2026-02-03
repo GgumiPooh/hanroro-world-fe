@@ -1,6 +1,5 @@
 export const ENV_VARIABLE = {
-  IS_COMMING_SOON:
-    import.meta.env.VITE_IS_COMMING_SOON === "true" ? true : false,
+  IS_COMING_SOON: import.meta.env.VITE_IS_COMING_SOON === "true",
   API_BASE_URL: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080",
   NAVER_OAUTH_URL: import.meta.env.VITE_NAVER_OAUTH_URL,
   KAKAO_OAUTH_URL: import.meta.env.VITE_KAKAO_OAUTH_URL,

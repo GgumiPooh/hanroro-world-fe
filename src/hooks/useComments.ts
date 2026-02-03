@@ -1,27 +1,21 @@
-import { type CommentData } from "@/components/CommentInput";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { commentArraySchema } from "@/schemas/comment";
+import type { Comment } from "@/types/comment";
+import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useCallback, useEffect, useState } from "react";
 
 type UseCommentsConfig = {
   fetchEndpoint: string;
   deleteEndpoint: (id: number) => string;
-  /** Whether to auto-fetch on mount. Defaults to true */
   autoFetch?: boolean;
-};
-
-type ApiResponse = {
-  id: number;
-  content: string;
-  author: string;
-  createdAt: string;
 };
 
 export function useComments(config: UseCommentsConfig) {
   const { fetchEndpoint, deleteEndpoint, autoFetch = true } = config;
-  const [comments, setComments] = useState<CommentData[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Nullable<string>>(null);
   const { displayName } = useCurrentUser();
 
   const fetchComments = useCallback(async () => {
@@ -38,16 +32,10 @@ export function useComments(config: UseCommentsConfig) {
         throw new Error("Failed to fetch comments");
       }
 
-      const data = (await res.json()) as ApiResponse[];
+      const data: unknown = await res.json();
+      const validated = commentArraySchema.parse(data);
 
-      const mapped: CommentData[] = data.map((c) => ({
-        id: c.id,
-        author: c.author,
-        content: c.content,
-        createdAt: c.createdAt,
-      }));
-
-      setComments(mapped);
+      setComments(validated);
     } catch (err) {
       console.error("Failed to load comments:", err);
       setError("댓글을 불러오는데 실패했습니다.");
@@ -62,7 +50,7 @@ export function useComments(config: UseCommentsConfig) {
     }
   }, [autoFetch, fetchComments]);
 
-  const addComment = useCallback((newComment: CommentData) => {
+  const addComment = useCallback((newComment: Comment) => {
     setComments((prev) => [newComment, ...prev]);
   }, []);
 
@@ -81,7 +69,9 @@ export function useComments(config: UseCommentsConfig) {
           throw new Error("Failed to delete");
         }
 
-        setComments((prev) => prev.filter((c) => c.id !== commentId));
+        setComments((prev) =>
+          prev.filter((comment) => comment.id !== commentId),
+        );
         return true;
       } catch (err) {
         console.error("Failed to delete:", err);

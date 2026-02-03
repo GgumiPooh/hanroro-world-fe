@@ -2,11 +2,10 @@ import { cn } from "@/utils/styles";
 import { type ComponentProps, type FC } from "react";
 
 type Props = {
+  className?: string;
   variant: "primary" | "secondary" | "ghost" | "icon";
   size: "sm" | "md" | "lg";
-  className?: string;
 } & ComponentProps<"button">;
-// } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<Props> = ({
   variant,
@@ -17,7 +16,6 @@ const Button: FC<Props> = ({
 }) => {
   return (
     <button
-      type="button"
       className={cn(
         "inline-flex items-center justify-center rounded-4xl font-medium transition-all focus:outline-none",
         variant === "primary" && "bg-gray-600 text-white hover:bg-gray-500",
@@ -33,6 +31,7 @@ const Button: FC<Props> = ({
 
         className,
       )}
+      type="button"
       {...props}
     >
       {children}
