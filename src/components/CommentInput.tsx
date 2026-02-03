@@ -1,21 +1,16 @@
 import Button from "@/components/Button";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
+import { commentSchema } from "@/schemas/comment";
+import type { Comment } from "@/types/comment";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useState } from "react";
 
-export type CommentData = {
-  id: number;
-  author: string;
-  content: string;
-  createdAt: string;
-};
-
 type Props = {
   apiEndpoint: string;
-  onCommentSubmit?: (comment: CommentData) => void;
+  onCommentSubmit?: (comment: Comment) => void;
   placeholder?: string;
   className?: string;
 };
@@ -59,20 +54,8 @@ const CommentInput: FC<Props> = ({
         throw new Error("Failed to submit comment");
       }
 
-      // 백엔드 응답에서 실제 댓글 데이터 사용 (실제 ID 포함)
-      const savedData = (await res.json()) as {
-        id: number;
-        content: string;
-        author: string;
-        createdAt: string;
-      };
-
-      const newComment: CommentData = {
-        id: savedData.id,
-        author: savedData.author,
-        content: savedData.content,
-        createdAt: savedData.createdAt,
-      };
+      const data = await res.json();
+      const newComment = commentSchema.parse(data);
 
       onCommentSubmit?.(newComment);
       setComment("");

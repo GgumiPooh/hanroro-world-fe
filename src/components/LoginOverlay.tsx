@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import type { FC } from "react";
 import { useEffect } from "react";
@@ -7,7 +8,7 @@ type Props = {
   onClose: () => void;
 };
 
-function resolveOAuthUrl(provider: "naver" | "kakao"): string | null {
+function resolveOAuthUrl(provider: "naver" | "kakao"): Nullable<string> {
   if (provider === "naver" && ENV_VARIABLE.NAVER_OAUTH_URL) {
     return ENV_VARIABLE.NAVER_OAUTH_URL;
   }

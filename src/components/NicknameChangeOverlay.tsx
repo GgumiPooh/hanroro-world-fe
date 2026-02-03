@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, type FC } from "react";
@@ -6,14 +7,14 @@ import { createPortal } from "react-dom";
 import { useEvent } from "react-use";
 
 type Props = {
-  currentNickname?: string | null;
+  currentNickname?: Nullable<string>;
   onClose: () => void;
 };
 
 const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
   const [nickname, setNickname] = useState(currentNickname ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Nullable<string>>(null);
   const queryClient = useQueryClient();
 
   useEvent("keydown", (event) => {

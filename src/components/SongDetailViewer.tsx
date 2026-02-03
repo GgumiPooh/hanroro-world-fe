@@ -1,17 +1,19 @@
 import Button from "@/components/Button";
-import CommentInput, { type CommentData } from "@/components/CommentInput";
+import CommentInput from "@/components/CommentInput";
 import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
-import { useSongSupabase } from "@/hooks/supabase/useSongSupabase";
+import { useAlbumsSupabase } from "@/hooks/useAlbumsSupabase";
+import { useSongSupabase } from "@/hooks/useSongSupabase";
 import { useYouTubePlayer } from "@/hooks/useYouTubePlayer";
+import type { Comment } from "@/types/comment";
+import type { Nullable } from "@/types/misc";
 import { cn } from "@/utils/styles";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 
-function extractYouTubeId(url: string): string | null {
+function extractYouTubeId(url: string): Nullable<string> {
   if (!url) return null;
   // Handle various YouTube URL formats
   const patterns = [
@@ -48,7 +50,7 @@ const SongDetailViewer: FC = () => {
 
   const isCurrentSongPlaying = youtubeId === currentVideoId && isPlaying;
 
-  const handleCommentSubmit = (newComment: CommentData) => {
+  const handleCommentSubmit = (newComment: Comment) => {
     commentListRef.current?.addComment(newComment);
   };
 

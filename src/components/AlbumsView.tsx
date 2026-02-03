@@ -1,5 +1,5 @@
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
+import { useAlbumsSupabase } from "@/hooks/useAlbumsSupabase";
 import type { FC } from "react";
 import { Link } from "react-router";
 

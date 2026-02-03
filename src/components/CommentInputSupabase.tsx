@@ -1,8 +1,8 @@
 import Button from "@/components/Button";
-import { type CommentData } from "@/components/CommentInput";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { supabase } from "@/lib/supabase";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
+import type { Comment } from "@/types/comment";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useState } from "react";
@@ -11,7 +11,7 @@ type Props = {
   tableName: string;
   foreignKeyColumn: string;
   foreignKeyValue: string | number;
-  onCommentSubmit?: (comment: CommentData) => void;
+  onCommentSubmit?: (comment: Comment) => void;
   placeholder?: string;
   className?: string;
 };
@@ -58,7 +58,7 @@ const CommentInputSupabase: FC<Props> = ({
         throw new Error(error.message);
       }
 
-      const newComment: CommentData = {
+      const newComment: Comment = {
         id: data.id,
         author: user.name || user.nickname || user.email || "익명",
         content: comment.trim(),

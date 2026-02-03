@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
-import { type CommentData } from "@/components/CommentInput";
-import { useComments } from "@/hooks/backend/useComments";
+import { useComments } from "@/hooks/useComments";
+import type { Comment } from "@/types/comment";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { forwardRef, useImperativeHandle } from "react";
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export type CommentListRef = {
-  addComment: (comment: CommentData) => void;
+  addComment: (comment: Comment) => void;
   refresh: () => void;
 };
 

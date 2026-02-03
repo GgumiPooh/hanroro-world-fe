@@ -1,7 +1,7 @@
 import ActivityControls from "@/components/ActivityControls";
 import ActivityViewer from "@/components/AtivitiyViewer";
 import BlurBackground from "@/components/BlurBackground";
-import { useActivitiesSupabase } from "@/hooks/supabase/useActivitiesSupabase";
+import { useActivitiesSupabase } from "@/hooks/useActivitiesSupabase";
 import type { Sort } from "@/types/sort";
 
 import { useState, type FC } from "react";

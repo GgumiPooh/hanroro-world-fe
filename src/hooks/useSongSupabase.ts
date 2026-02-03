@@ -1,30 +1,13 @@
 import { supabase } from "@/lib/supabase";
+import { songSchema } from "@/schemas/song";
+import type { LanguageData } from "@/types/common";
+import type { Nullable, Optional } from "@/types/misc";
+import type { SongDetail } from "@/types/song";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-export type LanguageData = {
-  language: string;
-  content: string;
-};
-
-export type MetaData = {
-  type: string;
-  url: string;
-};
-
-export type SongDetail = {
-  id: number;
-  album_id: number;
-  title?: LanguageData[];
-  description?: LanguageData[];
-  lyrics?: LanguageData[];
-  metadata?: MetaData[];
-  track_number?: number;
-  created_at?: string;
-};
-
 function resolveLocalizedText(
-  items: string | LanguageData[] | undefined,
+  items: string | Optional<LanguageData[]>,
   preferred: string[] = ["ko", "en"],
 ): string {
   if (!items) return "";
@@ -37,7 +20,9 @@ function resolveLocalizedText(
   return items[0]?.content ?? "";
 }
 
-async function fetchSong(songId: string | number): Promise<SongDetail | null> {
+async function fetchSong(
+  songId: string | number,
+): Promise<Nullable<SongDetail>> {
   const { data, error } = await supabase
     .from("songs")
     .select("*")
@@ -48,7 +33,7 @@ async function fetchSong(songId: string | number): Promise<SongDetail | null> {
     throw new Error(error.message);
   }
 
-  return data;
+  return data ? songSchema.parse(data) : null;
 }
 
 export function useSongSupabase(

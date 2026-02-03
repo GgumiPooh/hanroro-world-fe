@@ -1,35 +1,13 @@
 import { supabase } from "@/lib/supabase";
+import { albumArraySchema } from "@/schemas/album";
+import type { Album } from "@/types/album";
+import type { LanguageData } from "@/types/common";
+import type { Optional } from "@/types/misc";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-type LanguageData = {
-  language: string;
-  content: string;
-};
-
-type MetaData = {
-  type: string;
-  url: string;
-};
-
-type Song = {
-  id: number;
-  track_number?: number;
-};
-
-export type Album = {
-  id: number;
-  title: LanguageData[];
-  description?: LanguageData[];
-  metadata?: MetaData[];
-  album_type?: string;
-  published_at?: string;
-  created_at?: string;
-  songs?: Song[];
-};
-
 function resolveLocalizedText(
-  items: LanguageData[] | undefined,
+  items: Optional<LanguageData[]>,
   preferred: string[] = ["ko", "en"],
 ): string {
   if (!items || items.length === 0) return "";
@@ -50,7 +28,7 @@ async function fetchAlbums(): Promise<Album[]> {
     throw new Error(error.message);
   }
 
-  return data ?? [];
+  return albumArraySchema.parse(data ?? []);
 }
 
 export function useAlbumsSupabase() {
@@ -75,7 +53,6 @@ export function useAlbumsSupabase() {
         lower[0]?.url ||
         "";
 
-      // Get first track's song id (track_number = 1 or just the first in list)
       const sortedSongs = [...(album.songs ?? [])].sort(
         (a, b) => (a.track_number ?? 0) - (b.track_number ?? 0),
       );

@@ -2,7 +2,7 @@ import AlbumDetailViewer from "@/components/AlbumDetailViewer";
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
+import { useAlbumsSupabase } from "@/hooks/useAlbumsSupabase";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 import { useMemo, useState } from "react";

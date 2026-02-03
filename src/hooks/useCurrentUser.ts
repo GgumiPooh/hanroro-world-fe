@@ -1,6 +1,7 @@
 import { A_MINUTE } from "@/constants/misc";
-import { userSchema, type User } from "@/schemas/user";
+import { userSchema } from "@/schemas/user";
 import type { Nullable } from "@/types/misc";
+import type { User } from "@/types/user";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 

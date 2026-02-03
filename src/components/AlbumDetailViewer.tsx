@@ -1,4 +1,4 @@
-import { useAlbumDetailSupabase } from "@/hooks/supabase/useAlbumDetailSupabase";
+import { useAlbumDetailSupabase } from "@/hooks/useAlbumDetailSupabase";
 import type { FC } from "react";
 import { Link } from "react-router";
 

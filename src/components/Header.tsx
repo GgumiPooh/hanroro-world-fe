@@ -2,8 +2,8 @@ import Button from "@/components/Button";
 import NicknameChangeOverlay from "@/components/NicknameChangeOverlay";
 import UserMenuOverlay from "@/components/UserMenuOverlay";
 import { HEADER_MENU_LIST } from "@/constants/navigation";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LogoIcon from "@/icons/LogoIcon";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import type { Nullable } from "@/types/misc";
@@ -148,7 +148,7 @@ const Header: FC<Props> = ({ className }) => {
 
 type MenuListProps = {
   className?: string;
-  displayName?: string | null;
+  displayName?: Nullable<string>;
   isLoading?: boolean;
   onUserClick?: () => void;
   onNavigate?: () => void;

@@ -1,6 +1,6 @@
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
-import { useCurrentUser } from "@/hooks/backend/useCurrentUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { type FC } from "react";
 import { useNavigate } from "react-router";
 

@@ -1,40 +1,15 @@
 import { supabase } from "@/lib/supabase";
+import { albumDetailSchema } from "@/schemas/album";
+import { songArraySchema } from "@/schemas/song";
+import type { AlbumDetail } from "@/types/album";
+import type { LanguageData } from "@/types/common";
+import type { Nullable, Optional } from "@/types/misc";
+import type { Song } from "@/types/song";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-export type LanguageData = {
-  language: string;
-  content: string;
-};
-
-export type MetaData = {
-  type: string;
-  url: string;
-};
-
-export type Song = {
-  id: number;
-  album_id: number;
-  title?: LanguageData[];
-  description?: LanguageData[];
-  lyrics?: LanguageData[];
-  metadata?: MetaData[];
-  track_number?: number;
-  created_at?: string;
-};
-
-export type AlbumDetail = {
-  id: number;
-  title: LanguageData[];
-  description?: LanguageData[];
-  published_at?: string;
-  metadata?: MetaData[];
-  created_at?: string;
-  songs?: Song[];
-};
-
 function resolveLocalizedText(
-  items: LanguageData[] | undefined,
+  items: Optional<LanguageData[]>,
   preferred: string[] = ["ko", "en"],
 ): string {
   if (!items || items.length === 0) return "";
@@ -47,8 +22,7 @@ function resolveLocalizedText(
 
 async function fetchAlbumDetail(
   albumId: string | number,
-): Promise<{ album: AlbumDetail | null; songs: Song[] }> {
-  // Fetch album
+): Promise<{ album: Nullable<AlbumDetail>; songs: Song[] }> {
   const { data: album, error: albumError } = await supabase
     .from("albums")
     .select("*")
@@ -59,7 +33,6 @@ async function fetchAlbumDetail(
     throw new Error(albumError.message);
   }
 
-  // Fetch songs for this album
   const { data: songs, error: songsError } = await supabase
     .from("songs")
     .select("*")
@@ -70,7 +43,10 @@ async function fetchAlbumDetail(
     throw new Error(songsError.message);
   }
 
-  return { album, songs: songs ?? [] };
+  const validatedAlbum = album ? albumDetailSchema.parse(album) : null;
+  const validatedSongs = songArraySchema.parse(songs ?? []);
+
+  return { album: validatedAlbum, songs: validatedSongs };
 }
 
 export function useAlbumDetailSupabase(albumId?: string | number) {
