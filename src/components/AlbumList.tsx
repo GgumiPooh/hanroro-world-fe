@@ -1,7 +1,12 @@
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
+import { cn } from "@/utils/styles";
 import type { FC } from "react";
 import { Link } from "react-router";
+
+type Props = {
+  className?: string;
+};
 
 function findMetadataUrl(
   metadata: { type: string; url: string }[],
@@ -11,7 +16,7 @@ function findMetadataUrl(
   return matched ? matched.url : (metadata[0]?.url ?? "");
 }
 
-const AlbumList: FC = () => {
+const AlbumList: FC<Props> = ({ className }) => {
   const { albumsView, isLoading, error } = useAlbums();
 
   if (isLoading) {
@@ -24,7 +29,7 @@ const AlbumList: FC = () => {
   }
 
   return (
-    <ul className="">
+    <ul className={cn(className)}>
       {albumsView.map((albumItem) => {
         const coverUrl = findMetadataUrl(albumItem.metadata ?? [], "img");
         const albumTitle = albumItem.titleText || "Untitled Album";

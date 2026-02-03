@@ -1,12 +1,18 @@
 import { useAlbumDetail } from "@/hooks/useAlbumDetail";
+import { cn } from "@/utils/styles";
 import type { FC } from "react";
 import { Link } from "react-router";
 
-const AlbumTrackList: FC<{ albumId: string | number }> = ({ albumId }) => {
+type Props = {
+  className?: string;
+  albumId: string | number;
+};
+
+const AlbumTrackList: FC<Props> = ({ albumId, className }) => {
   const { detailView } = useAlbumDetail(albumId);
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full", className)}>
       <ul className="divide-y divide-plum-300/30">
         {detailView?.songsView.map((song) => (
           <li key={song.id} className="py-5">

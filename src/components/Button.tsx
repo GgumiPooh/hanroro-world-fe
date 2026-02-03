@@ -2,9 +2,9 @@ import { cn } from "@/utils/styles";
 import { type ComponentProps, type FC } from "react";
 
 type Props = {
+  className?: string;
   variant: "primary" | "secondary" | "ghost" | "icon";
   size: "sm" | "md" | "lg";
-  className?: string;
 } & ComponentProps<"button">;
 
 const Button: FC<Props> = ({

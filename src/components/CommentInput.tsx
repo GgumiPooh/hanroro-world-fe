@@ -9,10 +9,10 @@ import type { FC } from "react";
 import { useState } from "react";
 
 type Props = {
+  className?: string;
   apiEndpoint: string;
   onCommentSubmit?: (comment: Comment) => void;
   placeholder?: string;
-  className?: string;
 };
 
 const CommentInput: FC<Props> = ({

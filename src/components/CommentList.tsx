@@ -5,6 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { forwardRef, useImperativeHandle } from "react";
 
 type Props = {
+  className?: string;
   /** songId for song comments (uses default endpoints) */
   songId?: string | number;
   /** Custom fetch endpoint (overrides songId) */
@@ -13,7 +14,6 @@ type Props = {
   deleteEndpoint?: (id: number) => string;
   showHeader?: boolean;
   emptyMessage?: string;
-  className?: string;
 };
 
 export type CommentListRef = {

@@ -1,5 +1,6 @@
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
+import ExternalLink from "@/components/ExternalLink";
 import BlogIcon from "@/icons/BlogIcon";
 import InstagramIcon from "@/icons/Instagram";
 import SignIcon from "@/icons/SignIcon";
@@ -26,61 +27,42 @@ const Home: FC = () => {
         </h3>
       </div>
       <div className="absolute right-[3%] bottom-[2.5%] flex flex-col gap-10 sm:gap-23 md:bottom-15">
-        <Button
-          variant="icon"
-          size="sm"
-          onClick={handleOpenBlog}
-          aria-label="Blog 채널로 이동"
+        <ExternalLink href={SOCIAL_LINKS.blog} ariaLabel="Blog 채널로 이동">
+          <Button variant="icon" size="sm">
+            <BlogIcon className="h-7 text-[#38bb0c] sm:h-10" />
+          </Button>
+        </ExternalLink>
+        <ExternalLink
+          href={SOCIAL_LINKS.instagram}
+          ariaLabel="Instagram 채널로 이동"
         >
-          <BlogIcon className="h-7 text-[#38bb0c] sm:h-10" />
-        </Button>
-        <Button
-          variant="icon"
-          size="sm"
-          onClick={handleOpenInstagram}
-          aria-label="Instagram 채널로 이동"
+          <Button variant="icon" size="sm">
+            <InstagramIcon className="h-10 sm:h-14" />
+          </Button>
+        </ExternalLink>
+        <ExternalLink
+          href={SOCIAL_LINKS.youtube}
+          ariaLabel="YouTube 채널로 이동"
         >
-          <InstagramIcon className="h-10 sm:h-14" />
-        </Button>
-        <Button
-          variant="icon"
-          size="sm"
-          onClick={handleOpenYoutube}
-          aria-label="YouTube 채널로 이동"
+          <Button variant="icon" size="sm">
+            <YoutubeIcon className="h-8 sm:h-12" />
+          </Button>
+        </ExternalLink>
+        <ExternalLink
+          href={SOCIAL_LINKS.homepage}
+          ariaLabel="hanroro 홈페이지로 이동"
         >
-          <YoutubeIcon className="h-8 sm:h-12" />
-        </Button>
-        <Button
-          variant="icon"
-          size="sm"
-          onClick={handleOpenHomepage}
-          aria-label="hanroro 홈페이지로 이동"
-        >
-          <img
-            src="/images/hanroro.webp"
-            alt="hanroro 홈페이지"
-            className="h-9 rounded-4xl sm:h-13"
-          />
-        </Button>
+          <Button variant="icon" size="sm">
+            <img
+              src="/images/hanroro.webp"
+              alt="hanroro 홈페이지"
+              className="h-9 rounded-4xl sm:h-13"
+            />
+          </Button>
+        </ExternalLink>
       </div>
     </div>
   );
-
-  function handleOpenBlog() {
-    window.open(SOCIAL_LINKS.blog, "_blank");
-  }
-
-  function handleOpenInstagram() {
-    window.open(SOCIAL_LINKS.instagram, "_blank");
-  }
-
-  function handleOpenYoutube() {
-    window.open(SOCIAL_LINKS.youtube, "_blank");
-  }
-
-  function handleOpenHomepage() {
-    window.open(SOCIAL_LINKS.homepage, "_blank");
-  }
 };
 
 export default Home;

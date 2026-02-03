@@ -3,6 +3,7 @@ import { cn } from "@/utils/styles";
 import type { FC } from "react";
 
 type Props = {
+  className?: string;
   src?: string;
   alt?: string;
   imgClassName?: string;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const BlurBackground: FC<Props> = ({
+  className,
   src = "/images/home-banner6.webp",
   alt = "background",
   imgClassName = "",
@@ -18,7 +20,7 @@ const BlurBackground: FC<Props> = ({
   overlayClassName = "bg-gray-400/50",
 }) => {
   return (
-    <>
+    <div className={className}>
       <ImageWithPlaceholder
         className="fixed inset-0 -z-2 h-dvh w-full"
         imgClassName={cn("object-cover object-center", imgClassName)}
@@ -26,7 +28,7 @@ const BlurBackground: FC<Props> = ({
         alt={alt}
       />
       {overlay && <div className={`fixed inset-0 -z-1 ${overlayClassName}`} />}
-    </>
+    </div>
   );
 };
 

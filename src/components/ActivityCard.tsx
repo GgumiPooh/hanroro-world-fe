@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import ExternalLink from "@/components/ExternalLink";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import type { Activity } from "@/types/activity";
 import type { Sort } from "@/types/sort";
@@ -92,17 +93,15 @@ const ActivityCard: FC<Props> = ({ className, activity, index, sort }) => {
           <h1 className="mb-5 text-base font-bold text-gray-100 md:text-lg">
             {selectLocalizedTitle(activity.title, "kor")}
           </h1>
-          <Button variant="secondary" size="sm" onClick={handleOpenVideo}>
-            <VideoCameraIcon className="size-4" />
-          </Button>
+          <ExternalLink href={findMetadataUrl(activity.metaData, "video")}>
+            <Button variant="secondary" size="sm">
+              <VideoCameraIcon className="size-4" />
+            </Button>
+          </ExternalLink>
         </div>
       </div>
     </li>
   );
-
-  function handleOpenVideo() {
-    window.open(findMetadataUrl(activity.metaData, "video"), "_blank");
-  }
 };
 
 export default ActivityCard;

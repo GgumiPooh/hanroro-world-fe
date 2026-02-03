@@ -2,22 +2,18 @@ import Button from "@/components/Button";
 import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import type { FC } from "react";
-import { useEffect } from "react";
+import { useEvent } from "react-use";
 
 type Props = {
   onClose: () => void;
 };
 
 const LoginOverlay: FC<Props> = ({ onClose }) => {
-  useEffect(() => {
-    function handleKeydown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        onClose();
-      }
+  useEvent("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose();
     }
-    window.addEventListener("keydown", handleKeydown);
-    return () => window.removeEventListener("keydown", handleKeydown);
-  }, [onClose]);
+  });
 
   return (
     <div className="fixed inset-0 z-50">

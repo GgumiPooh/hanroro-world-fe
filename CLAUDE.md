@@ -5,6 +5,8 @@
 - Flat structure: `src/hooks/*.ts`, not `src/hooks/backend/*.ts`
 - Zod schemas: `src/schemas/{feature}.ts` (export schemas only)
 - Types: `src/types/{feature}.ts` using `z.infer<typeof schema>` (export all)
+- Shared utilities: `src/utils/{name}.ts` (e.g., `localization.ts` for `selectLocalizedText`)
+- Constants: `src/constants/{name}.ts` (e.g., `misc.ts` for time units, `navigation.ts` for routes)
 - No `export type { X } from '...'` re-exports; define types directly
 
 ## Naming
@@ -20,6 +22,7 @@
 ### Required
 
 - Descriptive names: `albumItem`, `matchedContent`, `publishedDate`
+- Constants for config values: `MIN_NICKNAME_LENGTH`, `MAX_NICKNAME_LENGTH`, `EARLIEST_ACTIVITY_YEAR`
 - Examples: `useAlbumsSupabase` → `useAlbums`, `SongDetailViewer` → `SongInfo`
 
 ## Type Safety
@@ -49,13 +52,17 @@
 
 - Self-documenting code; avoid unnecessary comments
 - Remove all commented-out code
-- Required prefix: `// TODO:`, `// NOTE:`, `// WARN:`
-- JSDoc only for public API (exported types, function params)
+- Remove unnecessary JSX section markers (code structure should be self-documenting)
+- Required prefix for necessary comments: `// TODO:`, `// NOTE:`, `// WARN:`
+- JSDoc (`/** */`) only for public API (exported types, component props)
 
 ### Component Structure
 
 - Handler functions: `handle-` prefix, hoist after `return`
-- Utility functions: place outside component
+- Utility functions: place outside component (after `export default`)
+- Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
+- UI components must accept `className` prop and apply it to the outermost element
+- In Props type definition, `className` must be the first property
 
   ```typescript
   const MyComponent: FC = () => {
@@ -68,12 +75,30 @@
     }
   };
 
+  export default MyComponent;
+
   function formatDate(date: Date): string {
     return date.toLocaleDateString();
   }
   ```
 
+### Declarative React Patterns
+
+- Use `useEvent` from react-use instead of manual `addEventListener`/`removeEventListener`
+- External links: use `<ExternalLink>` component instead of `window.open`
+  ```tsx
+  <ExternalLink href={url} ariaLabel="Description">
+    <Button variant="icon" size="sm">
+      <Icon />
+    </Button>
+  </ExternalLink>
+  ```
+- OAuth/auth redirects: `window.location.assign` is acceptable
+- Avoid direct DOM manipulation; prefer React state and props
+- Modals: `createPortal` to `document.body` is acceptable
+
 ## Verification
 
 - Run `npx tsc --noEmit` after all code changes
-- Fix type errors before completion
+- Run `npm run build` for production build verification
+- Fix all type errors before completion

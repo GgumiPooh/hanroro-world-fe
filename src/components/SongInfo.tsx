@@ -19,7 +19,11 @@ const YOUTUBE_URL_PATTERNS = [
   /youtu\.be\/([a-zA-Z0-9_-]{11})/,
 ];
 
-const SongInfo: FC = () => {
+type Props = {
+  className?: string;
+};
+
+const SongInfo: FC<Props> = ({ className }) => {
   const { albumId, songId } = useParams();
 
   const { detailView, isLoading, error } = useSong(songId);
@@ -61,7 +65,7 @@ const SongInfo: FC = () => {
   }
 
   return (
-    <div className="mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0">
+    <div className={cn("mx-auto mb-20 w-[min(92vw,1000px)] px-5 md:px-0", className)}>
       <div className="mb-5 flex flex-col items-center gap-6 md:justify-center md:gap-10 lg:flex-row">
         <ImageWithPlaceholder
           className="ld:h-[350px] ld:w-[350px] h-[250px] w-[250px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px]"
