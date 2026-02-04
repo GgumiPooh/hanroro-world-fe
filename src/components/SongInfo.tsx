@@ -150,8 +150,6 @@ const SongInfo: FC<Props> = ({ className }) => {
   }
 };
 
-export default SongInfo;
-
 const YOUTUBE_URL_PATTERNS = [
   /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
   /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
@@ -167,3 +165,5 @@ function extractYouTubeId(url: string): Nullable<string> {
     ) ?? null
   );
 }
+
+export default SongInfo;

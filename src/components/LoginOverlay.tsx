@@ -59,8 +59,6 @@ const LoginOverlay: FC<Props> = ({ className, onClose }) => {
   }
 };
 
-export default LoginOverlay;
-
 function getOAuthRedirectUrl(provider: "naver" | "kakao"): Nullable<string> {
   if (provider === "naver" && ENV_VARIABLE.NAVER_OAUTH_URL) {
     return ENV_VARIABLE.NAVER_OAUTH_URL;
@@ -71,3 +69,5 @@ function getOAuthRedirectUrl(provider: "naver" | "kakao"): Nullable<string> {
 
   return null;
 }
+
+export default LoginOverlay;

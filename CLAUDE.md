@@ -74,7 +74,7 @@
 
 - Single return statement per component; use conditional JSX inside instead of early returns
 - Handler functions: `handle-` prefix, hoist after `return`
-- Utility functions and constants: place after `export default` (Props → Component → export → utilities)
+- File structure order: Props → Component → utility functions/constants → `export default` (last line)
 - Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
 - All UI components must have `className?: string` in Props and apply it to outermost element via `cn()`
 - In Props type definition: all `*className` props first (grouped), then other props, function props last

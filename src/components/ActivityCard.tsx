@@ -52,8 +52,6 @@ const ActivityCard: FC<Props> = ({ className, activity }) => {
   );
 };
 
-export default ActivityCard;
-
 function isLocalDateFormat(value: string): boolean {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
@@ -85,3 +83,5 @@ function formatDateString(dateValue: string): string {
   if (Number.isNaN(date.getTime())) return dateValue;
   return `${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
 }
+
+export default ActivityCard;
