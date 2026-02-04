@@ -119,7 +119,7 @@
   ```
 - OAuth/auth redirects: `window.location.assign` is acceptable
 - Avoid direct DOM manipulation; prefer React state and props
-- Modals: `createPortal` to `document.body` is acceptable
+- Modals/Overlays: use `<Portal>` from `@headlessui/react` instead of `createPortal`
 
 ## Verification
 

@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { ENV_VARIABLE } from "@/utils/env-variable";
+import { Portal } from "@headlessui/react";
 import { type FC } from "react";
-import { createPortal } from "react-dom";
 import { useEvent } from "react-use";
 
 type Props = {
@@ -12,46 +12,47 @@ type Props = {
 const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameMenuClick }) => {
   useEvent("keydown", (e) => e.key === "Escape" && onClose());
 
-  return createPortal(
-    <div className="fixed inset-0 z-50">
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
-        onClick={onClose}
-      />
-      <div className="relative mx-auto mt-40 w-[min(90vw,280px)] rounded-4xl bg-gray-800/70 py-5 shadow-xl">
-        <h2 className="mb-5 border-b border-gray-400 py-3 text-center text-xl font-bold text-plum-100">
-          메뉴
-        </h2>
+  return (
+    <Portal>
+      <div className="fixed inset-0 z-50">
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+          onClick={onClose}
+        />
+        <div className="relative mx-auto mt-40 w-[min(90vw,280px)] rounded-4xl bg-gray-800/70 py-5 shadow-xl">
+          <h2 className="mb-5 border-b border-gray-400 py-3 text-center text-xl font-bold text-plum-100">
+            메뉴
+          </h2>
 
-        <div className="mb-3 space-y-3">
-          <Button
-            className="w-full py-3 text-plum-200 md:text-xl"
-            variant="icon"
-            size="md"
-            onClick={handleNicknameMenuClick}
-          >
-            닉네임 변경
-          </Button>
-          <Button
-            className="w-full py-3 text-plum-200 md:text-xl"
-            variant="icon"
-            size="md"
-            onClick={handleLogout}
-          >
-            지수와로그아웃
-          </Button>
-          <Button
-            className="w-full py-3 text-xl text-plum-600"
-            variant="icon"
-            size="md"
-            onClick={handleDeleteAccount}
-          >
-            회원 탈퇴
-          </Button>
+          <div className="mb-3 space-y-3">
+            <Button
+              className="w-full py-3 text-plum-200 md:text-xl"
+              variant="icon"
+              size="md"
+              onClick={handleNicknameMenuClick}
+            >
+              닉네임 변경
+            </Button>
+            <Button
+              className="w-full py-3 text-plum-200 md:text-xl"
+              variant="icon"
+              size="md"
+              onClick={handleLogout}
+            >
+              지수와로그아웃
+            </Button>
+            <Button
+              className="w-full py-3 text-xl text-plum-600"
+              variant="icon"
+              size="md"
+              onClick={handleDeleteAccount}
+            >
+              회원 탈퇴
+            </Button>
+          </div>
         </div>
       </div>
-    </div>,
-    document.body,
+    </Portal>
   );
 
   async function handleLogout() {
