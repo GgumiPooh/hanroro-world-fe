@@ -1,18 +1,22 @@
 import Button from "@/components/Button";
 import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
+import { cn } from "@/utils/styles";
+import { Portal } from "@headlessui/react";
 import type { FC } from "react";
 import { useEvent } from "react-use";
 
 type Props = {
+  className?: string;
   onClose: () => void;
 };
 
-const LoginOverlay: FC<Props> = ({ onClose }) => {
+const LoginOverlay: FC<Props> = ({ className, onClose }) => {
   useEvent("keydown", (e: KeyboardEvent) => e.key === "Escape" && onClose());
 
   return (
-    <div className="fixed inset-0 z-50">
+    <Portal>
+      <div className={cn("fixed inset-0 z-50", className)}>
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
@@ -42,6 +46,7 @@ const LoginOverlay: FC<Props> = ({ onClose }) => {
         </Button>
       </div>
     </div>
+    </Portal>
   );
 
   function handleRedirect(provider: "naver" | "kakao") {

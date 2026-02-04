@@ -74,7 +74,7 @@
 - Handler functions: `handle-` prefix, hoist after `return`
 - Utility functions: place outside component (after `export default`)
 - Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
-- UI components must accept `className` prop and apply it to the outermost element
+- All UI components must have `className?: string` in Props and apply it to outermost element via `cn()`
 - In Props type definition: `className` first, function props last
 
 ### JSX Attribute Order

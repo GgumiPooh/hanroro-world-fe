@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
+import { cn } from "@/utils/styles";
 import { Portal } from "@headlessui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, type FC } from "react";
@@ -10,11 +11,16 @@ const MIN_NICKNAME_LENGTH = 2;
 const MAX_NICKNAME_LENGTH = 20;
 
 type Props = {
+  className?: string;
   currentNickname?: Nullable<string>;
   onClose: () => void;
 };
 
-const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
+const NicknameChangeOverlay: FC<Props> = ({
+  className,
+  currentNickname,
+  onClose,
+}) => {
   const [nickname, setNickname] = useState(currentNickname ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<Nullable<string>>(null);
@@ -24,7 +30,7 @@ const NicknameChangeOverlay: FC<Props> = ({ currentNickname, onClose }) => {
 
   return (
     <Portal>
-      <div className="fixed inset-0 z-50">
+      <div className={cn("fixed inset-0 z-50", className)}>
         <div
           className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
           onClick={onClose}

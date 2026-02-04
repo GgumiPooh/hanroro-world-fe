@@ -1,20 +1,26 @@
 import Button from "@/components/Button";
 import { ENV_VARIABLE } from "@/utils/env-variable";
+import { cn } from "@/utils/styles";
 import { Portal } from "@headlessui/react";
 import { type FC } from "react";
 import { useEvent } from "react-use";
 
 type Props = {
+  className?: string;
   onClose: () => void;
   onNicknameMenuClick: () => void;
 };
 
-const UserMenuOverlay: FC<Props> = ({ onClose, onNicknameMenuClick }) => {
+const UserMenuOverlay: FC<Props> = ({
+  className,
+  onClose,
+  onNicknameMenuClick,
+}) => {
   useEvent("keydown", (e) => e.key === "Escape" && onClose());
 
   return (
     <Portal>
-      <div className="fixed inset-0 z-50">
+      <div className={cn("fixed inset-0 z-50", className)}>
         <div
           className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
           onClick={onClose}
