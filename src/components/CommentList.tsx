@@ -102,7 +102,7 @@ const CommentList = ({
                             className="h-8 w-8 text-plum-300 hover:text-red-400/80"
                             variant="icon"
                             size="sm"
-                            onClick={() => deleteComment(commentItem.id)}
+                            onClick={handleDeleteComment(commentItem.id)}
                           >
                             <XMarkIcon className="size-4" />
                           </Button>
@@ -121,6 +121,10 @@ const CommentList = ({
       )}
     </section>
   );
+
+  function handleDeleteComment(commentId: number) {
+    return () => deleteComment(commentId);
+  }
 };
 
 export default CommentList;

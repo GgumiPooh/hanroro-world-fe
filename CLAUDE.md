@@ -74,7 +74,7 @@
 ### Component Structure
 
 - Single return statement per component; use conditional JSX inside instead of early returns
-- Handler functions: `handle-` prefix, hoist after `return`
+- Handler functions: `handle-` prefix, hoist after `return`, use currying for parameterized handlers
 - File structure order: Props → Component → utility functions/constants → `export default` (last line)
 - Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
 - All UI components must have `className?: string` in Props and apply it to outermost element via `cn()`

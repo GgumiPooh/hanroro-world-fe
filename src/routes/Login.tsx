@@ -32,7 +32,7 @@ const Login: FC = () => {
             variant="secondary"
             size="lg"
             className="w-full"
-            onClick={() => handleRedirect("naver")}
+            onClick={handleRedirect("naver")}
           >
             Continue with Naver
           </Button>
@@ -40,7 +40,7 @@ const Login: FC = () => {
             variant="secondary"
             size="lg"
             className="w-full"
-            onClick={() => handleRedirect("kakao")}
+            onClick={handleRedirect("kakao")}
           >
             Continue with Kakao
           </Button>
@@ -63,12 +63,14 @@ const Login: FC = () => {
   }
 
   function handleRedirect(provider: "naver" | "kakao") {
-    const url = resolveOAuthUrl(provider);
-    if (!url) {
-      window.alert("OAuth URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
-      return;
-    }
-    window.location.assign(url);
+    return () => {
+      const url = resolveOAuthUrl(provider);
+      if (!url) {
+        window.alert("OAuth URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
+        return;
+      }
+      window.location.assign(url);
+    };
   }
 };
 

@@ -74,7 +74,7 @@ const Header: FC<Props> = ({ className }) => {
               className="hidden lg:flex"
               displayName={displayName}
               isLoading={isUserLoading}
-              onUserClick={() => setIsUserOverlayOpen(true)}
+              onUserClick={handleToggleUserOverlay(true)}
             />
           )}
           <Button
@@ -110,7 +110,7 @@ const Header: FC<Props> = ({ className }) => {
               className="mt-5 ml-1"
               displayName={displayName}
               isLoading={isUserLoading}
-              onUserClick={() => setIsUserOverlayOpen(true)}
+              onUserClick={handleToggleUserOverlay(true)}
               onNavigate={handleToggleHeaderMenu(false)}
             />
           )}
