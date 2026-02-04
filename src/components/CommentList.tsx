@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import { useComments } from "@/hooks/useComments";
 import type { Comment } from "@/types/comment";
+import { cn } from "@/utils/styles";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { Ref } from "react";
 import { useImperativeHandle } from "react";
@@ -86,13 +87,14 @@ const CommentList = ({
             const isOwn = isOwnComment(comment.author);
             return (
               <li
-                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                className={cn("flex", isOwn ? "justify-end" : "justify-start")}
                 key={comment.id}
               >
                 <div
-                  className={`relative w-full rounded-2xl bg-plum-300/20 px-4 py-3 ${
-                    isOwn ? "rounded-br-none" : "rounded-bl-none"
-                  }`}
+                  className={cn(
+                    "relative w-full rounded-2xl bg-plum-300/20 px-4 py-3",
+                    isOwn ? "rounded-br-none" : "rounded-bl-none",
+                  )}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">

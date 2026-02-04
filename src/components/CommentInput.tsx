@@ -4,6 +4,7 @@ import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { commentSchema } from "@/schemas/comment";
 import type { Comment } from "@/types/comment";
 import { ENV_VARIABLE } from "@/utils/env-variable";
+import { cn } from "@/utils/styles";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
 import { useState } from "react";
@@ -28,7 +29,10 @@ const CommentInput: FC<Props> = ({
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 ${className ?? ""}`}
+      className={cn(
+        "fixed inset-x-0 bottom-4 z-50 flex justify-center px-4",
+        className,
+      )}
     >
       <div className="flex w-[min(92vw,1000px)] items-center gap-3 rounded-2xl bg-gray-800/50 px-4 py-3 backdrop-blur-md">
         <input
