@@ -28,13 +28,11 @@ const Activity: FC = () => {
           onSortChange={setSort}
         />
         <ul className="relative ml-6 border-l-6 border-gray-600/40 md:ml-10">
-          {activities.map((activityItem, index) => (
+          {activities.map((activityItem) => (
             <ActivityCard
               className="mb-40 w-full max-w-[660px]"
-              key={`${index}-${sort}`}
+              key={activityItem.id}
               activity={activityItem}
-              index={index}
-              sort={sort}
             />
           ))}
         </ul>

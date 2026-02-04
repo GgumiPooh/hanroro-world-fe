@@ -2,7 +2,6 @@ import Button from "@/components/Button";
 import ExternalLink from "@/components/ExternalLink";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import type { Activity } from "@/types/activity";
-import type { Sort } from "@/types/sort";
 import { selectLocalizedText } from "@/utils/localization";
 import { findMetadataUrl } from "@/utils/metadata";
 import { cn } from "@/utils/styles";
@@ -44,16 +43,11 @@ function formatDateString(dateValue: string): string {
 type Props = {
   className?: string;
   activity: Activity;
-  index: number;
-  sort: Sort;
 };
 
-const ActivityCard: FC<Props> = ({ className, activity, index, sort }) => {
+const ActivityCard: FC<Props> = ({ className, activity }) => {
   return (
-    <li
-      className={cn("flex w-full items-center", className)}
-      key={`${index}-${sort}`}
-    >
+    <li className={cn("flex w-full items-center", className)}>
       <div className="relative top-2/5 left-[-15px] h-6 w-6 rounded-2xl bg-gray-500/90 md:left-[-19px] md:h-8 md:w-8">
         <CheckCircleIcon
           className={cn(

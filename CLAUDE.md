@@ -9,7 +9,7 @@
   - `localization.ts`: `selectLocalizedText`
   - `metadata.ts`: `findMetadataUrl`, `findCoverUrl`
 - Constants: `src/constants/{name}.ts`
-  - `misc.ts`: time units (`A_MINUTE`), `EARLIEST_ACTIVITY_YEAR`, `ACTIVITY_TYPE`
+  - `misc.ts`: time units (`A_MINUTE`), `EARLIEST_ACTIVITY_YEAR`, `ActivityType`
   - `navigation.ts`: routes, menu lists
 - No `export type { X } from '...'` re-exports; define types directly
 
@@ -46,7 +46,8 @@
   ```
 - Use utility types from `src/types/misc.ts`: `Nullable<T>`, `Optional<T>`, `Maybe<T>`
 - Prefer type unions over enums: `type Sort = "latest" | "oldest"`
-- Use `as const` objects for runtime constants: `ACTIVITY_TYPE = { ... } as const`
+- Use `as const` objects for runtime constants
+- Enum-like `as const` objects: PascalCase name (e.g., `ImageStatus.LOADING`, `ActivityType.PERFORMANCE`)
 
 ## Code Style
 

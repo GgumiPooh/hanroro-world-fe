@@ -12,11 +12,13 @@ import {
 } from "react";
 import { useIsomorphicLayoutEffect } from "react-use";
 
-enum ImageStatus {
-  LOADING = "loading",
-  LOADED = "loaded",
-  FAILED = "failed",
-}
+const ImageStatus = {
+  LOADING: "loading",
+  LOADED: "loaded",
+  FAILED: "failed",
+} as const;
+
+type ImageStatusType = (typeof ImageStatus)[keyof typeof ImageStatus];
 
 type Props = {
   className?: string;
@@ -24,7 +26,7 @@ type Props = {
   fallbackOnError?: boolean;
   fallbackSrc?: string;
   renderPlaceholder?: () => ReactNode;
-  onStatusChange?: (status: ImageStatus) => void;
+  onStatusChange?: (status: ImageStatusType) => void;
 } & Omit<ComponentProps<"img">, "onLoadStart" | "onLoad" | "onError">;
 
 const ImageWithPlaceholder: FC<Props> = ({
@@ -41,7 +43,7 @@ const ImageWithPlaceholder: FC<Props> = ({
   const imgRef = useRef<HTMLImageElement>(null);
 
   const [currentSrc, setCurrentSrc] = useState(sourceProp);
-  const [status, setStatus] = useState<ImageStatus>(ImageStatus.LOADING);
+  const [status, setStatus] = useState<ImageStatusType>(ImageStatus.LOADING);
 
   useIsomorphicLayoutEffect(() => {
     setCurrentSrc(sourceProp);

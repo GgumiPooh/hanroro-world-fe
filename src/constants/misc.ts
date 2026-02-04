@@ -8,6 +8,6 @@ export const A_YEAR = 365 * A_DAY;
 
 export const EARLIEST_ACTIVITY_YEAR = 2022;
 
-export const ACTIVITY_TYPE = {
+export const ActivityType = {
   PERFORMANCE: "PERFORMANCE",
 } as const;
