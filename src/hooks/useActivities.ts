@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { activityArraySchema } from "@/schemas/activity";
 import type { Activity } from "@/types/activity";
 import type { Sort } from "@/types/sort";
+import { assert } from "@/utils/assert";
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
@@ -21,9 +22,7 @@ async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
 
   const { data, error } = await query;
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  assert(!error, error?.message);
 
   const transformed = (data ?? []).map((item) => ({
     id: item.id,

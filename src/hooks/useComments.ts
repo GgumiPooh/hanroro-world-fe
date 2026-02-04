@@ -2,6 +2,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { commentArraySchema } from "@/schemas/comment";
 import type { Comment } from "@/types/comment";
 import type { Nullable } from "@/types/misc";
+import { assert } from "@/utils/assert";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useCallback, useEffect, useState } from "react";
 
@@ -28,9 +29,7 @@ export function useComments(config: UseCommentsConfig) {
         credentials: "include",
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch comments");
-      }
+      assert(res.ok, "Failed to fetch comments");
 
       const data: unknown = await res.json();
       const validated = commentArraySchema.parse(data);
@@ -65,9 +64,7 @@ export function useComments(config: UseCommentsConfig) {
           credentials: "include",
         });
 
-        if (!res.ok) {
-          throw new Error("Failed to delete");
-        }
+        assert(res.ok, "Failed to delete");
 
         setComments((prev) =>
           prev.filter((comment) => comment.id !== commentId),

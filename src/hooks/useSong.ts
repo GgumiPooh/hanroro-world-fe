@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { songSchema } from "@/schemas/song";
 import type { Nullable } from "@/types/misc";
 import type { Song } from "@/types/song";
+import { assert } from "@/utils/assert";
 import { selectLocalizedText } from "@/utils/localization";
 import { findMetadataUrl } from "@/utils/metadata";
 import { useQuery } from "@tanstack/react-query";
@@ -15,9 +16,7 @@ async function fetchSong(songId: string | number): Promise<Nullable<Song>> {
     .eq("id", songId)
     .single();
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  assert(!error, error?.message);
 
   return data ? songSchema.parse(data) : null;
 }
@@ -26,9 +25,7 @@ export function useSong(songId?: string | number) {
   const query = useQuery({
     queryKey: ["song", songId],
     queryFn: () => {
-      if (!songId) {
-        throw new Error("songId is required");
-      }
+      assert(songId, "songId is required");
       return fetchSong(songId);
     },
     enabled: !!songId,

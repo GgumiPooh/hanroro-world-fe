@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import type { Nullable } from "@/types/misc";
+import { assert } from "@/utils/assert";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Portal } from "@headlessui/react";
@@ -115,9 +116,7 @@ const NicknameChangeOverlay: FC<Props> = ({
         setError(`닉네임은 ${MIN_NICKNAME_LENGTH}자 이상이어야 합니다.`);
         return;
       }
-      if (!res.ok) {
-        throw new Error("Failed to update nickname");
-      }
+      assert(res.ok, "Failed to update nickname");
 
       await queryClient.refetchQueries({ queryKey: ["currentUser"] });
       onClose();

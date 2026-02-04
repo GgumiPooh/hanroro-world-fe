@@ -39,6 +39,7 @@
 
 - No `any` type
 - No non-null assertions (`!`); use explicit null checks
+- Use `assert()` from `@/utils/assert` instead of `throw new Error()`
 - API response typed as `unknown` before zod validation:
   ```typescript
   const data: unknown = await res.json();

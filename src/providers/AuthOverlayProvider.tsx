@@ -1,5 +1,6 @@
 import LoginOverlay from "@/components/LoginOverlay";
 import type { Nullable } from "@/types/misc";
+import { assert } from "@/utils/assert";
 import {
   createContext,
   useCallback,
@@ -20,9 +21,7 @@ const AuthOverlayContext =
 
 export const useAuthOverlay = (): AuthOverlayContextValue => {
   const context = useContext(AuthOverlayContext);
-  if (!context) {
-    throw new Error("useAuthOverlay must be used within AuthOverlayProvider");
-  }
+  assert(context, "useAuthOverlay must be used within AuthOverlayProvider");
   return context;
 };
 

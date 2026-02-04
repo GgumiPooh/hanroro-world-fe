@@ -2,6 +2,7 @@ import { A_MINUTE } from "@/constants/misc";
 import { userSchema } from "@/schemas/user";
 import type { Nullable } from "@/types/misc";
 import type { User } from "@/types/user";
+import { assert } from "@/utils/assert";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 
@@ -10,9 +11,7 @@ async function fetchCurrentUser(): Promise<Nullable<User>> {
     credentials: "include",
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch current user");
-  }
+  assert(res.ok, "Failed to fetch current user");
 
   const data: unknown = await res.json();
   return userSchema.parse(data);

@@ -2,6 +2,7 @@ import { A_MINUTE } from "@/constants/misc";
 import { supabase } from "@/lib/supabase";
 import { albumArraySchema } from "@/schemas/album";
 import type { Album } from "@/types/album";
+import { assert } from "@/utils/assert";
 import { selectLocalizedText } from "@/utils/localization";
 import { findCoverUrl } from "@/utils/metadata";
 import { useQuery } from "@tanstack/react-query";
@@ -13,9 +14,7 @@ async function fetchAlbums(): Promise<Album[]> {
     .select("*, songs(id, track_number)")
     .order("published_at", { ascending: false });
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  assert(!error, error?.message);
 
   return albumArraySchema.parse(data ?? []);
 }

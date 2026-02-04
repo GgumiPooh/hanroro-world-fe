@@ -5,6 +5,7 @@ import { songArraySchema } from "@/schemas/song";
 import type { AlbumDetail } from "@/types/album";
 import type { Nullable } from "@/types/misc";
 import type { Song } from "@/types/song";
+import { assert } from "@/utils/assert";
 import { selectLocalizedText } from "@/utils/localization";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -18,9 +19,7 @@ async function fetchAlbumDetail(
     .eq("id", albumId)
     .single();
 
-  if (albumError) {
-    throw new Error(albumError.message);
-  }
+  assert(!albumError, albumError?.message);
 
   const { data: songs, error: songsError } = await supabase
     .from("songs")
@@ -28,9 +27,7 @@ async function fetchAlbumDetail(
     .eq("album_id", albumId)
     .order("track_number", { ascending: true });
 
-  if (songsError) {
-    throw new Error(songsError.message);
-  }
+  assert(!songsError, songsError?.message);
 
   const validatedAlbum = album ? albumDetailSchema.parse(album) : null;
   const validatedSongs = songArraySchema.parse(songs ?? []);
@@ -42,9 +39,7 @@ export function useAlbumDetail(albumId?: string | number) {
   const query = useQuery({
     queryKey: ["albumDetail", albumId],
     queryFn: () => {
-      if (!albumId) {
-        throw new Error("albumId is required");
-      }
+      assert(albumId, "albumId is required");
       return fetchAlbumDetail(albumId);
     },
     enabled: !!albumId,

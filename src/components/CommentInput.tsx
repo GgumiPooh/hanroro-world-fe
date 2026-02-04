@@ -3,6 +3,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { commentSchema } from "@/schemas/comment";
 import type { Comment } from "@/types/comment";
+import { assert } from "@/utils/assert";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
@@ -85,9 +86,7 @@ const CommentInput: FC<Props> = ({
         body: JSON.stringify({ content: comment.trim() }),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to submit comment");
-      }
+      assert(res.ok, "Failed to submit comment");
 
       const responseData: unknown = await res.json();
       const newComment = commentSchema.parse(responseData);

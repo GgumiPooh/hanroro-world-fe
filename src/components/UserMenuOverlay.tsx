@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import { assert } from "@/utils/assert";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Portal } from "@headlessui/react";
@@ -87,9 +88,7 @@ const UserMenuOverlay: FC<Props> = ({
         method: "DELETE",
         credentials: "include",
       });
-      if (!res.ok) {
-        throw new Error("회원 탈퇴 실패");
-      }
+      assert(res.ok, "회원 탈퇴 실패");
 
       localStorage.removeItem("privacyConsent");
       window.location.reload();
