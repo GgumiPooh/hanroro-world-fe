@@ -2,132 +2,54 @@
 
 ## File Organization
 
-- Flat structure: `src/hooks/*.ts`, not `src/hooks/backend/*.ts`
-- Zod schemas: `src/schemas/{feature}.ts` (export schemas only)
-- Types: `src/types/{feature}.ts` using `z.infer<typeof schema>` (export all)
-- Shared utilities: `src/utils/{name}.ts`
-  - `localization.ts`: `selectLocalizedText`
-  - `metadata.ts`: `findMetadataUrl`, `findCoverUrl`
-- Constants: `src/constants/{name}.ts`
-  - `misc.ts`: time units (`A_MINUTE`), `EARLIEST_ACTIVITY_YEAR`, `ActivityType`
-  - `navigation.ts`: routes, menu lists
-- No `export type { X } from '...'` re-exports; define types directly
-
-## Abstraction
-
-- Only extract utilities for non-trivial logic (5+ lines, complex fallbacks)
-- Keep simple patterns inline (e.g., escape key handler as one-liner)
-- No wrapper hooks for single-line operations
+- Flat: `src/hooks/*.ts`, `src/schemas/*.ts`, `src/types/*.ts`, `src/utils/*.ts`, `src/constants/*.ts`
+- Schemas export only zod schemas; types use `z.infer<typeof schema>`
+- No re-exports: `export type { X } from '...'`
 
 ## Naming
 
-### Forbidden
+Forbidden: `-Supabase`, `-Backend`, `-API`, `-Service`, `-Viewer`, `-View`, `-Component`, `data`, `item`, `temp`, `result`, `info`, single-letter vars, magic numbers
 
-- Implementation suffixes: `-Supabase`, `-Backend`, `-API`, `-Service`
-- Redundant suffixes: `-Viewer`, `-View`, `-Component`
-- Generic names: `data`, `item`, `temp`, `result`, `info`
-- Single-letter variables (except trivial lambdas: `x => x * 2`)
-- Magic numbers without named constants
-
-### Required
-
-- Descriptive names: `albumItem`, `matchedContent`, `publishedDate`
-- Constants for config values: `MIN_NICKNAME_LENGTH`, `MAX_NICKNAME_LENGTH`, `EARLIEST_ACTIVITY_YEAR`
-- Component imperative handle types: `-Handle` suffix (e.g., `CommentListHandle`)
-- Examples: `useAlbumsSupabase` → `useAlbums`, `SongDetailViewer` → `SongInfo`
+Required: descriptive names (`albumItem`, `publishedDate`), `-Handle` for imperative refs (`CommentListHandle`), PascalCase `as const` objects (`ImageStatus.LOADING`)
 
 ## Type Safety
 
-- No `any` type
-- No non-null assertions (`!`); use explicit null checks
-- Use `assert()` from `@/utils/assert` instead of `throw new Error()`
-- API response typed as `unknown` before zod validation:
-  ```typescript
-  const data: unknown = await res.json();
-  return schema.parse(data);
-  ```
-- Use utility types from `src/types/misc.ts`: `Nullable<T>`, `Optional<T>`, `Maybe<T>`
-- Prefer type unions over enums: `type Sort = "latest" | "oldest"`
-- Use `as const` objects for runtime constants
-- Enum-like `as const` objects: PascalCase name (e.g., `ImageStatus.LOADING`, `ActivityType.PERFORMANCE`)
+- No `any`, no `!` assertions
+- `assert()` over `throw new Error()`
+- API responses: `unknown` → zod parse
+- Utility types: `Nullable<T>`, `Optional<T>`, `Maybe<T>`
+- Type unions over enums: `type Sort = "latest" | "oldest"`
 
 ## Code Style
 
-### Imports
+Imports: no blank lines, `@/` alias
 
-- No blank lines between import statements
-- Use `@/` path alias for all imports
+FP: `.map()`, `.filter()`, `.find()` over loops; `Array.from({ length: n }, ...)` over `for`
 
-### Functional Programming
+Comments: self-documenting code only; prefixes `TODO:`, `NOTE:`, `WARN:`; no JSDoc on Props
 
-- Prefer `.map()`, `.filter()`, `.find()`, `.some()`, `.every()`, `.reduce()` over loops
-- Use `Array.from({ length: n }, (_, i) => ...)` instead of `for` loops
+## Component Structure
 
-### Comments
+```
+type Props → const Component → utilities → export default
+```
 
-- Self-documenting code; avoid unnecessary comments
-- Remove all commented-out code
-- Remove unnecessary JSX section markers (code structure should be self-documenting)
-- Required prefix for necessary comments: `// TODO:`, `// NOTE:`, `// WARN:`
-- No JSDoc comments on Props fields; prop names should be self-documenting
+- Single return; conditional JSX over early returns
+- Handler: `handle-` prefix, after return, currying for params
+- Props order: `*className` first → other props → function props last
+- Destructuring matches Props order
+- `className?: string` required; apply via `cn()` to outermost element
 
-### Component Structure
+JSX attrs: `className` → other attrs → event handlers
 
-- Single return statement per component; use conditional JSX inside instead of early returns
-- Handler functions: `handle-` prefix, hoist after `return`, use currying for parameterized handlers
-- File structure order: Props → Component → utility functions/constants → `export default` (last line)
-- Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
-- All UI components must have `className?: string` in Props and apply it to outermost element via `cn()`
-- In Props type definition: all `*className` props first (grouped), then other props, function props last
-- Destructuring order must match Props type definition order
+## React Patterns
 
-### JSX Attribute Order
-
-1. `className` (first)
-2. Other attributes (`type`, `value`, `disabled`, etc.)
-3. Event handlers (`onClick`, `onChange`, etc.) (last)
-
-  ```typescript
-  type Props = {
-    className?: string;
-    label: string;
-  };
-
-  const MyComponent: FC<Props> = ({ className, label }) => {
-    const [count, setCount] = useState(0);
-
-    return (
-      <button className={className} onClick={handleClick}>
-        {label}: {count}
-      </button>
-    );
-
-    function handleClick() {
-      setCount(count + 1);
-    }
-  };
-
-  export default MyComponent;
-  ```
-
-### Declarative React Patterns
-
-- Use `useEvent` from react-use instead of manual `addEventListener`/`removeEventListener`
-- Images: use `<ImageWithPlaceholder>` instead of `<img>` for loading states
-- External links: use `<ExternalLink>` component instead of `window.open`
-  ```tsx
-  <ExternalLink href={url} ariaLabel="Description">
-    <Button variant="icon" size="sm">
-      <Icon />
-    </Button>
-  </ExternalLink>
-  ```
-- OAuth/auth redirects: `window.location.assign` is acceptable
-- Avoid direct DOM manipulation; prefer React state and props
-- Modals/Overlays: use `<Portal>` from `@headlessui/react` instead of `createPortal`
+- `useEvent` (react-use) over `addEventListener`
+- `<ImageWithPlaceholder>` over `<img>`
+- `<ExternalLink>` over `window.open`
+- `<Portal>` (headlessui) over `createPortal`
+- `window.location.assign` for OAuth redirects
 
 ## Verification
 
-- Run `npx tsc --noEmit` after all code changes
-- Run `npm run build` for production build verification
-- Fix all type errors before completion
+`npx tsc --noEmit` and `npm run build` after changes
