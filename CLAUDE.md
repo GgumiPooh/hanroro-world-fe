@@ -68,7 +68,7 @@
 - Remove all commented-out code
 - Remove unnecessary JSX section markers (code structure should be self-documenting)
 - Required prefix for necessary comments: `// TODO:`, `// NOTE:`, `// WARN:`
-- JSDoc (`/** */`) only for public API (exported types, component props)
+- No JSDoc comments on Props fields; prop names should be self-documenting
 
 ### Component Structure
 

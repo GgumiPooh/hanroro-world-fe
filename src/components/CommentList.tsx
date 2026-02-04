@@ -14,13 +14,10 @@ export type CommentListRef = {
 type Props = {
   className?: string;
   ref?: Ref<CommentListRef>;
-  /** songId for song comments (uses default endpoints) */
   songId?: string | number;
-  /** Custom fetch endpoint (overrides songId) */
   fetchEndpoint?: string;
   showHeader?: boolean;
   emptyMessage?: string;
-  /** Custom delete endpoint function (overrides songId) */
   deleteEndpoint?: (id: number) => string;
 };
 
