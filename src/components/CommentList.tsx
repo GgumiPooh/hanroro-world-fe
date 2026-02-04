@@ -6,14 +6,14 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { Ref } from "react";
 import { useImperativeHandle } from "react";
 
-export type CommentListRef = {
+export type CommentListHandle = {
   addComment: (comment: Comment) => void;
   refresh: () => void;
 };
 
 type Props = {
   className?: string;
-  ref?: Ref<CommentListRef>;
+  ref?: Ref<CommentListHandle>;
   songId?: string | number;
   fetchEndpoint?: string;
   showHeader?: boolean;

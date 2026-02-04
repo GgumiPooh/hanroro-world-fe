@@ -1,11 +1,11 @@
 import CommentInput from "@/components/CommentInput";
-import CommentList, { type CommentListRef } from "@/components/CommentList";
+import CommentList, { type CommentListHandle } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import type { Comment } from "@/types/comment";
 import { useRef, type FC } from "react";
 
 const ToArtist: FC = () => {
-  const commentListRef = useRef<CommentListRef>(null);
+  const commentListHandle = useRef<CommentListHandle>(null);
 
   return (
     <div className="relative min-h-screen overflow-y-auto pt-50">
@@ -23,7 +23,7 @@ const ToArtist: FC = () => {
         </h1>
 
         <CommentList
-          ref={commentListRef}
+          ref={commentListHandle}
           fetchEndpoint="/api/public/message"
           deleteEndpoint={(id) => `/api/public/message/${id}`}
           showHeader={false}
@@ -40,7 +40,7 @@ const ToArtist: FC = () => {
   );
 
   function handleMessageSubmit(newComment: Comment) {
-    commentListRef.current?.addComment(newComment);
+    commentListHandle.current?.addComment(newComment);
   }
 };
 

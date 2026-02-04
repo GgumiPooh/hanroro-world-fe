@@ -33,6 +33,7 @@
 
 - Descriptive names: `albumItem`, `matchedContent`, `publishedDate`
 - Constants for config values: `MIN_NICKNAME_LENGTH`, `MAX_NICKNAME_LENGTH`, `EARLIEST_ACTIVITY_YEAR`
+- Component imperative handle types: `-Handle` suffix (e.g., `CommentListHandle`)
 - Examples: `useAlbumsSupabase` → `useAlbums`, `SongDetailViewer` → `SongInfo`
 
 ## Type Safety

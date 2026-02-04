@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import CommentInput from "@/components/CommentInput";
-import CommentList, { type CommentListRef } from "@/components/CommentList";
+import CommentList, { type CommentListHandle } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import { useAlbums } from "@/hooks/useAlbums";
 import { useSong } from "@/hooks/useSong";
@@ -25,7 +25,7 @@ const SongInfo: FC<Props> = ({ className }) => {
   const { videoId: currentVideoId, isPlaying, toggle } = useYouTubePlayer();
 
   const [showLyrics, setShowLyrics] = useState(false);
-  const commentListRef = useRef<CommentListRef>(null);
+  const commentListHandle = useRef<CommentListHandle>(null);
 
   const album = useMemo(
     () => albumsView.find((albumItem) => String(albumItem.id) === albumId),
@@ -119,7 +119,7 @@ const SongInfo: FC<Props> = ({ className }) => {
           {songId && (
             <CommentList
               className="mt-8 mb-24"
-              ref={commentListRef}
+              ref={commentListHandle}
               songId={songId}
             />
           )}
@@ -146,7 +146,7 @@ const SongInfo: FC<Props> = ({ className }) => {
   }
 
   function handleCommentSubmit(newComment: Comment) {
-    commentListRef.current?.addComment(newComment);
+    commentListHandle.current?.addComment(newComment);
   }
 };
 
