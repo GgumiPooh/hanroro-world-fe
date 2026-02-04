@@ -62,7 +62,9 @@ const LoginOverlay: FC<Props> = ({ className, onClose }) => {
     return () => {
       const redirectUrl = getOAuthRedirectUrl(provider);
       if (!redirectUrl) {
-        window.alert("OAuth URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
+        window.alert(
+          "OAuth URL이 설정되지 않았습니다. 환경변수를 확인해주세요.",
+        );
         return;
       }
       window.location.assign(redirectUrl);
