@@ -47,9 +47,11 @@ const SongInfo: FC<Props> = ({ className }) => {
       )}
     >
       {isLoading ? (
-        <p className="text-center font-bold text-plum-300/80">로로로로디중...</p>
+        <p className="text-center font-bold text-plum-300/80">
+          로로로로디중...
+        </p>
       ) : error ? (
-        <p className="text-center text-red-200">
+        <p className="text-red-200 text-center">
           Failed to load song detail: {error.message}
         </p>
       ) : !detailView ? null : (
@@ -108,7 +110,9 @@ const SongInfo: FC<Props> = ({ className }) => {
               <div
                 className={cn(
                   "ml-10 overflow-hidden text-sm leading-relaxed whitespace-pre-wrap text-plum-200/90 transition-all duration-500 ease-in-out md:text-base",
-                  showLyrics ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0",
+                  showLyrics
+                    ? "max-h-[2000px] opacity-100"
+                    : "max-h-0 opacity-0",
                 )}
               >
                 {detailView.lyrics}

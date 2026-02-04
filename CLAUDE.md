@@ -113,6 +113,7 @@
 ### Declarative React Patterns
 
 - Use `useEvent` from react-use instead of manual `addEventListener`/`removeEventListener`
+- Images: use `<ImageWithPlaceholder>` instead of `<img>` for loading states
 - External links: use `<ExternalLink>` component instead of `window.open`
   ```tsx
   <ExternalLink href={url} ariaLabel="Description">

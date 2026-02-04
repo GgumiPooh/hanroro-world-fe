@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
 import type { Nullable } from "@/types/misc";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
@@ -30,7 +31,11 @@ const LoginOverlay: FC<Props> = ({ className, onClose }) => {
             size="sm"
             onClick={() => handleRedirect("naver")}
           >
-            <img src="/images/naver-login.png" alt="Naver" />
+            <ImageWithPlaceholder
+              className="w-full"
+              src="/images/naver-login.png"
+              alt="Naver"
+            />
           </Button>
           <Button
             className="w-full hover:scale-100"
@@ -38,7 +43,11 @@ const LoginOverlay: FC<Props> = ({ className, onClose }) => {
             size="sm"
             onClick={() => handleRedirect("kakao")}
           >
-            <img src="/images/kakao-login.png" alt="Kakao" />
+            <ImageWithPlaceholder
+              className="w-full"
+              src="/images/kakao-login.png"
+              alt="Kakao"
+            />
           </Button>
         </div>
         <Button className="mt-5" variant="ghost" size="md" onClick={onClose}>
