@@ -6,7 +6,7 @@ type Props = PropsWithChildren<{
   ariaLabel?: string;
 }>;
 
-const ExternalLink: FC<Props> = ({ href, className, ariaLabel, children }) => {
+const ExternalLink: FC<Props> = ({ className, href, ariaLabel, children }) => {
   return (
     <a
       className={className}

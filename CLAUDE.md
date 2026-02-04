@@ -78,6 +78,7 @@
 - Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
 - All UI components must have `className?: string` in Props and apply it to outermost element via `cn()`
 - In Props type definition: all `*className` props first (grouped), then other props, function props last
+- Destructuring order must match Props type definition order
 
 ### JSX Attribute Order
 

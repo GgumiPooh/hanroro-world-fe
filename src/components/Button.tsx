@@ -8,10 +8,10 @@ type Props = {
 } & ComponentProps<"button">;
 
 const Button: FC<Props> = ({
+  className,
   variant,
   size,
   children,
-  className,
   ...props
 }) => {
   return (

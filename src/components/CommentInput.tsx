@@ -18,10 +18,10 @@ type Props = {
 };
 
 const CommentInput: FC<Props> = ({
-  apiEndpoint,
-  onCommentSubmit,
-  placeholder = "댓글을 입력하세요...",
   className,
+  apiEndpoint,
+  placeholder = "댓글을 입력하세요...",
+  onCommentSubmit,
 }) => {
   const { displayName } = useCurrentUser();
   const { open: openLogin } = useAuthOverlay();

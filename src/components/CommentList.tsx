@@ -29,9 +29,9 @@ const CommentList = ({
   ref,
   songId,
   fetchEndpoint,
-  deleteEndpoint,
   showHeader = true,
   emptyMessage = "아직 댓글이 없습니다. 첫 댓글을 남겨보세요!",
+  deleteEndpoint,
 }: Props) => {
   const finalFetchEndpoint =
     fetchEndpoint ?? `/api/public/song/${songId}/comments`;

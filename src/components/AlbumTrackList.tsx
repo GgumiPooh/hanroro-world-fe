@@ -8,7 +8,7 @@ type Props = {
   albumId: string | number;
 };
 
-const AlbumTrackList: FC<Props> = ({ albumId, className }) => {
+const AlbumTrackList: FC<Props> = ({ className, albumId }) => {
   const { detailView } = useAlbumDetail(albumId);
 
   return (

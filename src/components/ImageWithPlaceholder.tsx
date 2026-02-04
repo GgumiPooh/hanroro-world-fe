@@ -32,12 +32,12 @@ type Props = {
 const ImageWithPlaceholder: FC<Props> = ({
   className,
   imgClassName,
-  src: sourceProp,
-  alt,
   fallbackOnError = true,
   fallbackSrc,
   renderPlaceholder = () => <Skeleton className="size-full" />,
   onStatusChange,
+  src: sourceProp,
+  alt,
   ...props
 }) => {
   const imgRef = useRef<HTMLImageElement>(null);

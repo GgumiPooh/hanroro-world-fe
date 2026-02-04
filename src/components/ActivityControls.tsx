@@ -15,8 +15,8 @@ type Props = {
 const ActivityControls: FC<Props> = ({
   className,
   year,
-  onYearChange,
   sort,
+  onYearChange,
   onSortChange,
 }) => {
   return (
