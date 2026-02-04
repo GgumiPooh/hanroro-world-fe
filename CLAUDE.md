@@ -77,7 +77,7 @@
 - Utility functions: place outside component (after `export default`)
 - Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)
 - All UI components must have `className?: string` in Props and apply it to outermost element via `cn()`
-- In Props type definition: `className` first, function props last
+- In Props type definition: all `*className` props first (grouped), then other props, function props last
 
 ### JSX Attribute Order
 

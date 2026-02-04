@@ -4,20 +4,20 @@ import type { FC } from "react";
 
 type Props = {
   className?: string;
+  imgClassName?: string;
+  overlayClassName?: string;
   src?: string;
   alt?: string;
-  imgClassName?: string;
   overlay?: boolean;
-  overlayClassName?: string;
 };
 
 const BlurBackground: FC<Props> = ({
   className,
+  imgClassName = "",
+  overlayClassName = "bg-gray-400/50",
   src = "/images/home-banner6.webp",
   alt = "background",
-  imgClassName = "",
   overlay = false,
-  overlayClassName = "bg-gray-400/50",
 }) => {
   return (
     <div className={className}>
@@ -27,7 +27,9 @@ const BlurBackground: FC<Props> = ({
         src={src}
         alt={alt}
       />
-      {overlay && <div className={`fixed inset-0 -z-1 ${overlayClassName}`} />}
+      {overlay && (
+        <div className={cn("fixed inset-0 -z-1", overlayClassName)} />
+      )}
     </div>
   );
 };
