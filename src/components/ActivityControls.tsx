@@ -7,8 +7,8 @@ import type { FC } from "react";
 type Props = {
   className?: string;
   year: string;
-  onYearChange: (year: string) => void;
   sort: Sort;
+  onYearChange: (year: string) => void;
   onSortChange: (sort: Sort) => void;
 };
 

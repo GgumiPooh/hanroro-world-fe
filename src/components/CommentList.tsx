@@ -17,10 +17,10 @@ type Props = {
   songId?: string | number;
   /** Custom fetch endpoint (overrides songId) */
   fetchEndpoint?: string;
-  /** Custom delete endpoint function (overrides songId) */
-  deleteEndpoint?: (id: number) => string;
   showHeader?: boolean;
   emptyMessage?: string;
+  /** Custom delete endpoint function (overrides songId) */
+  deleteEndpoint?: (id: number) => string;
 };
 
 const CommentList = ({

@@ -11,8 +11,8 @@ import { useState } from "react";
 type Props = {
   className?: string;
   apiEndpoint: string;
-  onCommentSubmit?: (comment: Comment) => void;
   placeholder?: string;
+  onCommentSubmit?: (comment: Comment) => void;
 };
 
 const CommentInput: FC<Props> = ({
