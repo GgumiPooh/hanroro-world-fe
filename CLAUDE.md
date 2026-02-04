@@ -71,6 +71,7 @@
 
 ### Component Structure
 
+- Single return statement per component; use conditional JSX inside instead of early returns
 - Handler functions: `handle-` prefix, hoist after `return`
 - Utility functions: place outside component (after `export default`)
 - Extract duplicate logic to shared utilities (e.g., `selectLocalizedText`)

@@ -56,81 +56,74 @@ const CommentList = ({
     refresh,
   }));
 
-  if (isLoading) {
-    return (
-      <section className={className}>
-        <p className="text-center text-sm text-plum-300/60">로딩중...</p>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className={className}>
-        <p className="text-center text-sm text-plum-300/80">{error}</p>
-      </section>
-    );
-  }
-
   return (
     <section className={className}>
-      {showHeader && (
-        <h3 className="mb-4 text-lg font-semibold text-plum-100">
-          댓글 <span className="text-plum-400">({comments.length})</span>
-        </h3>
-      )}
-      {comments.length === 0 ? (
-        <p className="text-center text-sm text-plum-300/60">{emptyMessage}</p>
+      {isLoading ? (
+        <p className="text-center text-sm text-plum-300/60">로딩중...</p>
+      ) : error ? (
+        <p className="text-center text-sm text-plum-300/80">{error}</p>
       ) : (
-        <ul className="mb-50 flex w-full flex-col gap-5">
-          {comments.map((comment) => {
-            const isOwn = isOwnComment(comment.author);
-            return (
-              <li
-                className={cn("flex", isOwn ? "justify-end" : "justify-start")}
-                key={comment.id}
-              >
-                <div
-                  className={cn(
-                    "relative w-full rounded-2xl bg-plum-300/20 px-4 py-3",
-                    isOwn ? "rounded-br-none" : "rounded-bl-none",
-                  )}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <span className="md:text-md text-sm text-plum-300">
-                        {comment.author}
-                      </span>
-                      <span className="text-xs text-plum-200/90">
-                        {comment.createdAt}
-                      </span>
-                    </div>
-                    {isOwn && (
-                      <Button
-                        className="hover:text-red-400/80 h-8 w-8 text-plum-300"
-                        variant="icon"
-                        size="sm"
-                        onClick={() => handleDeleteComment(comment.id)}
-                      >
-                        <XMarkIcon className="size-4" />
-                      </Button>
+        <>
+          {showHeader && (
+            <h3 className="mb-4 text-lg font-semibold text-plum-100">
+              댓글 <span className="text-plum-400">({comments.length})</span>
+            </h3>
+          )}
+          {comments.length === 0 ? (
+            <p className="text-center text-sm text-plum-300/60">
+              {emptyMessage}
+            </p>
+          ) : (
+            <ul className="mb-50 flex w-full flex-col gap-5">
+              {comments.map((commentItem) => {
+                const isOwn = isOwnComment(commentItem.author);
+                return (
+                  <li
+                    className={cn(
+                      "flex",
+                      isOwn ? "justify-end" : "justify-start",
                     )}
-                  </div>
-                  <p className="text-base leading-relaxed font-medium text-plum-300 md:text-lg">
-                    {comment.content}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                    key={commentItem.id}
+                  >
+                    <div
+                      className={cn(
+                        "relative w-full rounded-2xl bg-plum-300/20 px-4 py-3",
+                        isOwn ? "rounded-br-none" : "rounded-bl-none",
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <span className="md:text-md text-sm text-plum-300">
+                            {commentItem.author}
+                          </span>
+                          <span className="text-xs text-plum-200/90">
+                            {commentItem.createdAt}
+                          </span>
+                        </div>
+                        {isOwn && (
+                          <Button
+                            className="h-8 w-8 text-plum-300 hover:text-red-400/80"
+                            variant="icon"
+                            size="sm"
+                            onClick={() => deleteComment(commentItem.id)}
+                          >
+                            <XMarkIcon className="size-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <p className="text-base font-medium leading-relaxed text-plum-300 md:text-lg">
+                        {commentItem.content}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </>
       )}
     </section>
   );
-
-  function handleDeleteComment(commentId: number) {
-    deleteComment(commentId);
-  }
 };
 
 export default CommentList;
