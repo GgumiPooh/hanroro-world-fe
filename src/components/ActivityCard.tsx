@@ -8,38 +8,6 @@ import { cn } from "@/utils/styles";
 import { CheckCircleIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 
-function isLocalDateFormat(value: string): boolean {
-  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
-}
-
-function padZero(num: number): string {
-  return num < 10 ? `0${num}` : String(num);
-}
-
-function getTodayDateString(): string {
-  const today = new Date();
-  return `${today.getFullYear()}-${padZero(today.getMonth() + 1)}-${padZero(today.getDate())}`;
-}
-
-function isDateInPast(dateValue: string): boolean {
-  if (!dateValue) return false;
-  if (isLocalDateFormat(dateValue)) {
-    return dateValue < getTodayDateString();
-  }
-  const timestamp = Date.parse(dateValue);
-  return Number.isFinite(timestamp) ? timestamp < Date.now() : false;
-}
-
-function formatDateString(dateValue: string): string {
-  if (!dateValue) return "";
-  if (isLocalDateFormat(dateValue)) {
-    return dateValue.replaceAll("-", ".");
-  }
-  const date = new Date(dateValue);
-  if (Number.isNaN(date.getTime())) return dateValue;
-  return `${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
-}
-
 type Props = {
   className?: string;
   activity: Activity;
@@ -85,3 +53,35 @@ const ActivityCard: FC<Props> = ({ className, activity }) => {
 };
 
 export default ActivityCard;
+
+function isLocalDateFormat(value: string): boolean {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+function padZero(num: number): string {
+  return num < 10 ? `0${num}` : String(num);
+}
+
+function getTodayDateString(): string {
+  const today = new Date();
+  return `${today.getFullYear()}-${padZero(today.getMonth() + 1)}-${padZero(today.getDate())}`;
+}
+
+function isDateInPast(dateValue: string): boolean {
+  if (!dateValue) return false;
+  if (isLocalDateFormat(dateValue)) {
+    return dateValue < getTodayDateString();
+  }
+  const timestamp = Date.parse(dateValue);
+  return Number.isFinite(timestamp) ? timestamp < Date.now() : false;
+}
+
+function formatDateString(dateValue: string): string {
+  if (!dateValue) return "";
+  if (isLocalDateFormat(dateValue)) {
+    return dateValue.replaceAll("-", ".");
+  }
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return dateValue;
+  return `${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
+}

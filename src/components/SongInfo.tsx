@@ -13,12 +13,6 @@ import type { FC } from "react";
 import { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 
-const YOUTUBE_URL_PATTERNS = [
-  /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-  /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-  /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-];
-
 type Props = {
   className?: string;
 };
@@ -157,6 +151,12 @@ const SongInfo: FC<Props> = ({ className }) => {
 };
 
 export default SongInfo;
+
+const YOUTUBE_URL_PATTERNS = [
+  /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+  /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+];
 
 function extractYouTubeId(url: string): Nullable<string> {
   if (!url) return null;
