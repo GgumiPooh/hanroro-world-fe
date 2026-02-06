@@ -1,37 +1,59 @@
-import { A_MINUTE, ActivityType } from "@/constants/misc";
-import { supabase } from "@/lib/supabase";
+import { A_MINUTE } from "@/constants/misc";
 import { activityArraySchema } from "@/schemas/activity";
 import type { Activity } from "@/types/activity";
 import type { Sort } from "@/types/sort";
 import { assert } from "@/utils/assert";
+import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 
-async function fetchActivities(sort: Sort, year: string): Promise<Activity[]> {
-  let query = supabase.from("activities").select("*");
+type PageResponse<T> = {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+};
 
-  query = query.eq("type", ActivityType.PERFORMANCE);
+async function fetchActivities(
+  sort: Sort,
+  year: string,
+  page = 0,
+  size = 100,
+): Promise<Activity[]> {
+  const params = new URLSearchParams({
+    sort,
+    page: String(page),
+    size: String(size),
+  });
 
   if (year) {
-    const startDate = `${year}-01-01`;
-    const endDate = `${year}-12-31`;
-    query = query.gte("active_from", startDate).lte("active_from", endDate);
+    params.set("year", year);
   }
 
-  const ascending = sort === "oldest";
-  query = query.order("active_from", { ascending });
+  const baseUrl = ENV_VARIABLE.API_BASE_URL;
+  const res = await fetch(`${baseUrl}/api/public/activity?${params}`, {
+    credentials: "include",
+  });
 
-  const { data, error } = await query;
+  assert(res.ok, "Failed to fetch activities");
 
-  assert(!error, error?.message);
+  const data: unknown = await res.json();
+  const pageResponse = data as PageResponse<unknown>;
 
-  const transformed = (data ?? []).map((item) => ({
-    id: item.id,
-    title: item.title ?? [],
-    activityType: item.type,
-    activeFrom: item.active_from,
-    activeTo: item.active_to,
-    metaData: item.meta_data ?? [],
-  }));
+  const transformed = (pageResponse.content ?? []).map((item) => {
+    const activityItem = item as Record<string, unknown>;
+    return {
+      id: activityItem.id as number,
+      title: (activityItem.title as Array<{ language: string; text: string }>) ?? [],
+      activityType: activityItem.activityType as string | undefined,
+      activeFrom: activityItem.activeFrom as string,
+      activeTo: activityItem.activeTo as string,
+      metaData: (activityItem.metaData as Array<{ type: string; value: string }>) ?? [],
+    };
+  });
 
   return activityArraySchema.parse(transformed);
 }
