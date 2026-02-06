@@ -4,12 +4,38 @@ import BlurBackground from "@/components/BlurBackground";
 import { useActivities } from "@/hooks/useActivities";
 import type { Sort } from "@/types/sort";
 
-import { useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 
 const Activity: FC = () => {
   const [sort, setSort] = useState<Sort>("latest");
   const [year, setYear] = useState<string>("");
-  const { activities } = useActivities(sort, year);
+  const {
+    activities,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useActivities(sort, year);
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer로 자동 로드
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="relative overflow-y-auto pt-50">
@@ -27,15 +53,35 @@ const Activity: FC = () => {
           sort={sort}
           onSortChange={setSort}
         />
-        <ul className="relative ml-6 border-l-6 border-gray-600/40 md:ml-10">
-          {activities.map((activityItem) => (
-            <ActivityCard
-              className="mb-40 w-full max-w-[660px]"
-              key={activityItem.id}
-              activity={activityItem}
-            />
-          ))}
-        </ul>
+
+        {isLoading ? (
+          <div className="py-20 text-center text-gray-400">로딩 중...</div>
+        ) : (
+          <ul className="relative ml-6 border-l-6 border-gray-600/40 md:ml-10">
+            {activities.map((activityItem) => (
+              <ActivityCard
+                className="mb-40 w-full max-w-[660px]"
+                key={activityItem.id}
+                activity={activityItem}
+              />
+            ))}
+          </ul>
+        )}
+
+        {/* 자동 로드 트리거 */}
+        <div ref={loadMoreRef} className="h-10" />
+
+        {isFetchingNextPage && (
+          <div className="py-10 text-center text-gray-400">
+            더 불러오는 중...
+          </div>
+        )}
+
+        {!hasNextPage && activities.length > 0 && (
+          <div className="py-10 text-center text-gray-500">
+            모든 활동을 불러왔습니다
+          </div>
+        )}
       </div>
     </div>
   );
