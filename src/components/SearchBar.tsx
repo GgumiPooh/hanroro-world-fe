@@ -22,12 +22,7 @@ const SearchBar: FC<Props> = ({
   };
 
   return (
-    <div
-      className={cn(
-        "flex items-center gap-3 rounded-4xl border border-gray-300/30 px-3 py-2 md:px-4 md:py-3",
-        className,
-      )}
-    >
+    <div className={cn("flex items-center gap-3", className)}>
       <MagnifyingGlassIcon className="size-5 shrink-0 text-plum-300" />
       <input
         type="text"

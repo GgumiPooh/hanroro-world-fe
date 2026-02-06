@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -12,20 +12,14 @@ type MetaData = {
   url: string;
 };
 
-type Song = {
-  id: number;
-  track_number?: number;
-};
-
 export type Album = {
   id: number;
   title: LanguageData[];
   description?: LanguageData[];
   metadata?: MetaData[];
-  album_type?: string;
-  published_at?: string;
+  albumType?: string;
+  publishedAt?: string;
   created_at?: string;
-  songs?: Song[];
 };
 
 function resolveLocalizedText(
@@ -41,29 +35,46 @@ function resolveLocalizedText(
 }
 
 async function fetchAlbums(): Promise<Album[]> {
-  const { data, error } = await supabase
-    .from("albums")
-    .select("*, songs(id, track_number)")
-    .order("published_at", { ascending: false });
+  const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+  const res = await fetch(`${baseUrl}/api/public/album`, {
+    credentials: "include",
+  });
 
-  if (error) {
-    throw new Error(error.message);
+  if (!res.ok) {
+    throw new Error("Failed to fetch albums");
   }
 
-  return data ?? [];
+  return res.json();
 }
 
-export function useAlbumsSupabase() {
-  const query = useQuery({
+async function fetchAlbumSongs(albumId: number): Promise<{ id: number; trackNumber?: number }[]> {
+  const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+  const res = await fetch(`${baseUrl}/api/public/album/${albumId}`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch album songs");
+  }
+
+  const songs = await res.json();
+  return songs.map((s: { id: number; trackNumber?: number }) => ({
+    id: s.id,
+    trackNumber: s.trackNumber,
+  }));
+}
+
+export function useAlbums() {
+  const albumsQuery = useQuery({
     queryKey: ["albums"],
     queryFn: fetchAlbums,
     staleTime: 60_000,
   });
 
   const albumsView = useMemo(() => {
-    if (!query.data) return [];
+    if (!albumsQuery.data) return [];
 
-    return query.data.map((album) => {
+    return albumsQuery.data.map((album) => {
       const meta = album.metadata ?? [];
       const lower = meta.map((m) => ({
         type: (m.type || "").toLowerCase(),
@@ -75,26 +86,22 @@ export function useAlbumsSupabase() {
         lower[0]?.url ||
         "";
 
-      // Get first track's song id (track_number = 1 or just the first in list)
-      const sortedSongs = [...(album.songs ?? [])].sort(
-        (a, b) => (a.track_number ?? 0) - (b.track_number ?? 0),
-      );
-      const firstSongId = sortedSongs[0]?.id ?? null;
-
       return {
         ...album,
         titleText: resolveLocalizedText(album.title),
         descriptionText: resolveLocalizedText(album.description),
         coverUrl: cover,
-        firstSongId,
+        firstSongId: null as number | null,
+        album_type: album.albumType,
       };
     });
-  }, [query.data]);
+  }, [albumsQuery.data]);
 
   return {
-    albums: query.data ?? [],
+    albums: albumsQuery.data ?? [],
     albumsView,
-    isLoading: query.isLoading,
-    error: query.error,
+    isLoading: albumsQuery.isLoading,
+    error: albumsQuery.error,
+    fetchAlbumSongs,
   };
 }

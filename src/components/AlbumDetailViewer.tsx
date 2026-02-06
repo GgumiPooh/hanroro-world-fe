@@ -1,9 +1,9 @@
-import { useAlbumDetailSupabase } from "@/hooks/supabase/useAlbumDetailSupabase";
+import { useAlbumDetail } from "@/hooks/backend/useAlbumDetail";
 import type { FC } from "react";
 import { Link } from "react-router";
 
 const AlbumDetailViewer: FC<{ albumId: string | number }> = ({ albumId }) => {
-  const { detailView } = useAlbumDetailSupabase(albumId);
+  const { detailView } = useAlbumDetail(albumId);
 
   return (
     <div className="w-full">

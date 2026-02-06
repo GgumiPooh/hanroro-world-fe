@@ -1,5 +1,5 @@
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
+import { useAlbums } from "@/hooks/backend/useAlbums";
 import type { FC } from "react";
 import { Link } from "react-router";
 
@@ -9,7 +9,7 @@ const getUrlsByType = (meta: { type: string; url: string }[], type: string) => {
 };
 
 const AlbumsView: FC = () => {
-  const { albumsView, isLoading, error } = useAlbumsSupabase();
+  const { albumsView, isLoading, error } = useAlbums();
 
   if (isLoading) {
     return <p className="mb-20 text-center text-plum-100/80">Loading...</p>;
@@ -25,7 +25,7 @@ const AlbumsView: FC = () => {
       {albumsView.map((item) => {
         const cover = getUrlsByType(item.metadata ?? [], "img");
         const title = item.titleText || "Untitled Album";
-        const dateStr = item.published_at ?? "";
+        const dateStr = item.publishedAt ?? "";
 
         const isDigitalSingle = item.album_type === "DIGITAL_SINGLE";
         const targetPath =

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -14,13 +14,13 @@ export type MetaData = {
 
 export type SongDetail = {
   id: number;
-  album_id: number;
+  albumId: number;
   title?: LanguageData[];
   description?: LanguageData[];
   lyrics?: LanguageData[];
   metadata?: MetaData[];
-  track_number?: number;
-  created_at?: string;
+  trackNumber?: number;
+  createdAt?: string;
 };
 
 function resolveLocalizedText(
@@ -38,20 +38,19 @@ function resolveLocalizedText(
 }
 
 async function fetchSong(songId: string | number): Promise<SongDetail | null> {
-  const { data, error } = await supabase
-    .from("songs")
-    .select("*")
-    .eq("id", songId)
-    .single();
+  const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+  const res = await fetch(`${baseUrl}/api/public/album/song/${songId}`, {
+    credentials: "include",
+  });
 
-  if (error) {
-    throw new Error(error.message);
+  if (!res.ok) {
+    throw new Error("Failed to fetch song");
   }
 
-  return data;
+  return res.json();
 }
 
-export function useSongSupabase(
+export function useSong(
   _albumId?: string | number,
   songId?: string | number,
 ) {

@@ -2,8 +2,8 @@ import Button from "@/components/Button";
 import CommentInput, { type CommentData } from "@/components/CommentInput";
 import CommentList, { type CommentListRef } from "@/components/CommentList";
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
-import { useSongSupabase } from "@/hooks/supabase/useSongSupabase";
+import { useAlbums } from "@/hooks/backend/useAlbums";
+import { useSong } from "@/hooks/backend/useSong";
 import { useYouTubePlayer } from "@/hooks/useYouTubePlayer";
 import { cn } from "@/utils/styles";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
@@ -29,8 +29,8 @@ function extractYouTubeId(url: string): string | null {
 const SongDetailViewer: FC = () => {
   const { albumId, songId } = useParams();
 
-  const { detailView, isLoading, error } = useSongSupabase(albumId, songId);
-  const { albumsView } = useAlbumsSupabase();
+  const { detailView, isLoading, error } = useSong(albumId, songId);
+  const { albumsView } = useAlbums();
   const { videoId: currentVideoId, isPlaying, toggle } = useYouTubePlayer();
 
   const [showLyrics, setShowLyrics] = useState(false);

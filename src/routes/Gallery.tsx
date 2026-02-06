@@ -123,7 +123,7 @@ const Gallery: FC = () => {
 
       {/* 메인 콘텐츠 */}
       <div className="z-2 mx-auto w-[min(92vw,760px)]">
-        <SearchBar className="mb-10" onSearch={handleSearch} />
+        <SearchBar className="mb-6" onSearch={handleSearch} />
 
         {/* 모바일용 태그 가로 스크롤 */}
         <div className="mb-6 scrollbar-hide flex gap-2 overflow-x-auto pb-2">

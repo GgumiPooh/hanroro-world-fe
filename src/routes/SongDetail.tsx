@@ -1,7 +1,7 @@
 import BlurBackground from "@/components/BlurBackground";
 import Button from "@/components/Button";
 import SongDetailViewer from "@/components/SongDetailViewer";
-import { useAlbumsSupabase } from "@/hooks/supabase/useAlbumsSupabase";
+import { useAlbums } from "@/hooks/backend/useAlbums";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import type { FC } from "react";
 import { useMemo } from "react";
@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router";
 const SongDetail: FC = () => {
   const { albumId } = useParams();
   const navigate = useNavigate();
-  const { albumsView } = useAlbumsSupabase();
+  const { albumsView } = useAlbums();
   const album = useMemo(
     () => albumsView.find((a) => String(a.id) === albumId),
     [albumsView, albumId],

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { ENV_VARIABLE } from "@/utils/env-variable";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -14,22 +14,22 @@ export type MetaData = {
 
 export type Song = {
   id: number;
-  album_id: number;
+  albumId: number;
   title?: LanguageData[];
   description?: LanguageData[];
   lyrics?: LanguageData[];
   metadata?: MetaData[];
-  track_number?: number;
-  created_at?: string;
+  trackNumber?: number;
+  createdAt?: string;
 };
 
 export type AlbumDetail = {
   id: number;
   title: LanguageData[];
   description?: LanguageData[];
-  published_at?: string;
+  publishedAt?: string;
   metadata?: MetaData[];
-  created_at?: string;
+  createdAt?: string;
   songs?: Song[];
 };
 
@@ -48,32 +48,33 @@ function resolveLocalizedText(
 async function fetchAlbumDetail(
   albumId: string | number,
 ): Promise<{ album: AlbumDetail | null; songs: Song[] }> {
-  // Fetch album
-  const { data: album, error: albumError } = await supabase
-    .from("albums")
-    .select("*")
-    .eq("id", albumId)
-    .single();
+  const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
 
-  if (albumError) {
-    throw new Error(albumError.message);
+  const albumRes = await fetch(`${baseUrl}/api/public/album`, {
+    credentials: "include",
+  });
+
+  if (!albumRes.ok) {
+    throw new Error("Failed to fetch albums");
   }
 
-  // Fetch songs for this album
-  const { data: songs, error: songsError } = await supabase
-    .from("songs")
-    .select("*")
-    .eq("album_id", albumId)
-    .order("track_number", { ascending: true });
+  const albums: AlbumDetail[] = await albumRes.json();
+  const album = albums.find((a) => a.id === Number(albumId)) ?? null;
 
-  if (songsError) {
-    throw new Error(songsError.message);
+  const songsRes = await fetch(`${baseUrl}/api/public/album/${albumId}`, {
+    credentials: "include",
+  });
+
+  if (!songsRes.ok) {
+    throw new Error("Failed to fetch songs");
   }
+
+  const songs: Song[] = await songsRes.json();
 
   return { album, songs: songs ?? [] };
 }
 
-export function useAlbumDetailSupabase(albumId?: string | number) {
+export function useAlbumDetail(albumId?: string | number) {
   const query = useQuery({
     queryKey: ["albumDetail", albumId],
     queryFn: () => fetchAlbumDetail(albumId!),
@@ -89,6 +90,7 @@ export function useAlbumDetailSupabase(albumId?: string | number) {
       title: resolveLocalizedText(s.title),
       description: resolveLocalizedText(s.description),
       lyrics: resolveLocalizedText(s.lyrics),
+      track_number: s.trackNumber,
     }));
 
     return { songsView };
