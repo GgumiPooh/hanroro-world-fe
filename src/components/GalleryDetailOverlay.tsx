@@ -9,6 +9,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   HeartIcon,
+  TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -18,6 +19,7 @@ type GalleryDetail = {
   id: number;
   title: string;
   description: string;
+  authorId: number;
   authorName: string;
   imageUrls: string[];
   likeCount: number;
@@ -46,8 +48,11 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
-  const { displayName } = useCurrentUser();
+  const { user, displayName } = useCurrentUser();
   const { open: openLogin } = useAuthOverlay();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const isOwner = user && gallery && String(user.id) === String(gallery.authorId);
 
   const fetchGallery = useCallback(async () => {
     try {
@@ -115,7 +120,8 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
   const handleCommentSubmit = (comment: {
     id: number;
     content: string;
-    author: string;
+    author?: string;
+    authorName?: string;
     createdAt: string;
   }) => {
     setGallery((prev) =>
@@ -126,7 +132,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
               {
                 id: comment.id,
                 content: comment.content,
-                authorName: comment.author,
+                authorName: comment.authorName || comment.author || "익명",
                 createdAt: comment.createdAt,
               },
               ...prev.comments,
@@ -199,6 +205,36 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     setShowDownloadMenu(false);
   };
 
+  const handleDelete = async () => {
+    if (!gallery) return;
+
+    const confirmed = window.confirm("이 게시물을 삭제하시겠습니까?");
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+    try {
+      const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
+      const res = await fetch(`${baseUrl}/api/public/gallery/${galleryId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        alert("게시물이 삭제되었습니다.");
+        onClose();
+        window.location.reload(); // 목록 새로고침
+      } else {
+        const error = await res.text();
+        alert(`삭제 실패: ${error}`);
+      }
+    } catch (err) {
+      console.error("Failed to delete gallery:", err);
+      alert("삭제 중 오류가 발생했습니다.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -231,6 +267,18 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       >
         {/* 상단 버튼들 */}
         <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+          {/* 삭제 버튼 (작성자만 표시) */}
+          {isOwner && (
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="rounded-full bg-red-500/70 p-2 text-white transition-colors hover:bg-red-600/90 disabled:opacity-50"
+              title="삭제"
+            >
+              <TrashIcon className="size-4 md:size-6" />
+            </button>
+          )}
+
           {/* 다운로드 버튼 */}
           <div className="relative">
             <button
