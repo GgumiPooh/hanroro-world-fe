@@ -2,11 +2,8 @@ import Button from "@/components/Button";
 import GalleryDetailOverlay from "@/components/GalleryDetailOverlay";
 import GalleryPostOverlay from "@/components/GalleryPostOverlay";
 import SearchBar from "@/components/SearchBar";
-import {
-  useCurrentUser,
-  useGalleries,
-  type GalleryItem,
-} from "@/hooks/backend";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useGalleries, type GalleryItem } from "@/hooks/useGalleries";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import {
   ChatBubbleLeftIcon,

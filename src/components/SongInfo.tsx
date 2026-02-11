@@ -61,7 +61,7 @@ const SongInfo: FC<Props> = ({ className }) => {
               className="h-[250px] w-[250px] shrink-0 shadow-[0_15px_35px_rgba(0,0,0,0.35)] md:h-[320px] md:w-[320px] lg:h-[350px] lg:w-[350px]"
               imgClassName="h-full w-full object-cover"
               src={
-                detailView.imageUrl ||
+                detailView.imgUrl ||
                 album?.coverUrl ||
                 "/images/placeholder.png"
               }

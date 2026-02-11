@@ -34,7 +34,7 @@ type AlbumItemProps = {
 const AlbumItem: FC<AlbumItemProps> = ({ album }) => {
   const coverUrl = findMetadataUrl(album.metadata ?? [], "img");
   const albumTitle = album.titleText || "Untitled Album";
-  const publishedDate = album.published_at ?? "";
+  const publishedDate = album.publishedAt ?? "";
 
   const isDigitalSingle = album.album_type === "DIGITAL_SINGLE";
   const targetPath =

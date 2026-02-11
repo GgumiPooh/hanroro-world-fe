@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
-import CommentInput, { type CommentData } from "@/components/CommentInput";
-import { useCurrentUser } from "@/hooks/backend";
+import CommentInput from "@/components/CommentInput";
+import type { Comment } from "@/types/comment";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import {
@@ -103,7 +104,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     }
   };
 
-  const handleCommentSubmit = (comment: CommentData) => {
+  const handleCommentSubmit = (comment: Comment) => {
     setGallery((prev) =>
       prev
         ? {
@@ -365,7 +366,6 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
               apiEndpoint={`/api/public/gallery/${galleryId}/comments`}
               onCommentSubmit={handleCommentSubmit}
               placeholder="댓글을 입력하세요..."
-              inline
             />
           </div>
         </div>
