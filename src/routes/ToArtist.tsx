@@ -8,7 +8,7 @@ const ToArtist: FC = () => {
   const commentListHandle = useRef<CommentListHandle>(null);
 
   return (
-    <div className="relative min-h-screen overflow-y-auto pt-50">
+    <div className="relative scrollbar-hide h-dvh overflow-y-auto pt-50">
       <div className="fixed inset-0 -z-1 bg-gray-900/70" />
       <ImageWithPlaceholder
         className="fixed inset-0 -z-2 h-dvh w-full"

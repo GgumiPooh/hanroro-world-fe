@@ -6,7 +6,7 @@ import { Outlet } from "react-router";
 const GlobalLayout: FC = () => {
   return (
     <div>
-      <Header className="fixed inset-x-0 top-0 z-3 mx-2 mt-5" />
+      <Header className="fixed inset-x-0 top-0 z-3 mx-5 mt-5" />
       <main className="">
         <Outlet />
       </main>

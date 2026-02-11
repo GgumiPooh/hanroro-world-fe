@@ -4,7 +4,7 @@ import type { FC } from "react";
 
 const Albums: FC = () => {
   return (
-    <div className="relative overflow-y-auto pt-50">
+    <div className="relative scrollbar-hide h-dvh overflow-y-auto pt-50">
       <BlurBackground overlay overlayClassName="bg-gray-400/50" />
       <h1 className="mb-35 text-center text-5xl font-bold text-gray-100 md:mb-60 md:text-8xl">
         Albums

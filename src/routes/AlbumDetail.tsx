@@ -23,9 +23,9 @@ const AlbumDetail: FC = () => {
       <BlurBackground
         src={album?.coverUrl}
         alt={album?.titleText}
-        imgClassName="scale-105 blur-sm"
+        imgClassName="scale-105 blur-md"
       />
-      <div className="fixed inset-0 -z-1 bg-gray-800/75" />
+      <div className="fixed inset-0 -z-1 bg-gray-800/60" />
 
       <div className="z-2 mx-auto w-[min(92vw,900px)]">
         {album?.coverUrl && (

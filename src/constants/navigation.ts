@@ -8,6 +8,14 @@ export const HEADER_MENU_LIST = [
     href: "/albums",
   },
   {
+    label: "Gallery",
+    href: "/gallery",
+  },
+  // {
+  //   label: "Goods",
+  //   href: "/goods",
+  // },
+  {
     label: "To. RoRo",
     href: "/toArtist",
   },
