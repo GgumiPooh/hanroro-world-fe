@@ -90,7 +90,7 @@ export function useAlbumDetail(albumId?: string | number) {
       title: resolveLocalizedText(s.title),
       description: resolveLocalizedText(s.description),
       lyrics: resolveLocalizedText(s.lyrics),
-      track_number: s.trackNumber,
+      trackNumber: s.trackNumber,
     }));
 
     return { songsView };

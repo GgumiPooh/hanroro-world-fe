@@ -1,6 +1,7 @@
 import { useAlbumDetail } from "@/hooks/useAlbumDetail";
 import { cn } from "@/utils/styles";
 import type { FC } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router";
 
 type Props = {
@@ -11,10 +12,16 @@ type Props = {
 const AlbumTrackList: FC<Props> = ({ className, albumId }) => {
   const { detailView } = useAlbumDetail(albumId);
 
+  const sortedSongs = useMemo(() => {
+    return [...(detailView?.songsView ?? [])].sort(
+      (a, b) => (a.trackNumber ?? 0) - (b.trackNumber ?? 0),
+    );
+  }, [detailView?.songsView]);
+
   return (
     <div className={cn("w-full", className)}>
       <ul className="divide-y divide-plum-300/30">
-        {detailView?.songsView.map((song) => (
+        {sortedSongs.map((song) => (
           <li key={song.id} className="py-5">
             <div className="flex">
               <Link
