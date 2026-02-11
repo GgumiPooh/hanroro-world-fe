@@ -68,9 +68,11 @@ const UserMenuOverlay: FC<Props> = ({
         method: "POST",
         credentials: "include",
       });
+      localStorage.removeItem("currentUser"); // 캐시 정리
       window.location.reload();
     } catch (err) {
       console.error("Logout failed:", err);
+      localStorage.removeItem("currentUser"); // 캐시 정리
       window.location.reload();
     }
   }
@@ -90,6 +92,7 @@ const UserMenuOverlay: FC<Props> = ({
       });
       assert(res.ok, "회원 탈퇴 실패");
 
+      localStorage.removeItem("currentUser"); // 캐시 정리
       localStorage.removeItem("privacyConsent");
       window.location.reload();
     } catch (err) {
