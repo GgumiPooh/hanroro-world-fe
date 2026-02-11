@@ -73,7 +73,8 @@ const CommentList = ({
           ) : (
             <ul className="mb-50 flex w-full flex-col gap-5">
               {comments.map((commentItem) => {
-                const isOwn = isOwnComment(commentItem.author);
+                const authorDisplay = commentItem.authorName || commentItem.author || "익명";
+                const isOwn = isOwnComment(authorDisplay);
                 return (
                   <li
                     className={cn(
@@ -91,7 +92,7 @@ const CommentList = ({
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <span className="md:text-md text-sm text-plum-300">
-                            {commentItem.author}
+                            {authorDisplay}
                           </span>
                           <span className="text-xs text-plum-200/90">
                             {commentItem.createdAt}

@@ -70,6 +70,15 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     fetchGallery();
   }, [fetchGallery]);
 
+  // 배경 스크롤 방지
+  useEffect(() => {
+    const originalStyle = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   const handleLike = async () => {
     if (!displayName) {
       openLogin();
@@ -217,7 +226,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="relative scrollbar-hide flex h-[85vh] w-[min(95vw,900px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
+        className="relative scrollbar-hide flex h-[95vh] w-[min(92vw,900px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 상단 버튼들 */}
@@ -337,7 +346,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           </div>
 
           {/* 댓글 목록 */}
-          <div className="flex-1 p-4 md:p-6">
+          <div className="mb-15 p-4 md:p-6">
             <h3 className="mb-4 text-lg font-semibold text-white">댓글</h3>
 
             {gallery.comments.length === 0 ? (
@@ -365,7 +374,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           </div>
 
           {/* 댓글 입력 */}
-          <div className="sticky bottom-0 z-50 bg-gray-900/60 p-3 backdrop-blur-sm md:p-4">
+          <div className=" bottom-0 z-50 w-full p-3 md:p-4">
             <CommentInput
               apiEndpoint={`/api/public/gallery/${galleryId}/comments`}
               onCommentSubmit={handleCommentSubmit}

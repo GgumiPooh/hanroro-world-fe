@@ -17,7 +17,7 @@ const LoginOverlay: FC<Props> = ({ className, onClose }) => {
 
   return (
     <Portal>
-      <div className={cn("fixed inset-0 z-50", className)}>
+      <div className={cn("fixed inset-0 z-[100]", className)}>
         <div
           className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
           onClick={onClose}
