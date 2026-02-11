@@ -58,7 +58,7 @@ async function fetchCurrentUser(): Promise<Nullable<User>> {
 }
 
 export function useCurrentUser() {
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, error, refetch, isFetched } = useQuery({
     queryKey: ["currentUser"],
     staleTime: A_MINUTE * 5,
     gcTime: A_MINUTE * 10,
@@ -67,12 +67,15 @@ export function useCurrentUser() {
   });
 
   const displayName = data?.name || data?.nickname || null;
-  const hasCachedData = typeof window !== "undefined" && !!getCachedUser();
+
+  // API 검증 완료 전까지는 로딩 상태
+  // isFetched: 최소 한 번은 API 호출 완료됨
+  const isVerified = isFetched;
 
   return {
-    user: data,
-    displayName,
-    isLoading: hasCachedData ? false : isLoading,
+    user: isVerified ? data : null,
+    displayName: isVerified ? displayName : null,
+    isLoading: !isVerified,
     error,
     refetch,
   };

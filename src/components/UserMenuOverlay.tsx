@@ -63,16 +63,17 @@ const UserMenuOverlay: FC<Props> = ({
   );
 
   async function handleLogout() {
+    // 먼저 localStorage 정리
+    localStorage.removeItem("currentUser");
+
     try {
       await fetch(`${ENV_VARIABLE.API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
-      localStorage.removeItem("currentUser"); // 캐시 정리
-      window.location.reload();
     } catch (err) {
       console.error("Logout failed:", err);
-      localStorage.removeItem("currentUser"); // 캐시 정리
+    } finally {
       window.location.reload();
     }
   }

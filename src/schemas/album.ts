@@ -9,12 +9,12 @@ export const albumSongSchema = z.object({
 export const albumSchema = z.object({
   id: z.number(),
   title: z.array(languageDataSchema),
-  description: z.array(languageDataSchema).optional(),
-  metadata: z.array(metaDataSchema).optional(),
-  album_type: z.string().optional(),
-  published_at: z.string().optional(),
-  created_at: z.string().optional(),
-  songs: z.array(albumSongSchema).optional(),
+  description: z.array(languageDataSchema).optional().nullable(),
+  metadata: z.array(metaDataSchema).optional().nullable(),
+  album_type: z.string().optional().nullable(),
+  published_at: z.string().optional().nullable(),
+  created_at: z.string().optional().nullable(),
+  songs: z.array(albumSongSchema).optional().nullable(),
 });
 
 export const albumArraySchema = z.array(albumSchema);
