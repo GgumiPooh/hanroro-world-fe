@@ -22,7 +22,7 @@ const AlbumTrackList: FC<Props> = ({ className, albumId }) => {
                 to={`/album/${albumId}/song/${song.id}`}
               >
                 <span className="pr-5 text-2xl font-medium text-plum-500">
-                  {song.track_number}
+                  {song.trackNumber}
                 </span>
                 {song.title}
               </Link>

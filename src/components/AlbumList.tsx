@@ -19,8 +19,8 @@ const AlbumList: FC<Props> = ({ className }) => {
       ) : error ? (
         <p className="mb-20 text-center text-red-200">Failed to load albums</p>
       ) : (
-        albumsView.map((albumItem, index) => (
-          <AlbumItem key={albumItem.id} album={albumItem} index={index + 1} />
+        albumsView.map((albumItem) => (
+          <AlbumItem key={albumItem.id} album={albumItem} />
         ))
       )}
     </ul>
@@ -29,10 +29,9 @@ const AlbumList: FC<Props> = ({ className }) => {
 
 type AlbumItemProps = {
   album: ReturnType<typeof useAlbums>["albumsView"][number];
-  index: number;
 };
 
-const AlbumItem: FC<AlbumItemProps> = ({ album, index }) => {
+const AlbumItem: FC<AlbumItemProps> = ({ album }) => {
   const coverUrl = findMetadataUrl(album.metadata ?? [], "img");
   const albumTitle = album.titleText || "Untitled Album";
   const publishedDate = album.publishedAt ?? "";
@@ -54,7 +53,6 @@ const AlbumItem: FC<AlbumItemProps> = ({ album, index }) => {
           />
           <div className="min-w-0 text-left">
             <h2 className="font-medium text-plum-100 sm:text-2xl md:text-3xl">
-              <span className="mr-2 text-plum-400">{index}. </span>
               {albumTitle}
             </h2>
             {publishedDate && (
