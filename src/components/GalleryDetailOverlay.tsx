@@ -1,6 +1,5 @@
 import Button from "@/components/Button";
 import CommentInput from "@/components/CommentInput";
-import type { Comment } from "@/types/comment";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthOverlay } from "@/providers/AuthOverlayProvider";
 import { ENV_VARIABLE } from "@/utils/env-variable";
@@ -104,7 +103,12 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     }
   };
 
-  const handleCommentSubmit = (comment: Comment) => {
+  const handleCommentSubmit = (comment: {
+    id: number;
+    content: string;
+    author: string;
+    createdAt: string;
+  }) => {
     setGallery((prev) =>
       prev
         ? {
