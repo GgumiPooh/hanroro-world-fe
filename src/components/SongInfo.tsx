@@ -20,7 +20,7 @@ type Props = {
 const SongInfo: FC<Props> = ({ className }) => {
   const { albumId, songId } = useParams();
 
-  const { detailView, isLoading, error } = useSong(songId);
+  const { detailView, isLoading, error } = useSong(albumId, songId);
   const { albumsView } = useAlbums();
   const { videoId: currentVideoId, isPlaying, toggle } = useYouTubePlayer();
 
