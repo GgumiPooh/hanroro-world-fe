@@ -22,7 +22,7 @@ const SearchBar: FC<Props> = ({
   };
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn("flex w-full items-center gap-3 px-4", className)}>
       <MagnifyingGlassIcon className="size-5 shrink-0 text-plum-300" />
       <input
         type="text"
@@ -30,13 +30,13 @@ const SearchBar: FC<Props> = ({
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         placeholder={placeholder}
-        className="h-8 flex-1 rounded-2xl border border-gray-300/30 bg-gray-500/20 px-4 text-sm text-plum-300 placeholder-plum-300/80 outline-none focus:border-plum-400/50 md:h-10 md:text-base"
+        className="h-8 min-w-0 flex-1 rounded-2xl border border-gray-300/30 bg-gray-500/20 px-4 text-sm text-plum-300 placeholder-plum-300/80 outline-none focus:border-plum-400/50 md:h-9 md:text-base"
       />
       <Button
         variant="icon"
         size="sm"
         onClick={handleSearch}
-        className="h-8 shrink-0 rounded-3xl border border-gray-300/30 bg-plum-500/30 px-4 text-sm font-medium text-gray-300 transition-colors hover:border-plum-400/50"
+        className="md:h-9 h-8 shrink-0 border border-gray-300/30 bg-plum-500/30 px-4 text-sm font-medium text-gray-300 transition-colors hover:border-plum-400/50"
       >
         검색
       </Button>

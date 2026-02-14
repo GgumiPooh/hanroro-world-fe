@@ -94,7 +94,7 @@ const Gallery: FC = () => {
         Gallery
       </h1>
 
-      <div className="z-2 mx-auto w-[min(92vw,760px)]">
+      <div className="z-2 mx-auto w-[min(90vw,760px)] overflow-x-hidden">
         <SearchBar className="mx-3 mb-6" onSearch={handleSearch} />
 
         <div className="mb-6 scrollbar-hide flex gap-2 overflow-x-auto pb-2">

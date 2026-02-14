@@ -75,7 +75,6 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     fetchGallery();
   }, [fetchGallery]);
 
-  // 배경 스크롤 방지
   useEffect(() => {
     const originalStyle = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -265,9 +264,8 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
         className="relative scrollbar-hide flex h-[95vh] w-[min(92vw,900px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 상단 버튼들 */}
+
         <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
-          {/* 삭제 버튼 (작성자만 표시) */}
           {isOwner && (
             <button
               onClick={handleDelete}
@@ -279,7 +277,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
             </button>
           )}
 
-          {/* 다운로드 버튼 */}
+
           <div className="relative">
             <button
               onClick={() => setShowDownloadMenu(!showDownloadMenu)}
@@ -288,7 +286,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
               <ArrowDownTrayIcon className="size-4 md:size-6" />
             </button>
 
-            {/* 다운로드 메뉴 */}
+
             {showDownloadMenu && (
               <div className="absolute top-full right-0 mt-2 w-40 overflow-hidden rounded-xl bg-gray-800/95 shadow-lg backdrop-blur-sm">
                 <button
@@ -309,7 +307,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
             )}
           </div>
 
-          {/* 닫기 버튼 */}
+
           <button
             onClick={onClose}
             className="rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
@@ -317,7 +315,6 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
             <XMarkIcon className="size-4 md:size-6" />
           </button>
         </div>
-        {/* 이미지 네비게이션 버튼 */}
         {gallery.imageUrls.length > 1 && (
           <>
             <button
@@ -335,9 +332,9 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           </>
         )}
 
-        {/* 이미지 슬라이더 */}
+
         <div className="relative mx-auto flex w-[90%] shrink-0 flex-col items-center justify-center p-5">
-          {/* 이미지 */}
+
           <img
             src={gallery.imageUrls[currentImageIndex]}
             alt={gallery.title}
@@ -421,12 +418,11 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
             )}
           </div>
 
-          {/* 댓글 입력 */}
-          <div className=" bottom-0 z-50 w-full p-3 md:p-4">
+          <div className="bottom-0 z-50 p-1 md:p-4">
             <CommentInput
               apiEndpoint={`/api/public/gallery/${galleryId}/comments`}
               onCommentSubmit={handleCommentSubmit}
-              placeholder="댓글을 입력하세요..."
+              placeholder="댓글을 입력하세요.."
             />
           </div>
         </div>
