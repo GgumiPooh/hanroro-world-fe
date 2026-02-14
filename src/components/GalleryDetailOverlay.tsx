@@ -378,7 +378,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
                 onClick={handleLike}
                 className="flex items-center gap-2 text-gray-400 transition-colors hover:text-plum-400"
               >
-                {gallery.isLikedByMe ? (
+                {gallery.isLikedByMe && user ? (
                   <HeartIconSolid className="text-red-500 size-6" />
                 ) : (
                   <HeartIcon className="size-6" />

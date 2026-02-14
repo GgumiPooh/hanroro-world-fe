@@ -3,6 +3,7 @@ import { assert } from "@/utils/assert";
 import { ENV_VARIABLE } from "@/utils/env-variable";
 import { cn } from "@/utils/styles";
 import { Portal } from "@headlessui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import { useEvent } from "react-use";
 
@@ -17,6 +18,7 @@ const UserMenuOverlay: FC<Props> = ({
   onClose,
   onNicknameMenuClick,
 }) => {
+  const queryClient = useQueryClient();
   useEvent("keydown", (e) => e.key === "Escape" && onClose());
 
   return (
@@ -63,18 +65,22 @@ const UserMenuOverlay: FC<Props> = ({
   );
 
   async function handleLogout() {
-    // 먼저 localStorage 정리
+    // 즉시 UI 반영: localStorage + React Query 캐시 클리어 → 헤더가 바로 "Log In"으로 전환
     localStorage.removeItem("currentUser");
+    queryClient.setQueryData(["currentUser"], null);
 
+    // 서버 쿠키 삭제 완료 후 오버레이 닫기 (쿠키 남아있는 상태에서 API 호출 방지)
     try {
       await fetch(`${ENV_VARIABLE.API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
+      alert("로그아웃이 완료되었습니다.");
+      window.location.href = "/";
     } catch (err) {
       console.error("Logout failed:", err);
     } finally {
-      window.location.reload();
+      onClose();
     }
   }
 
@@ -93,9 +99,10 @@ const UserMenuOverlay: FC<Props> = ({
       });
       assert(res.ok, "회원 탈퇴 실패");
 
-      localStorage.removeItem("currentUser"); // 캐시 정리
+      localStorage.removeItem("currentUser");
       localStorage.removeItem("privacyConsent");
-      window.location.reload();
+      queryClient.setQueryData(["currentUser"], null);
+      onClose();
     } catch (err) {
       console.error("회원 탈퇴 실패:", err);
       alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");

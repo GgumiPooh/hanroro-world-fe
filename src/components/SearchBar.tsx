@@ -36,7 +36,7 @@ const SearchBar: FC<Props> = ({
         variant="icon"
         size="sm"
         onClick={handleSearch}
-        className="h-9 shrink-0 rounded-3xl border border-gray-300/30 bg-plum-500/30 px-4 text-sm font-medium text-gray-300 transition-colors hover:border-plum-400/50"
+        className="h-8 shrink-0 rounded-3xl border border-gray-300/30 bg-plum-500/30 px-4 text-sm font-medium text-gray-300 transition-colors hover:border-plum-400/50"
       >
         검색
       </Button>

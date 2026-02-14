@@ -16,7 +16,8 @@ import { useEffect, useRef, useState, type FC } from "react";
 const RECOMMENDED_TAGS = [
   "전체",
   "안경",
-  "단발",
+  "모자",
+  "긴머리",
   "굿즈",
   "콘서트",
   "일상",
@@ -93,36 +94,9 @@ const Gallery: FC = () => {
         Gallery
       </h1>
 
-      {/* 왼쪽 고정 추천 검색어 메뉴 */}
-      {/* <aside className="fixed top-70 left-10 z-40 hidden w-35 lg:block">
-        <div className="rounded-2xl border border-gray-300/30 p-4">
-          <h2 className="mb-4 text-sm font-semibold text-plum-300">
-            추천 태그
-          </h2>
-          <ul className="space-y-1">
-            {RECOMMENDED_TAGS.map((tag) => (
-              <li key={tag}>
-                <button
-                  onClick={() => handleTagClick(tag)}
-                  className={`w-full rounded-xl px-3 py-2 text-left text-sm transition-colors ${
-                    selectedTag === tag
-                      ? "bg-plum-300/30 text-plum-100"
-                      : "text-gray-400 hover:bg-gray-700/50 hover:text-gray-200"
-                  }`}
-                >
-                  {tag}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </aside> */}
-
-      {/* 메인 콘텐츠 */}
       <div className="z-2 mx-auto w-[min(92vw,760px)]">
-        <SearchBar className="mb-6" onSearch={handleSearch} />
+        <SearchBar className="mx-3 mb-6" onSearch={handleSearch} />
 
-        {/* 모바일용 태그 가로 스크롤 */}
         <div className="mb-6 scrollbar-hide flex gap-2 overflow-x-auto pb-2">
           {RECOMMENDED_TAGS.map((tag) => (
             <button
@@ -139,7 +113,6 @@ const Gallery: FC = () => {
           ))}
         </div>
 
-        {/* 갤러리 그리드 */}
         {isLoading && galleries.length === 0 ? (
           <div className="flex justify-center py-20">
             <div className="size-8 animate-spin rounded-full border-2 border-plum-400 border-t-transparent" />
@@ -162,7 +135,6 @@ const Gallery: FC = () => {
               ))}
             </div>
 
-            {/* 무한 스크롤 트리거 */}
             <div ref={observerRef} className="flex justify-center py-10">
               {isLoading && (
                 <div className="size-6 animate-spin rounded-full border-2 border-plum-400 border-t-transparent" />
@@ -177,7 +149,6 @@ const Gallery: FC = () => {
         )}
       </div>
 
-      {/* 플로팅 추가 버튼 */}
       <Button
         variant="ghost"
         size="lg"
@@ -187,7 +158,6 @@ const Gallery: FC = () => {
         <PlusIcon className="size-7 text-white" />
       </Button>
 
-      {/* 게시물 작성 오버레이 */}
       {isPostOverlayOpen && (
         <GalleryPostOverlay
           onClose={() => setIsPostOverlayOpen(false)}
@@ -195,18 +165,19 @@ const Gallery: FC = () => {
         />
       )}
 
-      {/* 게시물 상세보기 오버레이 */}
       {selectedGalleryId !== null && (
         <GalleryDetailOverlay
           galleryId={selectedGalleryId}
-          onClose={() => setSelectedGalleryId(null)}
+          onClose={() => {
+            setSelectedGalleryId(null);
+            refresh();
+          }}
         />
       )}
     </div>
   );
 };
 
-// 갤러리 카드 컴포넌트
 type GalleryCardProps = {
   gallery: GalleryItem;
   onClick: () => void;
@@ -220,7 +191,6 @@ const GalleryCard: FC<GalleryCardProps> = ({ gallery, onClick }) => {
       onClick={onClick}
       className="group cursor-pointer overflow-hidden transition-transform"
     >
-      {/* 썸네일 */}
       <div className="aspect-3/4 overflow-hidden">
         {thumbnailUrl ? (
           <img
@@ -235,14 +205,12 @@ const GalleryCard: FC<GalleryCardProps> = ({ gallery, onClick }) => {
         )}
       </div>
 
-      {/* 정보 */}
       <div className="p-3">
         <h3 className="mb-1 truncate text-sm font-medium text-plum-100">
           {gallery.title}
         </h3>
         <p className="mb-2 text-xs text-gray-400">{gallery.authorName}</p>
 
-        {/* 좋아요 & 댓글 & 조회수 */}
         <div className="flex items-center gap-3 text-xs text-gray-500">
           <span className="flex items-center gap-1">
             <HeartIcon className="size-3.5" />
