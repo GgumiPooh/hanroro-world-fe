@@ -167,21 +167,15 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     });
   };
 
-  const isMobileDevice = () => {
-    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  };
-
-  const canShareFiles = () => {
-    return navigator.share && navigator.canShare;
-  };
-
   const downloadImage = async (imageUrl: string, filename: string) => {
     try {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
 
-      const isMobile = isMobileDevice();
-      const supportsShare = canShareFiles();
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const supportsShare =
+        typeof navigator.share === "function" &&
+        typeof navigator.canShare === "function";
 
       if (isMobile && supportsShare) {
         const file = new File([blob], filename, { type: blob.type });
