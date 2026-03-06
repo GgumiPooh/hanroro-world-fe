@@ -105,8 +105,8 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           prev
             ? {
                 ...prev,
-                isLikedByMe: data.liked,
-                likeCount: data.likeCount,
+                isLikedByMe: data.liked ?? !prev.isLikedByMe,
+                likeCount: data.likeCount ?? prev.likeCount,
               }
             : null,
         );
@@ -208,17 +208,29 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     return mimeTypes[extension || ""] || "image/jpeg";
   };
 
+  const fallbackDownload = (imageUrl: string, filename: string) => {
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.download = filename;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const downloadImage = async (imageUrl: string, filename: string) => {
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const supportsShare =
+      typeof navigator.share === "function" &&
+      typeof navigator.canShare === "function";
 
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      const supportsShare =
-        typeof navigator.share === "function" &&
-        typeof navigator.canShare === "function";
+    if (isMobile && supportsShare) {
+      try {
+        const response = await fetch(imageUrl, { mode: "cors" });
+        if (!response.ok) throw new Error("Fetch failed");
 
-      if (isMobile && supportsShare) {
+        const blob = await response.blob();
         const mimeType = getMimeType(imageUrl, blob.type);
         const file = new File([blob], filename, { type: mimeType });
         const shareData = { files: [file] };
@@ -227,8 +239,17 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
           await navigator.share(shareData);
           return;
         }
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") {
+          return;
+        }
+        console.log("Share failed, trying fallback:", err);
       }
+    }
 
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -237,11 +258,8 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-    } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") {
-        return;
-      }
-      console.error("Download failed:", err);
+    } catch {
+      fallbackDownload(imageUrl, filename);
     }
   };
 
