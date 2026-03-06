@@ -89,6 +89,23 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       return;
     }
 
+    if (!gallery) return;
+
+    const previousLiked = gallery.isLikedByMe;
+    const previousCount = gallery.likeCount;
+
+    setGallery((prev) =>
+      prev
+        ? {
+            ...prev,
+            isLikedByMe: !prev.isLikedByMe,
+            likeCount: prev.isLikedByMe
+              ? prev.likeCount - 1
+              : prev.likeCount + 1,
+          }
+        : null,
+    );
+
     try {
       const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
       const res = await fetch(
@@ -99,20 +116,33 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
         },
       );
 
-      if (res.ok) {
-        const data = await res.json();
+      if (!res.ok) {
+        throw new Error("Failed to like");
+      }
+
+      const data = await res.json();
+      if (data.likeCount !== undefined) {
         setGallery((prev) =>
           prev
             ? {
                 ...prev,
-                isLikedByMe: data.liked ?? !prev.isLikedByMe,
-                likeCount: data.likeCount ?? prev.likeCount,
+                isLikedByMe: data.liked,
+                likeCount: data.likeCount,
               }
             : null,
         );
       }
     } catch (err) {
       console.error("Failed to toggle like:", err);
+      setGallery((prev) =>
+        prev
+          ? {
+              ...prev,
+              isLikedByMe: previousLiked,
+              likeCount: previousCount,
+            }
+          : null,
+      );
     }
   };
 
@@ -208,15 +238,8 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     return mimeTypes[extension || ""] || "image/jpeg";
   };
 
-  const fallbackDownload = (imageUrl: string, filename: string) => {
-    const link = document.createElement("a");
-    link.href = imageUrl;
-    link.download = filename;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const openImageInNewTab = (imageUrl: string) => {
+    window.open(imageUrl, "_blank");
   };
 
   const downloadImage = async (imageUrl: string, filename: string) => {
@@ -225,26 +248,29 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       typeof navigator.share === "function" &&
       typeof navigator.canShare === "function";
 
-    if (isMobile && supportsShare) {
-      try {
-        const response = await fetch(imageUrl, { mode: "cors" });
-        if (!response.ok) throw new Error("Fetch failed");
+    if (isMobile) {
+      if (supportsShare) {
+        try {
+          const response = await fetch(imageUrl);
+          const blob = await response.blob();
+          const mimeType = getMimeType(imageUrl, blob.type);
+          const file = new File([blob], filename, { type: mimeType });
+          const shareData = { files: [file] };
 
-        const blob = await response.blob();
-        const mimeType = getMimeType(imageUrl, blob.type);
-        const file = new File([blob], filename, { type: mimeType });
-        const shareData = { files: [file] };
-
-        if (navigator.canShare(shareData)) {
-          await navigator.share(shareData);
-          return;
+          if (navigator.canShare(shareData)) {
+            await navigator.share(shareData);
+            return;
+          }
+        } catch (err) {
+          if (err instanceof Error && err.name === "AbortError") {
+            return;
+          }
         }
-      } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") {
-          return;
-        }
-        console.log("Share failed, trying fallback:", err);
       }
+
+      openImageInNewTab(imageUrl);
+      alert("이미지를 길게 눌러 저장해주세요");
+      return;
     }
 
     try {
@@ -259,7 +285,7 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch {
-      fallbackDownload(imageUrl, filename);
+      openImageInNewTab(imageUrl);
     }
   };
 
