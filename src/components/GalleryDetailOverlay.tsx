@@ -167,10 +167,32 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     });
   };
 
+  const isMobileDevice = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  };
+
+  const canShareFiles = () => {
+    return navigator.share && navigator.canShare;
+  };
+
   const downloadImage = async (imageUrl: string, filename: string) => {
     try {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
+
+      const isMobile = isMobileDevice();
+      const supportsShare = canShareFiles();
+
+      if (isMobile && supportsShare) {
+        const file = new File([blob], filename, { type: blob.type });
+        const shareData = { files: [file] };
+
+        if (navigator.canShare(shareData)) {
+          await navigator.share(shareData);
+          return;
+        }
+      }
+
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -180,6 +202,9 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        return;
+      }
       console.error("Download failed:", err);
     }
   };

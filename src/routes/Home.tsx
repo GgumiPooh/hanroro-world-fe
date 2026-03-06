@@ -23,7 +23,7 @@ const Home: FC = () => {
         <h3 className="text-left text-xs font-bold text-gray-400 md:text-sm">
           NOT OFFICIAL SITE
           <br />
-          CONTACT : hyoeun.jin2@gmail.com
+          CONTACT : janghyopop@naver.com
         </h3>
       </div>
       <div className="absolute right-[3%] bottom-[2.5%] flex flex-col gap-10 sm:gap-23 md:bottom-15">
