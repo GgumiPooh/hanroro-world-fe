@@ -36,7 +36,7 @@ const ActivityCard: FC<Props> = ({ className, activity }) => {
         </div>
         <div className="mr-5 h-auto border-l-3 border-gray-600/40 pl-5">
           <h1 className="text-lg font-bold text-plum-300">
-            {formatDateString(activity.activeFrom)}
+            {formatDateRange(activity.activeFrom, activity.activeTo)}
           </h1>
           <h1 className="mb-5 text-base font-bold text-gray-100 md:text-lg">
             {selectLocalizedText(activity.title, ["ko"])}
@@ -82,6 +82,17 @@ function formatDateString(dateValue: string): string {
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return dateValue;
   return `${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
+}
+
+function formatDateRange(activeFrom: string, activeTo: string): string {
+  const formattedFrom = formatDateString(activeFrom);
+  const formattedTo = formatDateString(activeTo);
+
+  if (!formattedFrom) return formattedTo;
+  if (!formattedTo) return formattedFrom;
+  if (formattedFrom === formattedTo) return formattedFrom;
+
+  return `${formattedFrom} ~ ${formattedTo}`;
 }
 
 export default ActivityCard;
