@@ -13,7 +13,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
-import { useCallback, useEffect, useState, type FC } from "react";
+import { useCallback, useEffect, useRef, useState, type FC } from "react";
 
 type GalleryDetail = {
   id: number;
@@ -158,6 +158,30 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     }
   };
 
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diffX = touchStartX.current - touchEndX.current;
+    const threshold = 50;
+
+    if (Math.abs(diffX) > threshold) {
+      if (diffX > 0) {
+        handleNextImage();
+      } else {
+        handlePrevImage();
+      }
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("ko-KR", {
@@ -280,11 +304,11 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="relative scrollbar-hide flex h-[95vh] w-[min(92vw,900px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-10"
+        className="relative scrollbar-hide flex h-[95vh] w-[min(92vw,900px)] flex-col overflow-y-auto rounded-2xl bg-black/90 pt-16"
         onClick={(e) => e.stopPropagation()}
       >
 
-        <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
           {isOwner && (
             <button
               onClick={handleDelete}
@@ -334,33 +358,39 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
             <XMarkIcon className="size-4 md:size-6" />
           </button>
         </div>
-        {gallery.imageUrls.length > 1 && (
-          <>
-            <button
-              onClick={handlePrevImage}
-              className="absolute top-3/7 left-0 mx-3 -translate-y-1/2 rounded-full border border-gray-700/60 bg-black/50 p-2 text-white transition-colors"
-            >
-              <ChevronLeftIcon className="size-4 md:size-6" />
-            </button>
-            <button
-              onClick={handleNextImage}
-              className="absolute top-3/7 right-0 mx-3 -translate-y-1/2 rounded-full border border-gray-700/60 bg-black/50 p-2 text-white transition-colors"
-            >
-              <ChevronRightIcon className="size-4 md:size-6" />
-            </button>
-          </>
-        )}
 
+        <div
+          className="relative mx-auto flex w-[90%] shrink-0 flex-col items-center justify-center p-5"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="relative flex items-center justify-center">
+            {gallery.imageUrls.length > 1 && (
+              <button
+                onClick={handlePrevImage}
+                className="absolute left-0 z-10 -translate-x-full rounded-full border border-gray-700/60 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 md:-translate-x-[150%]"
+              >
+                <ChevronLeftIcon className="size-4 md:size-6" />
+              </button>
+            )}
 
-        <div className="relative mx-auto flex w-[90%] shrink-0 flex-col items-center justify-center p-5">
+            <img
+              src={gallery.imageUrls[currentImageIndex]}
+              alt={gallery.title}
+              className="max-h-[60vh] max-w-full object-contain"
+            />
 
-          <img
-            src={gallery.imageUrls[currentImageIndex]}
-            alt={gallery.title}
-            className="max-h-[60vh] max-w-full object-contain"
-          />
+            {gallery.imageUrls.length > 1 && (
+              <button
+                onClick={handleNextImage}
+                className="absolute right-0 z-10 translate-x-full rounded-full border border-gray-700/60 bg-black/50 p-2 text-white transition-colors hover:bg-black/70 md:translate-x-[150%]"
+              >
+                <ChevronRightIcon className="size-4 md:size-6" />
+              </button>
+            )}
+          </div>
 
-          {/* 이미지 인디케이터 - 이미지 아래에 자연스럽게 배치 */}
           {gallery.imageUrls.length > 1 && (
             <div className="mt-4 flex gap-2">
               {gallery.imageUrls.map((_, idx) => (
