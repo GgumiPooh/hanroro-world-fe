@@ -191,6 +191,23 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
     });
   };
 
+  const getMimeType = (url: string, blobType: string): string => {
+    if (blobType && blobType.startsWith("image/")) {
+      return blobType;
+    }
+
+    const extension = url.split(".").pop()?.toLowerCase().split("?")[0];
+    const mimeTypes: Record<string, string> = {
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      gif: "image/gif",
+      webp: "image/webp",
+    };
+
+    return mimeTypes[extension || ""] || "image/jpeg";
+  };
+
   const downloadImage = async (imageUrl: string, filename: string) => {
     try {
       const response = await fetch(imageUrl);
@@ -202,7 +219,8 @@ const GalleryDetailOverlay: FC<Props> = ({ galleryId, onClose }) => {
         typeof navigator.canShare === "function";
 
       if (isMobile && supportsShare) {
-        const file = new File([blob], filename, { type: blob.type });
+        const mimeType = getMimeType(imageUrl, blob.type);
+        const file = new File([blob], filename, { type: mimeType });
         const shareData = { files: [file] };
 
         if (navigator.canShare(shareData)) {
