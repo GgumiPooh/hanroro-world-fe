@@ -37,11 +37,17 @@ function resolveLocalizedText(
   return items[0]?.content ?? "";
 }
 
-async function fetchSong(songId: string | number): Promise<SongDetail | null> {
+async function fetchSong(
+  albumId: string | number,
+  trackNumber: string | number,
+): Promise<SongDetail | null> {
   const baseUrl = ENV_VARIABLE.API_BASE_URL || "http://localhost:8080";
-  const res = await fetch(`${baseUrl}/api/public/album/song/${songId}`, {
-    credentials: "include",
-  });
+  const res = await fetch(
+    `${baseUrl}/api/public/album/${albumId}/song/${trackNumber}`,
+    {
+      credentials: "include",
+    },
+  );
 
   if (!res.ok) {
     throw new Error("Failed to fetch song");
@@ -50,11 +56,14 @@ async function fetchSong(songId: string | number): Promise<SongDetail | null> {
   return res.json();
 }
 
-export function useSong(_albumId?: string | number, songId?: string | number) {
+export function useSong(
+  albumId?: string | number,
+  trackNumber?: string | number,
+) {
   const query = useQuery({
-    queryKey: ["song", songId],
-    queryFn: () => fetchSong(songId!),
-    enabled: !!songId,
+    queryKey: ["song", albumId, trackNumber],
+    queryFn: () => fetchSong(albumId!, trackNumber!),
+    enabled: !!albumId && !!trackNumber,
     staleTime: 60_000,
   });
 

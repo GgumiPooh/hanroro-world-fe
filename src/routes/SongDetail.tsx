@@ -40,7 +40,7 @@ const SongDetail: FC = () => {
   );
 
   function handleNavigateBack() {
-    if (album?.album_type === "DIGITAL_SINGLE") {
+    if (album?.albumType === "DIGITAL_SINGLE") {
       navigate("/albums");
     } else {
       navigate(`/album/${albumId}`);

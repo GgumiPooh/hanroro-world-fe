@@ -18,9 +18,9 @@ type Props = {
 };
 
 const SongInfo: FC<Props> = ({ className }) => {
-  const { albumId, songId } = useParams();
+  const { albumId, trackNumber } = useParams();
 
-  const { detailView, isLoading, error } = useSong(albumId, songId);
+  const { detailView, isLoading, error } = useSong(albumId, trackNumber);
   const { albumsView } = useAlbums();
   const { videoId: currentVideoId, isPlaying, toggle } = useYouTubePlayer();
 
@@ -120,17 +120,18 @@ const SongInfo: FC<Props> = ({ className }) => {
             </div>
           )}
 
-          {songId && (
+          {albumId && trackNumber && (
             <CommentList
               className="mt-8 mb-24"
               ref={commentListHandle}
-              songId={songId}
+              albumId={albumId}
+              trackNumber={trackNumber}
             />
           )}
 
-          {songId && (
+          {albumId && trackNumber && (
             <CommentInput
-              apiEndpoint={`/api/public/song/${songId}/comment`}
+              apiEndpoint={`/api/public/album/${albumId}/song/${trackNumber}/comment`}
               onCommentSubmit={handleCommentSubmit}
             />
           )}

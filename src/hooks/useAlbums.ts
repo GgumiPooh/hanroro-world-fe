@@ -95,7 +95,7 @@ export function useAlbums() {
         descriptionText: resolveLocalizedText(album.description),
         coverUrl: cover,
         firstSongId: null as number | null,
-        album_type: album.albumType,
+        albumType: album.albumType,
       };
     });
   }, [albumsQuery.data]);

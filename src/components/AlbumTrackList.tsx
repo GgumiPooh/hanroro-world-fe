@@ -22,11 +22,11 @@ const AlbumTrackList: FC<Props> = ({ className, albumId }) => {
     <div className={cn("w-full", className)}>
       <ul className="divide-y divide-plum-300/30">
         {sortedSongs.map((song) => (
-          <li key={song.id} className="py-5">
+          <li key={song.trackNumber} className="py-5">
             <div className="flex">
               <Link
                 className="flex w-full items-center justify-start text-start text-2xl text-plum-100"
-                to={`/album/${albumId}/song/${song.id}`}
+                to={`/album/${albumId}/song/${song.trackNumber}`}
               >
                 <span className="pr-5 text-2xl font-medium text-plum-500">
                   {song.trackNumber}

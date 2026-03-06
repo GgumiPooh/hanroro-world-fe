@@ -14,7 +14,8 @@ export type CommentListHandle = {
 type Props = {
   className?: string;
   ref?: Ref<CommentListHandle>;
-  songId?: string | number;
+  albumId?: string | number;
+  trackNumber?: string | number;
   fetchEndpoint?: string;
   showHeader?: boolean;
   emptyMessage?: string;
@@ -24,16 +25,17 @@ type Props = {
 const CommentList = ({
   className,
   ref,
-  songId,
+  albumId,
+  trackNumber,
   fetchEndpoint,
   showHeader = true,
   emptyMessage = "아직 댓글이 없습니다. 첫 댓글을 남겨보세요!",
   deleteEndpoint,
 }: Props) => {
   const finalFetchEndpoint =
-    fetchEndpoint ?? `/api/public/song/${songId}/comments`;
+    fetchEndpoint ?? `/api/public/album/${albumId}/song/${trackNumber}/comments`;
   const finalDeleteEndpoint =
-    deleteEndpoint ?? ((id: number) => `/api/public/song/comment/${id}`);
+    deleteEndpoint ?? ((id: number) => `/api/public/album/comment/${id}`);
 
   const {
     comments,

@@ -36,11 +36,8 @@ const AlbumItem: FC<AlbumItemProps> = ({ album }) => {
   const albumTitle = album.titleText || "Untitled Album";
   const publishedDate = album.publishedAt ?? "";
 
-  const isDigitalSingle = album.album_type === "DIGITAL_SINGLE";
-  const targetPath =
-    `/album/${album.id}` +
-    (isDigitalSingle && album.firstSongId ? `/song/${album.firstSongId}` : "");
-
+  const isDigitalSingle = album.albumType === "DIGITAL_SINGLE";
+  const targetPath = `/album/${album.id}` + (isDigitalSingle ? "/song/1" : "");
   return (
     <li className="mb-20 rounded-xl bg-gray-900/40 backdrop-blur-md md:mb-50">
       <Link className="flex p-0" to={targetPath}>

@@ -22,7 +22,7 @@ const App: FC = () => {
         <Route path="/activity" element={<Activity />} />
         <Route path="/albums" element={<Albums />} />
         <Route path="/album/:albumId" element={<AlbumDetail />} />
-        <Route path="/album/:albumId/song/:songId" element={<SongDetail />} />
+        <Route path="/album/:albumId/song/:trackNumber" element={<SongDetail />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/toArtist" element={<ToArtist />} />
       </Route>
