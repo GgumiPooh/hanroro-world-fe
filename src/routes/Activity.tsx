@@ -41,7 +41,7 @@ const Activity: FC = () => {
     <div className="relative scrollbar-hide h-dvh overflow-y-auto pt-50">
       <BlurBackground overlay overlayClassName="bg-gray-400/50" />
 
-      <h1 className="mb-50 text-center text-5xl font-bold text-gray-100 md:mb-70 md:text-8xl">
+      <h1 className="mb-50 text-center text-5xl font-bold text-[#faf8e1] md:mb-70 md:text-8xl">
         Activity
       </h1>
 
@@ -55,7 +55,7 @@ const Activity: FC = () => {
         />
 
         {isLoading ? (
-          <div className="py-20 text-center text-gray-400">로딩 중...</div>
+          <div className="py-20 text-center text-[#faf8e1]">로딩 중...</div>
         ) : (
           <ul className="relative ml-6 border-l-6 border-gray-600/40 md:ml-10">
             {activities.map((activityItem) => (
@@ -72,13 +72,13 @@ const Activity: FC = () => {
         <div ref={loadMoreRef} className="h-10" />
 
         {isFetchingNextPage && (
-          <div className="py-10 text-center text-gray-400">
+          <div className="py-10 text-center text-[#faf8e1]">
             더 불러오는 중...
           </div>
         )}
 
         {!hasNextPage && activities.length > 0 && (
-          <div className="py-10 text-center text-gray-500">
+          <div className="py-10 text-center text-[#faf8e1]">
             모든 활동을 불러왔습니다
           </div>
         )}

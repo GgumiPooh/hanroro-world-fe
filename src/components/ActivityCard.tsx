@@ -21,7 +21,7 @@ const ActivityCard: FC<Props> = ({ className, activity }) => {
           className={cn(
             "size-6 md:size-8",
             isDateInPast(activity.activeTo)
-              ? "text-plum-300"
+              ? "text-[#faf8e1]"
               : "text-gray-500/50",
           )}
         />
@@ -34,7 +34,7 @@ const ActivityCard: FC<Props> = ({ className, activity }) => {
             alt="img"
           />
         </div>
-        <div className="mr-5 h-auto border-l-3 border-gray-600/40 pl-5">
+        <div className="mr-5 h-auto border-l-3 text-[#faf8e1] pl-5">
           <h1 className="text-lg font-bold text-plum-300">
             {formatDateRange(activity.activeFrom, activity.activeTo)}
           </h1>
