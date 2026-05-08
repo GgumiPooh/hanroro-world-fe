@@ -1,4 +1,5 @@
 import ImageWithPlaceholder from "@/components/ImageWithPlaceholder";
+import { isMobile } from "@/utils/env";
 import { cn } from "@/utils/styles";
 import type { FC } from "react";
 
@@ -15,7 +16,7 @@ const BlurBackground: FC<Props> = ({
   className,
   imgClassName = "",
   overlayClassName = "bg-gray-400/50",
-  src = "/images/home-banner6.webp",
+  src = isMobile() ? "/images/home-banner7.webp" : "/images/home-banner9.webp",
   alt = "background",
   overlay = false,
 }) => {

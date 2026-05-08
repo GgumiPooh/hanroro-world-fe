@@ -102,7 +102,8 @@ const UserMenuOverlay: FC<Props> = ({
       localStorage.removeItem("currentUser");
       localStorage.removeItem("privacyConsent");
       queryClient.setQueryData(["currentUser"], null);
-      onClose();
+      alert("회원탈퇴가 완료되었습니다.");
+      window.location.href = "/";
     } catch (err) {
       console.error("회원 탈퇴 실패:", err);
       alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
