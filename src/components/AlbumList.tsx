@@ -17,7 +17,7 @@ const AlbumList: FC<Props> = ({ className }) => {
       {isLoading ? (
         <p className="mb-20 text-center text-plum-100/80">Loading...</p>
       ) : error ? (
-        <p className="mb-20 text-center text-red-200">Failed to load albums</p>
+        <p className="text-red-200 mb-20 text-center">Failed to load albums</p>
       ) : (
         albumsView.map((albumItem) => (
           <AlbumItem key={albumItem.id} album={albumItem} />

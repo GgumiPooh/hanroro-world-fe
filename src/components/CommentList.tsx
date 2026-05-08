@@ -93,16 +93,16 @@ const CommentList = ({
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <span className="md:text-md text-sm text-plum-300">
+                          <span className="md:text-md text-sm text-[#faf8e1]">
                             {authorDisplay}
                           </span>
-                          <span className="text-xs text-plum-200/90">
+                          <span className="text-xs text-plum-100/90">
                             {commentItem.createdAt}
                           </span>
                         </div>
                         {isOwn && (
                           <Button
-                            className="h-8 w-8 text-plum-300 hover:text-red-400/80"
+                            className="h-8 w-8 text-[#faf8e1] hover:text-red-400/80"
                             variant="icon"
                             size="sm"
                             onClick={handleDeleteComment(commentItem.id)}
@@ -111,7 +111,7 @@ const CommentList = ({
                           </Button>
                         )}
                       </div>
-                      <p className="text-base font-medium leading-relaxed text-plum-300 md:text-lg">
+                      <p className="text-base font-medium leading-relaxed text-[#faf8e1] md:text-lg">
                         {commentItem.content}
                       </p>
                     </div>

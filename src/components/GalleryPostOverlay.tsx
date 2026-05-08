@@ -265,7 +265,7 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSuccess }) => {
         </div>
 
         <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium text-plum-300">
+          <label className="mb-2 block text-sm font-medium text-[#faf8e1]">
             제목
           </label>
           <input
@@ -283,7 +283,7 @@ const GalleryPostOverlay: FC<Props> = ({ onClose, onSuccess }) => {
             size="md"
             onClick={handleSubmit}
             disabled={isSubmitting || isAnyCompressing}
-            className="flex-1 rounded-xl bg-plum-300 py-3 disabled:opacity-50"
+            className="flex-1 rounded-xl text-[#fffac3] py-3 disabled:opacity-50"
           >
             {isSubmitting ? (
               <div className="size-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
