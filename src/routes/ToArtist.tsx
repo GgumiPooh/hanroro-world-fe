@@ -18,7 +18,7 @@ const ToArtist: FC = () => {
       />
 
       <div className="mx-auto w-[min(92vw,700px)] px-4 pb-40">
-        <h1 className="mb-6 text-center text-4xl font-bold text-plum-100 md:mb-10 md:text-6xl">
+        <h1 className="mb-6 text-center text-4xl font-bold text-[#faf8e1] md:mb-10 md:text-6xl">
           To. RORO
         </h1>
 

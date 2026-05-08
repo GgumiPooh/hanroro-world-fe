@@ -90,7 +90,7 @@ const Gallery: FC = () => {
 
   return (
     <div className="relative scrollbar-hide h-dvh overflow-y-auto bg-black pt-50">
-      <h1 className="mb-15 text-center text-5xl font-bold text-gray-100 md:mb-30 md:text-8xl">
+      <h1 className="mb-15 text-center text-5xl font-bold text-[#faf8e1] md:mb-30 md:text-8xl">
         Gallery
       </h1>
 
@@ -104,7 +104,7 @@ const Gallery: FC = () => {
               onClick={() => handleTagClick(tag)}
               className={`shrink-0 rounded-full px-4 py-2 text-sm transition-colors ${
                 selectedTag === tag
-                  ? "bg-plum-500/40 text-plum-100"
+                  ? "bg-[#b9b9b978] text-[#e5e2e2]"
                   : "bg-gray-700/50 text-gray-400"
               }`}
             >
@@ -115,7 +115,7 @@ const Gallery: FC = () => {
 
         {isLoading && galleries.length === 0 ? (
           <div className="flex justify-center py-20">
-            <div className="size-8 animate-spin rounded-full border-2 border-plum-400 border-t-transparent" />
+            <div className="size-8 animate-spin rounded-full border-2 border-[#c4bda8] border-t-transparent" />
           </div>
         ) : error ? (
           <p className="text-center text-gray-400">{error}</p>
@@ -137,7 +137,7 @@ const Gallery: FC = () => {
 
             <div ref={observerRef} className="flex justify-center py-10">
               {isLoading && (
-                <div className="size-6 animate-spin rounded-full border-2 border-plum-400 border-t-transparent" />
+                <div className="size-6 animate-spin rounded-full border-2 border-[#c4bda8] border-t-transparent" />
               )}
               {!hasMore && galleries.length > 0 && (
                 <p className="text-sm text-gray-500">
@@ -153,7 +153,7 @@ const Gallery: FC = () => {
         variant="ghost"
         size="lg"
         onClick={handleAddPost}
-        className="fixed right-10 bottom-10 z-50 flex rounded-full bg-plum-300/50 p-4 ring-3 ring-gray-500/30"
+        className="fixed right-10 bottom-10 z-50 flex rounded-full bg-[#dbd8c286] p-4 ring-3 ring-[#cfcfcf78]"
       >
         <PlusIcon className="size-7 text-white" />
       </Button>

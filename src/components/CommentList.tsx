@@ -58,9 +58,9 @@ const CommentList = ({
   return (
     <section className={className}>
       {isLoading ? (
-        <p className="text-center text-sm text-plum-300/60">로딩중...</p>
+        <p className="text-center text-sm text-[#b2b2adb9]">로딩중...</p>
       ) : error ? (
-        <p className="text-center text-sm text-plum-300/80">{error}</p>
+        <p className="text-center text-sm text-[#b2b2adb9]">{error}</p>
       ) : (
         <>
           {showHeader && (
@@ -69,7 +69,7 @@ const CommentList = ({
             </h3>
           )}
           {comments.length === 0 ? (
-            <p className="text-center text-sm text-plum-300/60">
+            <p className="text-center text-sm text-[#b2b2adb9]">
               {emptyMessage}
             </p>
           ) : (

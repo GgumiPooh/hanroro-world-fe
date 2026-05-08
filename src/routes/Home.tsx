@@ -18,18 +18,18 @@ const Home: FC = () => {
   return (
     <div className="relative h-dvh text-black">
       <BlurBackground />
-      <SignIcon className="absolute bottom-[8%] left-[2%] w-60 text-[#deb754] sm:w-100 md:bottom-20 md:left-5 md:w-120" />
+      <SignIcon className="absolute bottom-[8%] left-[2%] w-60 text-[#dccca1] sm:w-100 md:bottom-20 md:left-5 md:w-120" />
       <div className="absolute bottom-[2.5%] left-[3%]">
-        <h3 className="text-left text-xs text-[#bbad85] md:text-sm">
+        <h3 className="text-left text-xs text-[#c4bda8] md:text-sm">
           NOT OFFICIAL SITE
           <br />
           CONTACT : hyoeun.jin2@gmail.com
         </h3>
       </div>
-      <div className="absolute right-[3%] bottom-[2.5%] flex flex-col gap-10 sm:gap-23 md:bottom-15">
+      <div className="absolute right-[3%] bottom-[2.5%] flex flex-col gap-10 sm:gap-20 md:bottom-15">
         <ExternalLink href={SOCIAL_LINKS.blog} ariaLabel="Blog 채널로 이동">
           <Button variant="icon" size="sm">
-            <BlogIcon className="h-7 text-[#38bb0c] sm:h-10" />
+            <BlogIcon className="ml-1 h-7 text-[#38bb0c] sm:h-10" />
           </Button>
         </ExternalLink>
         <ExternalLink
@@ -45,7 +45,7 @@ const Home: FC = () => {
           ariaLabel="YouTube 채널로 이동"
         >
           <Button variant="icon" size="sm">
-            <YoutubeIcon className="h-8 sm:h-12" />
+            <YoutubeIcon className="ml-1 h-8 sm:h-12" />
           </Button>
         </ExternalLink>
         <ExternalLink
